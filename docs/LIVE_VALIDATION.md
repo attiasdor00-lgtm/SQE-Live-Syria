@@ -1,11 +1,11 @@
-# SQE Live 0.1.6 — validation boundary
+# SQE Live 0.1.7 — validation boundary
 
 Release date: 2026-11-05. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **122 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **137 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,6 +15,15 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- Fifteen solo-balance tests cover automatic reserve boundaries versus explicit
+  requests, last advances, red costs, partial-site recovery, outage migration,
+  failed creation after a group exists, retirement failure/rollback/retry, finite
+  stock, depot priority, incoming cargo, terminal exhaustion and read-only reports.
+  Seven paired six-hour accounting fixtures compare 0.1.6 and 0.1.7, including
+  scripted attrition and a two-hour corridor interruption. Support requests in
+  the steady fixture improve from 2/8 to 8/8; depot repair restores first cargo
+  at minute 275 in the low-stock/partial-site fixtures. Travel/returns/combat events
+  are prescribed inputs; these are not DCS difficulty or navigation estimates.
 - Seventeen supply-connectivity scenarios cover disconnected depots, deterministic
   alternative paths, fuel-only isolation, pause/resume, unchanged IDs/positions,
   Hold failure and retry, shared road-attempt budgets, control flapping, partial
@@ -108,8 +117,8 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   slot, armed F-16, one live trigger, package hashes and supported vehicle types
   are checked.
 
-Final test output is included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.6 and passed.
+Final test output and the paired solo accounting report are included in the release's Validation folder.
+The original SQE headless smoke suite was rerun separately for 0.1.7 and passed.
 
 ## Required real-game validation
 

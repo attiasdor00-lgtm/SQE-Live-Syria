@@ -64,6 +64,13 @@ function V.overview(s)
         lines[#lines+1]=string.format("Fuel %.0f  Ammo %.0f  Supply %.0f",r.fuel,r.ammo,r.supply)
         local types={};for k in pairs(b.ready) do types[#types+1]=k end;table.sort(types)
         for _,k in ipairs(types) do lines[#lines+1]=k..": "..b.ready[k].." ready" end
+        if b.automation_reserve then
+            local r=b.automation_reserve
+            lines[#lines+1]="Automatic dispatch reserve: "..r.fuel.." fuel / "..r.ammo.." ammo / "..r.supply.." supply. Requested support may use reserved fuel/ammo."
+            if not b.ground_funded then lines[#lines+1]="Ground advance waits for "..b.ground_required.." supply (12 cost + "..r.supply.." recovery reserve)." end
+            if r.supply==0 then lines[#lines+1]="Recovery reserve released: no connected depot or affordable depot repair. Last advances use existing stock." end
+            for _,reason in ipairs(b.site_recovery or {}) do lines[#lines+1]="Recovery: "..reason end
+        end
         if b.depots then
             lines[#lines+1]="Connected depots: "..b.depots.." / fuel sources: "..b.fuel_sites
             if b.supply_reason then lines[#lines+1]=b.supply_reason end

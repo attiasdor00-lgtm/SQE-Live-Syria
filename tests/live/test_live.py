@@ -617,7 +617,8 @@ class ReleaseCase(unittest.TestCase):
             for i=1,5 do mock.kill('SQEL-G-south_armor-1-'..i) end
             local function stage()return mods.operations.sectors(c)[3].stage end
             c.state.bases.ramat.resources.supply=11;assert(stage()=='NO_SUPPLY')
-            c.state.bases.ramat.resources.supply=12;assert(stage()=='AWAIT_ADVANCE')
+            c.state.bases.ramat.resources.supply=36;assert(stage()=='NO_SUPPLY')
+            c.state.bases.ramat.resources.supply=37;assert(stage()=='AWAIT_ADVANCE')
             c.config.unit_budget=c:active_count()+3;assert(stage()=='UNIT_LIMIT')
             c.config.unit_budget=180;c.state.zones.galilee.owner='red'
             assert(stage()=='NO_BASE' and c:support_offer('CAP').code=='BASE_LOST')

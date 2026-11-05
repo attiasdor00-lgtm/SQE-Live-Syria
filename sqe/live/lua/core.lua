@@ -51,13 +51,20 @@ function Core.new(config, adapter, restored, session, targets, supply)
     end
     for _, t in ipairs(config.targets) do
         local alive = {}; for i=1,#t.types do alive[tostring(i)]=true end
-        self.state.targets[t.id] = {alive=alive, generation=1, positions={}, destroyed_at=false}
+        self.state.targets[t.id] = {alive=alive, generation=1, positions={}, destroyed_at=false,disabled_at=false}
     end
     for _, z in ipairs(config.zones) do self.state.zones[z.id]={owner=z.owner} end
     if restored then
         local ok, err = self:validate_save(restored)
         if not ok then error("Campaign save rejected: "..err) end
         self.state = copy(restored)
+        for _,d in ipairs(config.targets) do
+            local t=self.state.targets[d.id]
+            if (d.kind=="DEPOT" or d.kind=="FUEL") and count(t.alive)/#d.types<=0.25 and not t.disabled_at then
+                -- Legacy partial sites have no known outage time: start their repair wait at load.
+                t.disabled_at=t.destroyed_at or self.state.time
+            end
+        end
         -- DCS cannot resume the exact aircraft, fuel and weapons states. Bring surviving
         -- interrupted AI flights back through maintenance, keeping losses and costs.
         for _, f in pairs(self.state.flights) do
@@ -98,6 +105,8 @@ function Core:validate_save(s)
             return false, "invalid target "..id
         end
         if t.destroyed_at~=false and (not finite(t.destroyed_at) or t.destroyed_at<0 or t.destroyed_at>s.time) then return false,"invalid destruction time" end
+        if t.disabled_at~=nil and t.disabled_at~=false
+            and (not finite(t.disabled_at) or t.disabled_at<0 or t.disabled_at>s.time) then return false,"invalid site outage time" end
     end
     for id, def in pairs(self.base_defs) do
         local b=s.bases[id]
@@ -299,6 +308,10 @@ function Core:lose_target(id, index)
     local t=self.state.targets[id]; local key=tostring(index)
     if not t or not t.alive[key] then return false end
     t.alive[key]=false
+    local d=self.target_defs[id]
+    if (d.kind=="DEPOT" or d.kind=="FUEL") and count(t.alive)/#d.types<=0.25 and not t.disabled_at then
+        t.disabled_at=self.state.time
+    end
     if count(t.alive)==0 then t.destroyed_at=self.state.time end
     self:note(self.target_defs[id].name..": unit lost ("..count(t.alive).."/"..#self.target_defs[id].types.." remaining).")
     self:check_task()
@@ -327,7 +340,25 @@ end
 local COST={CAP={fuel=8,ammo=8,supply=0},ESCORT={fuel=8,ammo=8,supply=0},
     SEAD={fuel=8,ammo=12,supply=0},STRIKE={fuel=8,ammo=12,supply=0},
     AWACS={fuel=10,ammo=0,supply=0},TANKER={fuel=15,ammo=0,supply=0}}
-function Core:flight_offer(role,side,target)
+function Core:automation_reserve(base)
+    -- Solo tuning: one requested strike (8/12) plus one site's repair (0/10/25).
+    return base.side=="blue" and {fuel=8,ammo=22,supply=25} or {fuel=0,ammo=0,supply=0}
+end
+function Core:ground_funding(base)
+    local reserve=self:automation_reserve(base)
+    local stock=self.state.bases[base.id].resources
+    if base.side=="blue" and #self.supply.sources(self,base,"DEPOT")==0 then
+        local repairable=false
+        for _,d in ipairs(self.config.targets) do
+            if d.side==base.side and d.kind=="DEPOT" and self:target_health(d.id)<=0.25
+                and stock.supply>=25 and stock.ammo>=10 and self.supply.path(self,base.side,base.zone,d.zone) then repairable=true end
+        end
+        -- With no depot or affordable depot repair, spend finite stock on last advances.
+        if not repairable then reserve.supply=0 end
+    end
+    return stock.supply>=12+reserve.supply,12+reserve.supply
+end
+function Core:flight_offer(role,side,target,automatic)
     -- A read-only dispatch quote. Launch rechecks this same function before spending.
     local cost=COST[role]
     local out={available=false,role=role,side=side,target=target or false,cost=copy(cost or {})}
@@ -346,7 +377,7 @@ function Core:flight_offer(role,side,target)
     local n=(role=="AWACS" or role=="TANKER") and 1 or 2
     out.count=n
     local selected,aircraft
-    local reasons={};local resource_shortage=false
+    local reasons={};local resource_shortage=false;local reserve_shortage=false
     for _, b in ipairs(self.config.bases) do
         if b.side==side and self.state.zones[b.zone].owner==side then
             local ready
@@ -354,12 +385,18 @@ function Core:flight_offer(role,side,target)
                 if (self.state.bases[b.id].ready[ac] or 0)>=n then ready=ac;break end
             end
             if ready then
-                local missing={}
+                local missing={};local protected={};local reserve=self:automation_reserve(b)
                 for _,r in ipairs({"fuel","ammo","supply"}) do
-                    if self.state.bases[b.id].resources[r]<cost[r] then missing[#missing+1]=r end
+                    local remaining=self.state.bases[b.id].resources[r]-cost[r]
+                    if remaining<0 then missing[#missing+1]=r
+                    elseif automatic and cost[r]>0 and remaining<reserve[r] then protected[#protected+1]=r end
                 end
-                if #missing==0 then selected,aircraft=b,ready;break end
-                resource_shortage=true;reasons[#reasons+1]=b.name..": insufficient "..table.concat(missing," / ")
+                if #missing==0 and #protected==0 then selected,aircraft=b,ready;break end
+                if #missing>0 then
+                    resource_shortage=true;reasons[#reasons+1]=b.name..": insufficient "..table.concat(missing," / ")
+                else
+                    reserve_shortage=true;reasons[#reasons+1]=b.name..": automatic dispatch preserves solo reserve ("..table.concat(protected," / ")..")"
+                end
             else
                 local compatible={};local maintenance=0
                 for _,ac in ipairs(self.config.role_aircraft[side][role] or {}) do compatible[ac]=true end
@@ -373,7 +410,7 @@ function Core:flight_offer(role,side,target)
     end
     if not selected then
         if #reasons==0 then return blocked("BASE_LOST","No friendly operating base remains") end
-        return blocked(resource_shortage and "RESOURCES" or "AIRCRAFT",table.concat(reasons,"; "))
+        return blocked(resource_shortage and "RESOURCES" or reserve_shortage and "RESERVE" or "AIRCRAFT",table.concat(reasons,"; "))
     end
     if self:active_count()+n>self.config.unit_budget then return blocked("UNIT_LIMIT","Active unit budget reached; wait for a flight to recover") end
     local active=0
@@ -414,7 +451,7 @@ function Core:support_offer(role,selected)
     return self:flight_offer(role,"blue",target)
 end
 function Core:launch(role,side,target,automatic)
-    local offer=self:flight_offer(role,side,target)
+    local offer=self:flight_offer(role,side,target,automatic)
     if not offer.available then return false,offer.reason end
     local selected=self.base_defs[offer.base]
     local aircraft,n,cost=offer.aircraft,offer.count,offer.cost

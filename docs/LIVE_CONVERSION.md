@@ -26,6 +26,7 @@ losses and resources. No Python process or network service while flying.
 9. Observed coordinates and convoy resilience (0.1.4 / H01) — IMPLEMENTED; POSITION/RETRY/DELIVERY/RELOAD TESTS PASS.
 10. Debugging and dynamic ground-force task cards (0.1.5 / L09) — IMPLEMENTED; LIFECYCLE/RELOAD/AI-REFERENCE/NATIVE-CALLBACK TESTS PASS.
 11. Controlled supply connectivity (0.1.6 / L10) — IMPLEMENTED; CUT/RESUME/CARGO/RELOAD/VIEW TESTS PASS.
+12. Solo reserves and recovery (0.1.7 / L11) — IMPLEMENTED; PAIRED ACCOUNTING/FAILURE/RELOAD TESTS PASS.
 
 Actual DCS acceptance is outstanding for the complete release. See
 LIVE_VALIDATION.md for the test boundary and LIVE_USER_GUIDE.md for limitations.
@@ -33,15 +34,25 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.6
+## Continuation after 0.1.7
 
-### Next task — L11: solo campaign balance
+### Next task — L12: load checks and product completion
 
-Status: READY, not started. Evaluate supply and reinforcement cadence, isolated
-pockets, recovery from losses and reasons to choose different objectives. Use
-repeatable simulated campaigns to expose deadlocks and dominant choices; change
-one behavior at a time. C2 currently grants objective credit without an air
-launch penalty. Do not claim playability or FPS from contract tests.
+Status: READY. Inspect measured Lua/update/registry costs, packaging and startup
+failure modes; finish the install/release workflow and record the game-validation
+boundary. Native DCS flight, driving, rendering and FPS require a DCS environment.
+Do not assign the user a manual test as a prerequisite for further offline work.
+
+### Completed task — L11: first solo accounting balance pass
+
+Status: implementation and automated accounting checks complete; actual play
+balance remains provisional. Automatic blue dispatch preserves requested-support
+and site-repair resources. Disabled partial depots/fuel sites can recover after
+four hours, and depot reconstruction takes priority. Last advances may spend a
+released reserve; terminal supply exhaustion records defeat instead of an active
+softlock. Seven paired six-hour fixtures compare 0.1.6 and 0.1.7. See
+LIVE_BALANCE.md and LIVE_BALANCE_RESULTS.json for results and limitations. C2
+still has no dispatch penalty; that is not represented as an implemented effect.
 
 ### Completed task — L10: supply connectivity and interrupted routes
 
@@ -96,7 +107,7 @@ Exit checks: spawned hostile forces appear with current coordinates; enemy
 garrisons blocking recapture are taskable; full destruction completes once;
 arrival transitions and save/reload preserve identity and surviving units;
 friendly/destroyed forces cannot be accepted; map/F10/AI support share the same
-target lookup. Supply-route connectivity was subsequently completed in L10; balance is next.
+target lookup. Supply-route connectivity was subsequently completed in L10; the first solo accounting balance pass was completed in L11.
 
 ### Completed task — L07: actionable sector objectives
 

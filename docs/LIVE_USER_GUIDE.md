@@ -1,4 +1,4 @@
-# SQE Live 0.1.6 — Syria
+# SQE Live 0.1.7 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -154,7 +154,7 @@ status heartbeat, the map turns grey, shows **STALE / last known state**, and
 disables commands until fresh data arrives. This can occur while DCS is paused.
 Starting a different session clears the sector filter and prior selection.
 If the map widget cannot load, Front plan and F10 remain available.
-Existing 0.1.0–0.1.5 campaign saves remain compatible when upgrading. Loading a
+Existing 0.1.0–0.1.6 campaign saves remain compatible when upgrading. Loading a
 new dynamic assignment in an older release is not supported.
 
 ## Tasks created during the campaign
@@ -211,6 +211,35 @@ The sector graph is an abstract campaign gate, not road geofencing. No sector
 polygons constrain the native road path to friendly territory. Default Syria
 depots share their base sectors; red fuel from Marj and ground staging have
 connections through other sectors. Scenario geography is unchanged in 0.1.6.
+
+## Solo reserves and recovery
+
+Automatic blue air dispatch leaves 8 fuel and 22 ammo at the selected base.
+Requested support can spend those reserves; they are existing stock, not an extra
+allocation. The player's DCS ground-crew rearming account remains separate.
+
+An assault costs 12 supply and normally needs 37 available to leave 25 for
+recovery. If no depot is connected and no depot repair can be afforded through
+a controlled path, that supply reserve is released for finite last advances.
+
+Depots and fuel sites disabled at 25% strength or below can rebuild after four
+campaign hours, at the next repair review. They still require ownership, a
+connection, temporary unit space, 25 supply and 10 ammo. Depot repairs take
+priority over fuel and other sites. Replacements retire the previous survivors
+only after the new group exists; stock is charged only after a successful
+replacement. Ordinary ARMOR is not rebuilt by this rule.
+
+Resources and F10 Campaign status show reserves and recovery blockers. If no
+funded ground advance, connected depot, affordable depot reconstruction or
+incoming surviving blue ground force remains while enemy sectors exist, the
+campaign records DEFEAT instead of waiting indefinitely. Loaded supply or a
+moving assault postpones that decision until it resolves. Stocks and lost
+planes remain finite, and requested support can consume the repair allowance.
+
+Legacy partially disabled sites without a known outage time begin their wait
+at the first upgraded load. The timestamp then survives further reloads. A known
+complete-destruction time is retained. See LIVE_BALANCE.md for measured fixture
+results and the boundary between resource accounting and actual play difficulty.
 
 ## Convoy delays and partial supply delivery
 

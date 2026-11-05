@@ -33,7 +33,7 @@ installation test is not an installation pass. Real DCS behavior remains pending
 Commit the reviewed source and retain successful live/upstream test logs. Then:
 
 ```sh
-python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.6.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt
+python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.7.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
 ```
 
 The archive includes the install bundle, all tracked source and the logs, plus a
@@ -46,3 +46,14 @@ The inherited `.github/workflows/release.yml` builds the original SQE executable
 and uses the upstream version. It is not a Live release workflow. Use the Live
 commands above for this conversion. Future work should preserve unrelated
 remote edits and publish each completed feature as its own reviewed commit.
+
+## Repeat the solo accounting scenarios
+
+```sh
+python tools/live_balance.py --baseline-ref 08102d69f82c4c86679149d4f0cb0df9afc772f0 --output balance-results.json
+```
+
+The baseline ref is the public 0.1.6 import and must be available in local Git
+history (use a full clone). Omit `--baseline-ref` to measure the current rules
+only. The report uses scripted travel, returns and losses, not a DCS combat model.
+See LIVE_BALANCE.md for the fixtures and limits.

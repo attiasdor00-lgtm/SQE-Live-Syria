@@ -48,6 +48,7 @@ function Director.dispatch(c,b,kind,zone,source)
     end
     local price=kind=="ASSAULT" and 12 or 0
     if base.resources.supply<price then return false end
+    if kind=="ASSAULT" and not c:ground_funding(b) then return false,"Ground advance preserves the solo recovery reserve" end
     local id=c:id("ground-")
     local s={id=id,side=b.side,base=b.id,kind=kind,zone=zone,source=source,
         status="MOVING",outcome=false,corridor=corridor,started=c.state.time,alive={["1"]=true,["2"]=true,["3"]=true,["4"]=true},positions={}}
@@ -122,9 +123,19 @@ function Director.arrived(c,id)
     return true
 end
 function Director.repair(c)
-    for _,d in ipairs(c.config.targets) do
+    local sites=c.copy(c.config.targets)
+    local rank={DEPOT=1,FUEL=2}
+    table.sort(sites,function(a,b)
+        local x,y=rank[a.kind] or 3,rank[b.kind] or 3
+        if x==y then return a.id<b.id end;return x<y
+    end)
+    for _,d in ipairs(sites) do
         local t=c.state.targets[d.id]
-        if c:target_health(d.id)==0 and t.destroyed_at and c.state.time-t.destroyed_at>=14400
+        local health=c:target_health(d.id)
+        local logistics=d.kind=="DEPOT" or d.kind=="FUEL"
+        local disabled=logistics and health<=0.25 or health==0
+        local since=logistics and (t.disabled_at or t.destroyed_at) or t.destroyed_at
+        if disabled and since and c.state.time-since>=14400
             and c.state.zones[d.zone].owner==d.side and d.kind~="ARMOR" then
             for _,b in ipairs(c.config.bases) do
                 local r=c.state.bases[b.id].resources
@@ -132,15 +143,34 @@ function Director.repair(c)
                     local replacement=c.copy(t)
                     replacement.generation=replacement.generation+1;replacement.positions={}
                     for k in pairs(replacement.alive) do replacement.alive[k]=true end
-                    replacement.destroyed_at=false
+                    replacement.destroyed_at=false;replacement.disabled_at=false
                     local ok=false
-                    if c:active_count()+#d.types<=c.config.unit_budget then ok=c.adapter:spawn_target(d,replacement) end
+                    if c:active_count()+#d.types<=c.config.unit_budget then ok=c.adapter:rebuild_target(d,replacement) end
                     if ok then c.state.targets[d.id]=replacement;r.supply=r.supply-25;r.ammo=r.ammo-10;c:note(d.name.." rebuilt after resupply.") end
                     break
                 end
             end
         end
     end
+end
+function Director.supply_exhausted(c)
+    for _,b in ipairs(c.config.bases) do
+        if b.side=="blue" and c.state.zones[b.zone].owner==b.side then
+            if c:ground_funding(b) or #c.supply.sources(c,b,"DEPOT")>0 then return false end
+            local stock=c.state.bases[b.id].resources
+            if stock.supply>=25 and stock.ammo>=10 then
+                for _,d in ipairs(c.config.targets) do
+                    if d.side==b.side and d.kind=="DEPOT" and c:target_health(d.id)<=0.25
+                        and c.supply.path(c,b.side,b.zone,d.zone) then return false end
+                end
+            end
+        end
+    end
+    for _,ship in pairs(c.state.shipments) do
+        if ship.side=="blue" and ship.status=="MOVING" and c.count(ship.alive)>0 then return false end
+    end
+    for _,zone in pairs(c.state.zones) do if zone.owner=="red" then return true end end
+    return false
 end
 function Director.tick(c)
     local s=c.state
@@ -183,5 +213,9 @@ function Director.tick(c)
             and not c.catalog.referenced(c,id) then s.shipments[id]=nil end
     end
     c.supply.cleanup(c)
+    if Director.supply_exhausted(c) then
+        s.status="DEFEAT"
+        c:note("Campaign lost: no funded ground advance, incoming ground force or controlled depot recovery path remains.")
+    end
 end
 return Director

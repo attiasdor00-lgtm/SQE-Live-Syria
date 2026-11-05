@@ -1,0 +1,1227 @@
+{
+  "boundary": "Lua accounting fixtures: twenty-minute convoy travel, twenty-five-minute flight recovery, scripted losses and sector events; no combat/terrain/AI/FPS prediction.",
+  "baseline_ref": "1b2143166b4a73cb0fdf46a3defe43dd84338a1f",
+  "current": [
+    {
+      "first_south_capture_minute": 110,
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 21,
+      "final_strike_offer": {
+        "reason": "STRIKE already assigned",
+        "code": "ASSIGNED",
+        "available": false
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 36
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 64,
+            "supply": 88,
+            "ammo": 20
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 72,
+            "supply": 100,
+            "ammo": 20
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 88,
+            "supply": 100,
+            "ammo": 32
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 84,
+            "supply": 100,
+            "ammo": 20
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 5,
+      "accepted": 8,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "steady",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 84,
+        "supply": 100,
+        "ammo": 20
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": 335,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 96,
+      "first_rebuild_minute": 240,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 6,
+      "final_strike_offer": {
+        "reason": "2 F-16C ready at Ramat David",
+        "code": "READY",
+        "available": true
+      },
+      "supply_convoys": 4,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 5,
+            "ammo": 12
+          },
+          "minute": 240,
+          "depot_generation": 2
+        },
+        {
+          "resources": {
+            "fuel": 34,
+            "supply": 25,
+            "ammo": 24
+          },
+          "minute": 300,
+          "depot_generation": 2
+        },
+        {
+          "resources": {
+            "fuel": 42,
+            "supply": 53,
+            "ammo": 24
+          },
+          "minute": 360,
+          "depot_generation": 2
+        }
+      ],
+      "blue_sectors": 3,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 2,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "low_stock_depot_loss",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 42,
+        "supply": 53,
+        "ammo": 24
+      },
+      "first_supply_minute": 275
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 97,
+      "first_rebuild_minute": 240,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 6,
+      "final_strike_offer": {
+        "reason": "2 F-16C ready at Ramat David",
+        "code": "READY",
+        "available": true
+      },
+      "supply_convoys": 4,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 5,
+            "ammo": 12
+          },
+          "minute": 240,
+          "depot_generation": 2
+        },
+        {
+          "resources": {
+            "fuel": 34,
+            "supply": 25,
+            "ammo": 24
+          },
+          "minute": 300,
+          "depot_generation": 2
+        },
+        {
+          "resources": {
+            "fuel": 42,
+            "supply": 65,
+            "ammo": 24
+          },
+          "minute": 360,
+          "depot_generation": 2
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 2,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "quarter_strength_depot",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 42,
+        "supply": 65,
+        "ammo": 24
+      },
+      "first_supply_minute": 275
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 12,
+      "final_strike_offer": {
+        "reason": "2 F-16C ready at Ramat David",
+        "code": "READY",
+        "available": true
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 50,
+            "ammo": 34
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 90,
+            "ammo": 74
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 100,
+            "ammo": 100
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 75,
+            "ammo": 90
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 100,
+            "ammo": 68
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 100,
+            "ammo": 56
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 2,
+      "fuel_health": 1,
+      "scenario": "fuel_loss",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 14,
+        "supply": 100,
+        "ammo": 56
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 92,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 17,
+      "final_strike_offer": {
+        "reason": "2 F-16C ready at Ramat David",
+        "code": "READY",
+        "available": true
+      },
+      "supply_convoys": 9,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 30,
+            "ammo": 22
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 30,
+            "supply": 70,
+            "ammo": 22
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 38,
+            "supply": 100,
+            "ammo": 22
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 46,
+            "supply": 100,
+            "ammo": 22
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 54,
+            "supply": 100,
+            "ammo": 22
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 3,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "corridor_cut",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 54,
+        "supply": 100,
+        "ammo": 22
+      },
+      "first_supply_minute": 140
+    },
+    {
+      "first_south_capture_minute": 110,
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 11,
+      "valid": true,
+      "blue_automatic_launches": 16,
+      "final_strike_offer": {
+        "reason": "STRIKE already assigned",
+        "code": "ASSIGNED",
+        "available": false
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 51,
+            "supply": 100,
+            "ammo": 31
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 57,
+            "supply": 100,
+            "ammo": 25
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 55,
+            "supply": 88,
+            "ammo": 15
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 61,
+            "supply": 100,
+            "ammo": 17
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 75,
+            "supply": 100,
+            "ammo": 27
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 73,
+            "supply": 100,
+            "ammo": 13
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 5,
+      "accepted": 8,
+      "aircraft_losses": 9,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "attrition",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 73,
+        "supply": 100,
+        "ammo": 13
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 71,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 0,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient fuel / ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 0,
+      "status": "DEFEAT",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "empty_legacy_stock",
+      "depot_health": 0,
+      "resources": {
+        "fuel": 0,
+        "supply": 0,
+        "ammo": 0
+      },
+      "first_supply_minute": false
+    }
+  ],
+  "baseline_tree": "4291573a50b686341d17f486ebe69a9ec35f8bfd",
+  "baseline": [
+    {
+      "first_south_capture_minute": 110,
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 29,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 36
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 40,
+            "supply": 100,
+            "ammo": 0
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 48,
+            "supply": 88,
+            "ammo": 0
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 0
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 64,
+            "supply": 100,
+            "ammo": 0
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 72,
+            "supply": 100,
+            "ammo": 0
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 5,
+      "accepted": 2,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "steady",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 72,
+        "supply": 100,
+        "ammo": 0
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": 35,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 88,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 3,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient fuel / ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 0,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 18,
+            "ammo": 2
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 3,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "low_stock_depot_loss",
+      "depot_health": 0,
+      "resources": {
+        "fuel": 6,
+        "supply": 18,
+        "ammo": 2
+      },
+      "first_supply_minute": false
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 90,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 3,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient fuel / ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 0,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "quarter_strength_depot",
+      "depot_health": 0.25,
+      "resources": {
+        "fuel": 6,
+        "supply": 30,
+        "ammo": 2
+      },
+      "first_supply_minute": false
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 13,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient fuel",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 50,
+            "ammo": 22
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 90,
+            "ammo": 62
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 100,
+            "ammo": 100
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 75,
+            "ammo": 90
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 100,
+            "ammo": 68
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 100,
+            "ammo": 56
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 2,
+      "fuel_health": 1,
+      "scenario": "fuel_loss",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 6,
+        "supply": 100,
+        "ammo": 56
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 93,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 19,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 9,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 6,
+            "supply": 30,
+            "ammo": 2
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 14,
+            "supply": 70,
+            "ammo": 2
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 22,
+            "supply": 100,
+            "ammo": 2
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 30,
+            "supply": 100,
+            "ammo": 2
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 38,
+            "supply": 100,
+            "ammo": 2
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 3,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "corridor_cut",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 38,
+        "supply": 100,
+        "ammo": 2
+      },
+      "first_supply_minute": 140
+    },
+    {
+      "first_south_capture_minute": 110,
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 99,
+      "first_rebuild_minute": false,
+      "cargo_losses": 11,
+      "valid": true,
+      "blue_automatic_launches": 25,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 12,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 51,
+            "supply": 100,
+            "ammo": 31
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 41,
+            "supply": 100,
+            "ammo": 5
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 47,
+            "supply": 88,
+            "ammo": 7
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 53,
+            "supply": 100,
+            "ammo": 9
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 59,
+            "supply": 100,
+            "ammo": 11
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 57,
+            "supply": 100,
+            "ammo": 1
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 5,
+      "accepted": 1,
+      "aircraft_losses": 9,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "attrition",
+      "depot_health": 1,
+      "resources": {
+        "fuel": 57,
+        "supply": 100,
+        "ammo": 1
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": false,
+      "minutes": 360,
+      "requested": 0,
+      "peak_units": 85,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 0,
+      "final_strike_offer": {
+        "reason": "Ramat David: insufficient fuel / ammo",
+        "code": "RESOURCES",
+        "available": false
+      },
+      "supply_convoys": 0,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 0,
+            "supply": 0,
+            "ammo": 0
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 2,
+      "accepted": 0,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "scenario": "empty_legacy_stock",
+      "depot_health": 0,
+      "resources": {
+        "fuel": 0,
+        "supply": 0,
+        "ammo": 0
+      },
+      "first_supply_minute": false
+    }
+  ]
+}

@@ -293,6 +293,7 @@ class SupplyCase(unittest.TestCase):
     def test_isolated_staging_and_repairs_cannot_draw_remote_base_stock(self):
         self.h.run('''
             c.state.zones.golan.owner='red'
+            c.state.bases.ramat.resources.supply=80
             for i=1,4 do mock.kill('SQEL-G-marj_armor-1-'..i) end
             local stock=mods.json.encode(c.state.bases)
             assert(not mods.director.dispatch(c,c.base_defs.ramat,'ASSAULT','marj','south'))

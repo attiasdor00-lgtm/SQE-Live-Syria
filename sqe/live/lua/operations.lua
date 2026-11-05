@@ -51,11 +51,13 @@ function O.support(c,target)
 end
 function O.sectors(c)
     local out={}
-    local bases,affordable=0,0
+    local bases,affordable,ground_need=0,0,37
     for _,b in ipairs(c.config.bases) do
         if b.side=="blue" and c.state.zones[b.zone].owner=="blue" then
             bases=bases+1
-            if c.state.bases[b.id].resources.supply>=12 then affordable=affordable+1 end
+            local funded,required=c:ground_funding(b)
+            ground_need=math.min(ground_need,required)
+            if funded then affordable=affordable+1 end
         end
     end
     for _,z in ipairs(c.config.zones) do
@@ -105,13 +107,13 @@ function O.sectors(c)
         elseif bases==0 then
             s.stage="NO_BASE";s.instruction="Ground advance blocked: no friendly operating base remains."
         elseif affordable==0 then
-            s.stage="NO_SUPPLY";s.instruction="Ground advance blocked: an operating base needs 12 supply. Protect replenishment convoys."
+            s.stage="NO_SUPPLY";s.instruction="Ground advance needs "..ground_need.." supply: 12 to dispatch and "..(ground_need-12).." retained for recovery. Protect replenishment convoys."
         elseif c:active_count()+4>c.config.unit_budget then
             s.stage="UNIT_LIMIT";s.instruction="Ground advance waits for space within the active unit limit."
         else
             local connected=false
             for _,b in ipairs(c.config.bases) do
-                if b.side=="blue" and c.state.bases[b.id].resources.supply>=12 then
+                if b.side=="blue" and c:ground_funding(b) then
                     for _,origin in ipairs(z.neighbors) do
                         if c.supply.path(c,b.side,b.zone,origin) then connected=true end
                     end
@@ -161,6 +163,24 @@ function O.decorate(c,view)
         local fuel,_,fuel_reason=c.supply.sources(c,d,"FUEL")
         b.depots=#depots;b.fuel_sites=#fuel;b.active_depots=active;b.supply_reason=why
         b.fuel_reason=fuel_reason
+        b.automation_reserve=c:automation_reserve(d)
+        b.ground_funded,b.ground_required=c:ground_funding(d)
+        b.automation_reserve.supply=b.ground_required-12
+        b.site_recovery={}
+        for _,site in ipairs(c.config.targets) do
+            if site.side==d.side and (site.kind=="DEPOT" or site.kind=="FUEL") and c:target_health(site.id)<=0.25 then
+                local t=c.state.targets[site.id];local since=t.disabled_at or t.destroyed_at
+                local connected=c.supply.path(c,d.side,d.zone,site.zone)~=nil
+                local reason
+                if not connected then reason="controlled connection required"
+                elseif c.state.bases[d.id].resources.supply<25 or c.state.bases[d.id].resources.ammo<10 then
+                    reason="needs 25 supply and 10 ammo; requested support can spend reserved stock"
+                elseif since and c.state.time<since+14400 then
+                    reason="repair review in at least "..math.ceil((since+14400-c.state.time)/60).." min"
+                else reason="awaiting repair review, unit space and successful site replacement" end
+                b.site_recovery[#b.site_recovery+1]=site.name..": "..reason
+            end
+        end
         b.inbound=0;b.delayed=0;b.cut_convoys=0
         for _,ship in pairs(c.state.shipments) do
             if ship.base==d.id and ship.kind=="SUPPLY" and ship.status=="MOVING" and c.count(ship.alive)>0 then

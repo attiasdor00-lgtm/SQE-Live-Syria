@@ -1,5 +1,16 @@
 # CHANGES.md
 
+## SQE Live 0.1.7 — solo reserves and recoverable supply sites
+
+Automatic blue dispatch preserves resources for requested support and site repair.
+Disabled partial depots/fuel sites can rebuild after four hours, with depots
+prioritized and failed replacements rolled back before any charge. Last advances
+can spend the released reserve when depot recovery is unavailable; terminal
+supply exhaustion records defeat. Native/F10 reports explain the same rules.
+Includes 15 new balance tests and seven paired six-hour accounting scenarios.
+The complete source is now published in attiasdor00-lgtm/SQE-Live-Syria.
+Actual DCS play difficulty, driving, rendering and performance remain unverified.
+
 ## SQE Live 0.1.6 — controlled supply connectivity
 
 Disconnected depots can no longer resupply a base through enemy-held sectors.

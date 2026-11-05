@@ -102,6 +102,35 @@ function A:spawn_target(def,state)
     for n,r in pairs(records) do self.registry[n]=r end
     return true
 end
+function A:rebuild_target(def,replacement)
+    local old_name=self.ground_groups[def.id]
+    local old=Group.getByName(old_name or "")
+    local new_name="SQEL-G-"..def.id.."-"..replacement.generation
+    local function rollback()
+        local g=Group.getByName(new_name)
+        if exists(g) then g:destroy() end
+        self.ground_groups[def.id]=old_name
+        for name,r in pairs(self.registry) do
+            if r.kind=="target" and r.id==def.id and r.generation==replacement.generation then self.registry[name]=nil end
+        end
+    end
+    local called,ok,why=pcall(self.spawn_target,self,def,replacement)
+    if not called or not ok then
+        local cleaned,err=pcall(rollback)
+        if not cleaned then error("Site rebuild rollback failed: "..tostring(err)) end
+        return false,tostring(called and why or ok)
+    end
+    local retired,err=pcall(function()if exists(old) then old:destroy() end end)
+    if not retired then
+        local cleaned,cleanup_error=pcall(rollback)
+        if not cleaned then error("Site rebuild rollback failed: "..tostring(cleanup_error)) end
+        return false,"Previous site could not retire: "..tostring(err)
+    end
+    for name,r in pairs(self.registry) do
+        if r.kind=="target" and r.id==def.id and r.generation~=replacement.generation then self.registry[name]=nil end
+    end
+    return true
+end
 function A:player()
     local u=Unit.getByName(self.config.player_unit)
     if exists(u) then return u end

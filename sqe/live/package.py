@@ -12,7 +12,8 @@ from . import VERSION
 from .build import ROOT, build
 
 
-def package(output: Path, live_log: Path | None = None, upstream_log: Path | None = None):
+def package(output: Path, live_log: Path | None = None, upstream_log: Path | None = None,
+            balance_report: Path | None = None):
     bundle = output.parent / "SQE-Live-Syria"
     with contextlib.redirect_stdout(io.StringIO()):
         build(bundle)
@@ -32,6 +33,8 @@ def package(output: Path, live_log: Path | None = None, upstream_log: Path | Non
         for file,name in ((live_log,"live-tests.txt"), (upstream_log,"upstream-smoke.txt")):
             if file:
                 z.write(file,"Validation/"+name)
+        if balance_report:
+            z.write(balance_report,"Validation/solo-balance.json")
         z.writestr("START_HERE.txt",
                    f"SQE Live / Syria {VERSION}\n\n"
                    "Open SQE-Live-Syria/START_HERE_HE.md for Hebrew instructions.\n"
@@ -53,8 +56,9 @@ def main():
     p.add_argument("--output", type=Path, default=ROOT/"dist"/f"SQE-Live-Syria-v{VERSION}.zip")
     p.add_argument("--live-log", type=Path)
     p.add_argument("--upstream-log", type=Path)
+    p.add_argument("--balance-report", type=Path)
     args=p.parse_args()
-    print(package(args.output,args.live_log,args.upstream_log))
+    print(package(args.output,args.live_log,args.upstream_log,args.balance_report))
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ local M={clock=0,groups={},units={},messages={},marks={},menus={},handlers={},ne
     callbacks={},bases={},fail_spawn=false}
 local function make_group(data,category,country)
     assert(type(data.name)=="string" and #data.units>0,"invalid group")
-    assert(not M.groups[data.name],"group name collision: "..data.name)
+    assert(not M.groups[data.name] or not M.groups[data.name].alive,"live group name collision: "..data.name)
     M.next_id=M.next_id+1
     local g={id=M.next_id,name=data.name,data=data,category=category,country=country,alive=true,units={}}
     local controller={task={id="Mission",params={route=data.route}}}
@@ -18,7 +18,7 @@ local function make_group(data,category,country)
     function g:getController() return controller end
     function g:destroy() self.alive=false;for _,u in ipairs(self.units) do u.alive=false end end
     for _,d in ipairs(data.units) do
-        assert(not M.units[d.name],"unit name collision: "..d.name)
+        assert(not M.units[d.name] or not M.units[d.name].alive,"live unit name collision: "..d.name)
         assert(type(d.type)=="string" and type(d.x)=="number" and type(d.y)=="number","invalid unit")
         local u={name=d.name,group=g,alive=true,life=100,point={x=d.x,y=d.alt or 100,z=d.y},data=d}
         function u:isExist() return self.alive end
