@@ -1,4 +1,4 @@
-# SQE Live 0.1.11 — Syria
+# SQE Live 0.1.12 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -419,3 +419,11 @@ The offer and acknowledgement state the size. Singles pay the full sortie cost
 and have less payload/backup. Automatic dispatch does not use this fallback.
 No aircraft are granted, transferred or replaced; captured bases and exhausted
 compatible stock still block support. Existing saves keep their finite inventory.
+
+## Long-session recorded-loss cleanup
+
+AI aircraft already recorded lost through ejection/unit-loss events are retired
+on the next observation, even if the object still exists. A surviving wingman
+is preserved; loss does not return stock. Cleanup failure stops campaign updates
+and retains the last checkpoint. This is contract-tested policy; actual DCS
+object/event ordering and full-session behavior remain unverified.

@@ -899,6 +899,34 @@ class StorageCase(unittest.TestCase):
             fs.ack("cmd-1");assert(#fs.commands()==0)
         """)
 
+    def test_repeated_disk_checkpoints_and_command_backlog_recover_bounded_files(self):
+        self.lua.execute("""
+            for i=1,20 do assert(fs.save('stress',tostring(i))) end
+            assert(fs.load('stress')=='20' and fs.load('stress',true)=='19')
+            for i=1,600 do assert(fs.enqueue('stress-'..i,tostring(i))) end
+            local seen={};local total=0
+            while true do
+                local batch=fs.commands();assert(#batch<=16)
+                if #batch==0 then break end
+                for _,x in ipairs(batch)do
+                    assert(not seen[x.id] and tonumber(x.text))
+                    seen[x.id]=true;total=total+1;assert(fs.ack(x.id))
+                end
+            end
+            assert(total==600)
+            for i=1,120 do assert(fs.report(i%2==0 and 'ui' or 'runtime',tostring(i))) end
+        """)
+        folder=Path(self.temp.name)/'SQE-Live'
+        self.assertEqual([],list((folder/'commands').iterdir()))
+        self.assertEqual({'diagnostics-ui.json','diagnostics-runtime.json'},
+                         {p.name for p in folder.glob('diagnostics-*')})
+        (folder/'campaigns/stress.json').write_text('corrupted')
+        self.lua.execute("""
+            assert(fs.restore_previous('stress',fs.load('stress',true)))
+            assert(fs.load('stress')=='19' and fs.load('stress',true)=='19')
+        """)
+        self.assertFalse(list(folder.rglob('*.tmp')))
+
     def test_path_and_payload_limits(self):
         self.lua.execute("""
             assert(not fs.save("../outside","x"))

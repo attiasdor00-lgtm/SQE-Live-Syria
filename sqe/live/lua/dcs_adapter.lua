@@ -260,12 +260,13 @@ function A:control_flight(f,action)
 end
 function A:retire_flight(f)
     self.landed[f.id]=nil
-    for name in pairs(self.contacts) do
-        local r=self.registry[name]
-        if r and r.kind=="flight" and r.id==f.id then self.contacts[name]=nil end
-    end
     local g=Group.getByName(self.air_groups[f.id] or "")
     if exists(g) then g:destroy() end
+    for name,r in pairs(self.registry) do
+        if r.kind=="flight" and r.id==f.id then
+            self.contacts[name]=nil;self.registry[name]=nil
+        end
+    end
 end
 function A:ground_route(origin,destination)
     if type(land.findPathOnRoads)~="function" then return nil,"Road path API unavailable" end
@@ -392,7 +393,14 @@ end
 function A:observe()
     for name,r in pairs(self.registry) do
         local u=Unit.getByName(name)
-        if not exists(u) or u:getLife()<=0 then
+        local f=r.kind=="flight" and self.core.state.flights[r.id]
+        if r.kind=="flight" and (not f or f.status=="COMPLETE" or not f.alive[tostring(r.index)]) then
+            -- An ejection/loss notification can precede physical disappearance.
+            -- Retire recorded losses on observation, outside the native event
+            -- callback, without touching a surviving wingman or crediting stock.
+            if exists(u) then u:destroy() end
+            self.contacts[name]=nil;self.registry[name]=nil
+        elseif not exists(u) or u:getLife()<=0 then
             self:lost(name)
             self.registry[name]=nil
         else
@@ -422,7 +430,14 @@ function A:observe()
     end
     self:observe_contacts()
     for id in pairs(self.landed) do self:recover_ready(id) end
-    for id,name in pairs(self.air_groups) do if not self.core.state.flights[id] then self.air_groups[id]=nil end end
+    for id,name in pairs(self.air_groups) do
+        local f=self.core.state.flights[id]
+        local g=Group.getByName(name)
+        if not f then
+            if exists(g) then g:destroy() end
+            self.air_groups[id]=nil
+        elseif f.status=="COMPLETE" and exists(g) then self:retire_flight(f) end
+    end
     for id,name in pairs(self.ship_groups) do if not self.core.state.shipments[id] then self.ship_groups[id]=nil end end
     self:refresh_marks()
 end

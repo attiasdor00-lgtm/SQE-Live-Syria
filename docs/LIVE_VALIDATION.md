@@ -1,11 +1,11 @@
-# SQE Live 0.1.11 — validation boundary
+# SQE Live 0.1.12 — validation boundary
 
-Release date: 2026-11-05. Target: local Windows DCS, Syria, F-16C.
+Release date: 2026-11-06. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **177 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **186 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,6 +15,12 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- Nine runtime-retention/recovery cases cover recorded-loss cleanup, failed
+  retirement, live wingmen, bounded one-hour callbacks/queues, twenty Israel
+  resumes and a 600-command actual-file backlog/recovery fixture. A separate
+  six-hour/10,800-update report has zero live recorded-loss objects, checkpoint
+  peak 60,580 bytes and status peak 105,444 bytes. Host timings and retained-map
+  counts do not measure DCS FPS or process RAM. See LIVE_SOAK.md.
 - Ten Israel attrition/support cases cover manual singles at full cost, funded
   pair preference, captured/empty bases, conservation and failed dispatch,
   recovery/reload, shared native/F10 quotes and eight six-hour regional workloads.
@@ -144,7 +150,7 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   are checked.
 
 Final test output and the current Israel paired accounting report are included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.11 and passed.
+The original SQE headless smoke suite was rerun separately for 0.1.12 and passed.
 
 ## Required real-game validation
 

@@ -1,5 +1,17 @@
 # CHANGES.md
 
+## SQE Live 0.1.12 — recorded-loss cleanup and runtime retention checks
+
+Aircraft recorded lost through ejection/unit-loss events are retired on the next
+observation, outside the event callback. A surviving wingman is preserved; a
+completed or purged flight cannot leave a live group/registry entry. Successful
+retirement clears its registry/contacts without another debit or recovery credit.
+Nine added cases cover loss/retirement failures, a one-hour runtime workload,
+twenty Israel-profile resumes and real-file checkpoint/command backlog recovery.
+A six-hour runtime report and one-hour baseline probe are included. Host/stub
+costs and retained map counts are not DCS FPS or process-memory measurements.
+The memory bridge double now models the real bridge's sorted 16-command batches.
+
 ## SQE Live 0.1.11 — usable surviving aircraft across Israel bases
 
 Explicit blue combat-support requests prefer a funded pair at any friendly base,

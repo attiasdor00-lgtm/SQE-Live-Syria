@@ -133,7 +133,9 @@ function M.memory_storage()
     function f.read_report(kind)return f.reports[kind] end
     function f.enqueue(id,text)f.queue[id]=text;return true end
     function f.commands()
-        local out={};for id,text in pairs(f.queue) do out[#out+1]={id=id,text=text} end;return out
+        local names={};for id in pairs(f.queue)do names[#names+1]=id end;table.sort(names)
+        local out={};for i=1,math.min(#names,16)do local id=names[i];out[#out+1]={id=id,text=f.queue[id]} end
+        return out
     end
     function f.ack(id)f.queue[id]=nil;return true end
     return f

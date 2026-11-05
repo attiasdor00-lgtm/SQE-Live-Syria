@@ -33,7 +33,7 @@ installation test is not an installation pass. Real DCS behavior remains pending
 Commit the reviewed source and retain successful live/upstream test logs. Then:
 
 ```sh
-python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.11.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_ISRAEL_BALANCE_RESULTS.json
+python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.12.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_ISRAEL_BALANCE_RESULTS.json --soak-report docs/LIVE_SOAK_RESULTS.json
 ```
 
 The archive includes the install bundle, all tracked source and the logs, plus a
@@ -79,3 +79,15 @@ python tools/live_balance.py --scenario israel --regional --baseline-ref 404f985
 Use a full clone for the public baseline. This measures scripted access and
 conservation, not combat. --regional requires --scenario israel; the original
 legacy fixtures/report remain separate. See LIVE_ISRAEL_BALANCE.md for inputs.
+
+## Runtime retention workload
+
+```sh
+python tools/live_soak.py --hours 6 --output runtime-soak.json
+python tools/live_soak.py --hours 1 --baseline-ref a0a12db3773ff7fc5df39b3012d02a85203d67fd --output baseline-probe.json
+```
+
+The baseline substitutes only the pinned adapter. Inputs, memory bridge and
+observations are explicit fixtures. Timings include host/stub overhead, not DCS
+frame cost; see LIVE_SOAK.md. The package's optional --soak-report is included as
+Validation/runtime-soak.json. Source/docs also retains both measurement reports.

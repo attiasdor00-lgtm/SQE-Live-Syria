@@ -35,13 +35,23 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.11
+## Continuation after 0.1.12
 
-### Next task — L12: bounded long-session and product checks
+### Next task — V01: actual DCS acceptance
 
-Status: READY. Measure update cost, save size, registry/queue growth and repeated
-installation/recovery in the contract environment. Address concrete failures,
-retain actual DCS flight/rendering/FPS/Windows acceptance as pending.
+Status: PENDING ENGINE OBSERVATION. Observe mission startup, native UI/focus,
+loss/destruction ordering, AI support/landing, roads, save/exit/reload and frame
+time on target hardware. No manual task is assigned to the user. Specific code
+fixes may continue, but cannot be called actual-engine acceptance. This remains
+a development candidate, not 1.0 or a game-validated beta.
+
+### Completed task — L12: build-environment retention and recovery checks
+
+Recorded-loss aircraft no longer remain as live orphan units/registrations.
+Nine cases cover cleanup/failure/stock, a one-hour callback workload, twenty
+Israel resumes and actual-file backlog/checkpoint recovery. The six-hour report
+contains 10,800 updates and explicitly scoped host timings/map counts. See
+LIVE_SOAK.md; native DCS performance and process memory remain unmeasured.
 
 ### Completed task — G02: Israel-profile solo support attrition accounting
 
