@@ -1,0 +1,316 @@
+"""Threat map: SAM rings, the FLOT/gatekeeper rule, safe tanker stations, egress steering, corridor sites.
+
+The rule that keeps the war logical: a target is only offered if the straight route to it does not cross an intact
+SAM ring that sits IN FRONT of the target (closer to us by more than 15 nm). Blocking sites are promoted to DEAD
+objectives instead, so the war advances belt by belt instead of jumping straight to deep targets.
+"""
+from __future__ import annotations
+import math
+from .models import AssetKind
+
+NM = 1852.0
+UMBRELLA_VARIANTS = ("SA-10",)   # long-range sites whose reach covers their neighbours: in a cluster they are the first thing a SEAD wave has to beat
+UMBRELLA_KM = 55.0               # what an SA-10 reaches in practice: it opened fire on jets at 52-56 km in every run
+
+
+def umbrella_site(state, target_asset, reach_km: float = UMBRELLA_KM):
+    """The live long-range site whose reach covers this target (the nearest one), or None. A target that is itself an SA-10 has no umbrella
+    other than a second SA-10 nearby."""
+    if target_asset is None:
+        return None
+    best, bd = None, None
+    for a in state.assets.values():
+        if a.id == target_asset.id or a.variant not in UMBRELLA_VARIANTS or a.destroyed:
+            continue
+        d = math.hypot(a.x - target_asset.x, a.y - target_asset.y)
+        if d <= reach_km * 1000 and (bd is None or d < bd):
+            best, bd = a, d
+    return best
+RANGE_NM = {"SA-8": 7, "AAA": 3, "MANPAD": 3, "SA-2": 25, "SA-3": 13, "SA-6": 13, "SA-11": 18, "SA-10": 48, "SA-15": 8, "SA-19": 5}
+SERIOUS_NM = 8          # shorter-ranged systems do not block routes (they only matter at the target)
+
+
+def rings(state, min_range: float = SERIOUS_NM) -> list:
+    out = []
+    for a in state.assets.values():
+        if a.kind == AssetKind.SAM and not a.destroyed and a.health > 0.25:
+            r = RANGE_NM.get(a.variant, 0)
+            if r >= min_range:
+                out.append((a, r * NM))
+    return out
+
+
+def seg_dist(px, py, ax, ay, bx, by) -> float:
+    dx, dy = bx - ax, by - ay
+    L2 = dx * dx + dy * dy
+    if L2 == 0:
+        return math.hypot(px - ax, py - ay)
+    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / L2))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def poly_dist(px, py, pts) -> float:
+    return min(seg_dist(px, py, *pts[i], *pts[i + 1]) for i in range(len(pts) - 1))
+
+
+def cluster_ids(target_asset) -> set:
+    return set() if target_asset is None else {target_asset.id, *target_asset.defended_by}
+
+
+def blockers(state, base_xy, target_xy, target_asset=None, margin_nm: float = 8, front_nm: float = 15) -> list:
+    """Intact SAM sites the route crosses that are in front of the target (the FLOT/gatekeeper rule)."""
+    bx, by = base_xy
+    tx, ty = target_xy
+    d_t = math.hypot(tx - bx, ty - by)
+    skip = cluster_ids(target_asset)
+    out = []
+    for a, r in rings(state):
+        if a.id in skip:
+            continue
+        if seg_dist(a.x, a.y, bx, by, tx, ty) < r + margin_nm * NM and math.hypot(a.x - bx, a.y - by) < d_t - front_nm * NM:
+            out.append(a)
+    return out
+
+
+def fighter_bases(state) -> list:
+    return [(state.assets[w.base_asset_id].x, state.assets[w.base_asset_id].y) for w in state.enemy_air
+            if w.available > 0 and not state.assets[w.base_asset_id].destroyed]
+
+
+def tanker_station(state, base_xy, toward_xy, min_enemy_nm: float = 150, ring_margin_nm: float = 20):
+    """A tanker track behind the FLOT: far from enemy fighter bases and outside every SAM ring. None if no such spot."""
+    bx, by = base_xy
+    mx, my = toward_xy
+    enemies = fighter_bases(state)
+    rs = rings(state, min_range=3)
+    for f in (0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1):
+        x, y = bx + (mx - bx) * f, by + (my - by) * f
+        if enemies and min(math.hypot(x - ex, y - ey) for ex, ey in enemies) / NM < min_enemy_nm:
+            continue
+        if any(math.hypot(x - a.x, y - a.y) < r + ring_margin_nm * NM for a, r in rs):
+            continue
+        return x, y
+    return None
+
+
+def safe_egress(state, tx, ty, hdg, egr_nm, skip_ids=()):
+    """Pick the egress bearing that stays clear of live SAM rings (target cluster excluded)."""
+    rs = [(a, r) for a, r in rings(state) if a.id not in skip_ids]
+    best, best_clear = None, -1e18
+    for off in (100, -100, 150, -150, 60, -60, 180):
+        h = math.radians(hdg + off)
+        x, y = tx + egr_nm * NM * math.cos(h), ty + egr_nm * NM * math.sin(h)
+        clear = min((math.hypot(x - a.x, y - a.y) - r for a, r in rs), default=1e12)
+        if clear > 5 * NM:
+            return x, y
+        if clear > best_clear:
+            best, best_clear = (x, y), clear
+    return best
+
+
+MAX_ROUTE_SITES = 2     # SAM sites that merely touch the route (not the target's own cluster) that are spawned: keeps VR frame rate sane
+
+
+def corridor_sam_sites(state, polyline, target_asset, margin_nm: float = 10, max_route: int = MAX_ROUTE_SITES) -> list:
+    """The target's own SAM cluster, plus the few live sites whose ring reaches deepest into the route corridor."""
+    skip = cluster_ids(target_asset)
+    out, route = [], []
+    for a in state.assets.values():
+        if a.kind != AssetKind.SAM or a.destroyed:
+            continue
+        r = RANGE_NM.get(a.variant, 0) * NM
+        near_target = target_asset is not None and math.hypot(a.x - target_asset.x, a.y - target_asset.y) < 12_000
+        if a.id in skip or near_target:
+            out.append(a)
+        elif r >= SERIOUS_NM * NM and poly_dist(a.x, a.y, polyline) < r + margin_nm * NM:
+            route.append((r - poly_dist(a.x, a.y, polyline), a))
+    route.sort(key=lambda t: t[0], reverse=True)
+    return out + [a for _, a in route[:max_route]]
+
+
+def point_back_along(poly, d_back: float):
+    """Position d_back metres back from the END of a polyline, and the heading to the next point."""
+    pts = list(poly)
+    remaining = d_back
+    for i in range(len(pts) - 1, 0, -1):
+        (x1, y1), (x0, y0) = pts[i], pts[i - 1]
+        seg = math.hypot(x1 - x0, y1 - y0)
+        if remaining <= seg:
+            f = 1.0 - remaining / max(seg, 1e-9)
+            return (x0 + (x1 - x0) * f, y0 + (y1 - y0) * f), i
+        remaining -= seg
+    return pts[0], 1
+
+
+FIELD_DETECT_NM = 60.0      # an alert field scrambles when blue comes within this of the field (less for fields close to the fight)
+MARSHAL_FIELD_MARGIN_NM = 10.0   # v0.41.6: a marshal point stays this far outside every enemy field's detection circle
+
+
+FIELD_SAM_NM = 15.0         # v0.41.8: a live long-range SAM this close to an enemy field is its radar...
+FIELD_SAM_DETECT_NM = 50.0  # ...and the field then sees this far (the v0.41.6 Gudauta run: the stand-off wave stayed outside a 29 nm circle,
+                            # HARMed and bombed the SA-10 next to the field, and not one alert pair was called)
+
+
+RAMP_LEAD_NM = 30.0         # v0.41.92: extra scramble-circle radius when alert pairs wait hot on the ramp and taxi (see set_ramp_lead)
+_LEAD_NM = 0.0              # the lead in force for the mission being built (MissionBuilder.build sets it from the hot-ramp setting)
+
+
+def set_ramp_lead(on: bool) -> None:
+    """v0.41.92: hot-ramp pairs take 5 to 9 minutes from the call to the air (XO's 2026-10-21 runs: 324 to 566 s at Gudauta, 283 and 290 s at Nalchik;
+    the hidden runway start is about 2 minutes), so with the setting on the circles are larger by what blue covers in the 4 extra minutes
+    (about 500 kt = 8 nm a minute, 30 nm). Judgment call from those runs. Planning keep-outs (marshal, sweep, CVCAP) read the same radius."""
+    global _LEAD_NM
+    _LEAD_NM = RAMP_LEAD_NM if on else 0.0
+
+
+def field_detect_nm(field_xy, target_xy, state=None) -> float:
+    """v0.41.1: the radius of an enemy field's scramble circle, round the field itself, sized by how far it is from the fight.
+    v0.41.8: with state given, a field with a live long-range SAM (an SA-10) within FIELD_SAM_NM sees at least FIELD_SAM_DETECT_NM."""
+    d = math.hypot(field_xy[0] - target_xy[0], field_xy[1] - target_xy[1]) / NM
+    r = max(25.0, min(FIELD_DETECT_NM, 0.6 * d + 15.0))
+    if _LEAD_NM:
+        r = max(r, min(r + _LEAD_NM, 0.85 * d + 15.0))              # never past what the fight's own distance justifies
+    if state is not None and any(a.variant in UMBRELLA_VARIANTS and not a.destroyed and a.health > 0.25
+                                 and math.hypot(a.x - field_xy[0], a.y - field_xy[1]) / NM <= FIELD_SAM_NM for a in state.assets.values()):
+        r = max(r, FIELD_SAM_DETECT_NM)
+    return r
+
+
+def safe_marshal(state, base_xy, hdg_to_target, target_xy=None, min_enemy_nm: float = 90, ring_margin_nm: float = 20):
+    """Marshal point BEHIND the base: clear of enemy fighter fields and at least ring_margin_nm outside every SAM ring.
+    v0.41.6: with the target known, a field only needs the marshal outside its own scramble circle (field_detect_nm) plus a margin, not a flat
+    90 nm (which sent the Senaki Vipers 54 nm south to hold, then back north past their own base). Without it, the old flat distance.
+    Tries close-in first, directly behind, then swings to the sides. Returns the best spot found (never None)."""
+    bx, by = base_xy
+    enemies = [(ex, ey, (field_detect_nm((ex, ey), target_xy, state) + MARSHAL_FIELD_MARGIN_NM) if target_xy is not None else min_enemy_nm)
+               for ex, ey in fighter_bases(state)]
+    rs = rings(state, min_range=3)
+    back = hdg_to_target + 180
+    best, best_slack = None, -1e18
+    for nm in (15, 20, 25, 32, 40, 50, 62):
+        for ang in (0, 35, -35, 70, -70, 105, -105):
+            h = math.radians(back + ang)
+            x, y = bx + nm * NM * math.cos(h), by + nm * NM * math.sin(h)
+            slack = min([(math.hypot(x - ex, y - ey) / NM) - need for ex, ey, need in enemies] +
+                        [(math.hypot(x - a.x, y - a.y) - r) / NM - ring_margin_nm for a, r in rs] + [1e9])
+            if slack >= 0:
+                return x, y
+            if slack > best_slack:
+                best, best_slack = (x, y), slack
+    return best
+
+
+def spot_slack(state, x, y, target_xy, ring_margin_nm: float = 20, field_margin_nm: float = MARSHAL_FIELD_MARGIN_NM) -> float:
+    """v0.41.7: how far (nm) a friendly orbit at (x, y) is clear of every SAM ring (plus ring_margin_nm) and every enemy field's scramble circle
+    (plus field_margin_nm). >= 0 means clear."""
+    fs = [math.hypot(x - ex, y - ey) / NM - field_detect_nm((ex, ey), target_xy, state) - field_margin_nm for ex, ey in fighter_bases(state)]
+    rs = [(math.hypot(x - a.x, y - a.y) - r) / NM - ring_margin_nm for a, r in rings(state, min_range=3)]
+    return min(fs + rs + [1e9])
+
+
+def nearest_threat_bearing(state, x, y, fallback: float) -> float:
+    """v0.41.7: the bearing from (x, y) to the nearest enemy fighter field (where raids and chasers come from); fallback when there is none."""
+    fb = fighter_bases(state)
+    if not fb:
+        return fallback
+    ex, ey = min(fb, key=lambda e: math.hypot(e[0] - x, e[1] - y))
+    return math.degrees(math.atan2(ey - y, ex - x)) % 360
+
+
+def forward_tanker_spot(state, base_xy, egr_xy, target_xy, field_margin_nm: float = 15, ring_margin_nm: float = 15):
+    """v0.41.7: the tanker track centre on the way home: as far toward the egress point as it can go (half way at most), sideways off the line
+    if it has to, while it stays ring_margin_nm outside every SAM ring and outside every enemy field's scramble circle with a margin. When nothing
+    forward is clear, the nearest clear spot behind the base (up to 30 nm). None when nothing is."""
+    bx, by = base_xy
+    ex, ey = egr_xy
+    h = math.degrees(math.atan2(ey - by, ex - bx))
+    for f in (0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1, 0.05, 0.0):
+        cx, cy = bx + (ex - bx) * f, by + (ey - by) * f
+        for side in (0, 10, -10, 20, -20):
+            x, y = cx + side * NM * math.cos(math.radians(h + 90)), cy + side * NM * math.sin(math.radians(h + 90))
+            if spot_slack(state, x, y, target_xy, ring_margin_nm, field_margin_nm) >= 0:
+                return x, y
+    for back in (5, 10, 15, 20, 25, 30):
+        for side in (0, 10, -10, 20, -20):
+            x = bx - back * NM * math.cos(math.radians(h)) + side * NM * math.cos(math.radians(h + 90))
+            y = by - back * NM * math.sin(math.radians(h)) + side * NM * math.sin(math.radians(h + 90))
+            if spot_slack(state, x, y, target_xy, ring_margin_nm, field_margin_nm) >= 0:
+                return x, y
+    return None
+
+
+TANKER_CAP_NM = 40          # v0.41.26: a tanker track stays this far from every red patrol station
+TANKER_LANE_NM = 25         # ...and this far from the line an enemy field's fighters fly to the fight
+TANKER_MARGIN_NM = 20       # ...and this far outside every SAM ring and every enemy field's scramble circle (v0.41.7: 15)
+
+
+def _seg_nm(px, py, ax, ay, bx, by) -> float:
+    vx, vy = bx - ax, by - ay
+    L2 = vx * vx + vy * vy
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((px - ax) * vx + (py - ay) * vy) / L2))
+    return math.hypot(ax + t * vx - px, ay + t * vy - py) / NM
+
+
+def tanker_spot(state, base_xy, egr_xy, target_xy, caps=(), lanes=(), cover=(), half_track_nm: float = 15, track_hdg: float | None = None):
+    """v0.41.26: the tanker track centre. Between the action and home, where the package can use it, but a minimum distance from every danger:
+    TANKER_MARGIN_NM outside every SAM ring and every enemy field's scramble circle, TANKER_CAP_NM from every red patrol station (caps: [(x, y)]),
+    TANKER_LANE_NM from the lines red fighters fly in on (lanes: [(field x, y, target x, y)]), both ends of the racetrack included. Among the
+    clear spots, one inside friendly SAM cover (cover: [(x, y, nm)]) wins; then the one furthest forward. The XO's Nalchik run: the tanker sat in
+    the middle of the fight and was shot down. Falls back to behind the home field (up to 40 nm). None when nothing is clear."""
+    bx, by = base_xy
+    ex, ey = egr_xy
+    h = math.degrees(math.atan2(ey - by, ex - bx))
+    th = h + 90 if track_hdg is None else track_hdg
+    def ok(x, y):
+        ends = [(x, y), (x + half_track_nm * NM * math.cos(math.radians(th)), y + half_track_nm * NM * math.sin(math.radians(th))),
+                (x - half_track_nm * NM * math.cos(math.radians(th)), y - half_track_nm * NM * math.sin(math.radians(th)))]
+        for px, py in ends:
+            if spot_slack(state, px, py, target_xy, TANKER_MARGIN_NM, TANKER_MARGIN_NM) < 0:
+                return False
+            if any(math.hypot(px - cx, py - cy) / NM < TANKER_CAP_NM for cx, cy in caps):
+                return False
+            if any(_seg_nm(px, py, fx, fy, gx, gy) < TANKER_LANE_NM for fx, fy, gx, gy in lanes):
+                return False
+        return True
+    covered = lambda x, y: any(math.hypot(x - cx, y - cy) / NM <= cnm for cx, cy, cnm in cover)
+    clear = []
+    for k, f in enumerate((0.5, 0.45, 0.4, 0.35, 0.3, 0.25, 0.2, 0.15, 0.1, 0.05, 0.0)):
+        cx, cy = bx + (ex - bx) * f, by + (ey - by) * f
+        for side in (0, 10, -10, 20, -20, 30, -30):
+            x, y = cx + side * NM * math.cos(math.radians(h + 90)), cy + side * NM * math.sin(math.radians(h + 90))
+            if ok(x, y):
+                clear.append((0 if covered(x, y) else 1, k, abs(side), x, y))
+    if not clear:
+        for back in (5, 10, 15, 20, 25, 30, 35, 40):
+            for side in (0, 10, -10, 20, -20):
+                x = bx - back * NM * math.cos(math.radians(h)) + side * NM * math.cos(math.radians(h + 90))
+                y = by - back * NM * math.sin(math.radians(h)) + side * NM * math.sin(math.radians(h + 90))
+                if ok(x, y):
+                    return x, y
+        return None
+    clear.sort()
+    return clear[0][3], clear[0][4]
+
+
+def first_safe_egress(state, tx, ty, hdg_to_target, skip_ids=(), min_nm: float = 8, max_nm: float = 60, margin_nm: float = 4, avoid=()):
+    """EGR = the FIRST safe point after the target: the closest point (8 nm and out) that is clear of every live SAM ring (plus a margin).
+    Bearings that turn for home are tried first; among equals, the one farther from enemy fighter bases wins (away from their CAP).
+    avoid = [(x, y, nm)] extra keep-out circles (enemy CAP stations, fighter bases).
+    Returns None when nothing within max_nm is clear (the caller falls back to safe_egress)."""
+    rs = [(a, r) for a, r in rings(state, min_range=3) if a.id not in skip_ids]
+    enemies = fighter_bases(state)
+    best, best_score = None, 1e18
+    for k, off in enumerate((150, -150, 120, -120, 180, 90, -90, 60, -60)):
+        h = math.radians(hdg_to_target + off)
+        r = min_nm
+        while r <= max_nm:
+            x, y = tx + r * NM * math.cos(h), ty + r * NM * math.sin(h)
+            if all(math.hypot(x - a.x, y - a.y) >= rr + margin_nm * NM for a, rr in rs) and \
+                    all(math.hypot(x - ax, y - ay) >= anm * NM for ax, ay, anm in avoid):
+                far = min((math.hypot(x - ex, y - ey) for ex, ey in enemies), default=0) / NM
+                score = r - 0.08 * min(far, 150) + 0.4 * k
+                if score < best_score:
+                    best, best_score = (x, y), score
+                break
+            r += 2
+    return best

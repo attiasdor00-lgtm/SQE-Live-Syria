@@ -1,0 +1,60 @@
+1. SITUATION
+12 JUN 2004. Operation IRON TIDE, day 1. Phase 1 - Stop the Advance and Contest the Air.
+
+The first priority is to halt the armored columns and keep the Federation's fighters off our airfields and the fleet. Close air support, counter-air strikes and a standing combat air patrol over the carrier.
+
+Enemy air arm: 43 of 43 aircraft serviceable (100%).
+Air-defence network: 100% of sites operational.
+Armored advance: columns at 100% strength.
+Enemy command posts: 100% intact.
+Coalition air component: 78 of 78 aircraft serviceable (100%).
+
+Commander's intent: Until this battery is silenced, our strikers pay a toll. Remove it.  -- Col. Hale (Air Component)
+
+Threats near the target:
+  - SA-11 Gadfly (~18 nm), 0 nm from target
+  - SA-6 Gainful (~13 nm), 9 nm from target
+  - Early-warning radar, 13 nm from target
+  - SA-3 Goa (~13 nm), 29 nm from target
+  - SA-2 Guideline (~25 nm), 32 nm from target
+  - AAA (~3 nm), 33 nm from target
+  - SA-2 Guideline (~25 nm), 33 nm from target
+  - Early-warning radar, 34 nm from target
+
+Expect about 4 hostile fighters to contest the target; command is committing enough fighters to answer them.
+Weather: clear skies, unrestricted visibility.
+
+2. MISSION
+Destroy Gudauta SA-11 site.
+You are Springfield 1-1, lead of 2x F-14B(U) Tomcat, tasked as ESCORT.
+
+3. EXECUTION
+Package (push / TOT are staggered: sweep first, then SEAD, escorts, strikers):
+  Hornet 1       4x F/A-18C Hornet   SEAD     push 09:12:30   TOT 09:15:48
+  Springfield 1  2x F-14B(U) Tomcat  ESCORT   push 09:13:00   TOT 09:16:37   <- YOU
+  Springfield 2  4x F-14B(U) Tomcat  SWEEP    push 09:12:00   TOT 09:15:33
+  Springfield 3  2x F-14B(U) Tomcat  HAVCAP   push -   TOT -
+  Springfield 4  2x F-14B(U) Tomcat  BASECAP  push -   TOT -
+
+Your timeline (local):
+  Launch    09:00:00
+  Marshal   09:01:53   hold at MSHL, flights stacked 1,000 ft apart
+  PUSH      09:13:00   +/- 30 s
+  TOT       09:16:37   +/- 1 min
+  Egress    09:20:22
+  RTB       09:26:18
+
+The rest of the package is airborne and holding at MSHL. Each flight pushes on its own time; be there.
+
+4. ADMINISTRATION AND LOGISTICS
+BINGO 3,000 lb   JOKER 4,500 lb
+Recovery: carrier Case I, TACAN 74X, ICLS 11, ATC COMM1 CH1
+Divert: Batumi AB
+Tanker track is steerpoint TKR. Bullseye is the last steerpoint.
+
+5. COMMAND AND SIGNAL
+COMM1 (UHF): CH1 ATC 305.000 | CH2 AWACS 234.000 | CH3 TANKER1 312.500 | CH5 TANKER2 269.500
+COMM2 (VHF): CH1 FLIGHT 127.500
+IFF Mode 3: 4213    Laser code: 1687
+Bullseye: N42°34.660' E040°34.271'
+Package aircraft share a datalink; the AWACS feeds it. Station numbers (STN) are on your kneeboard.
