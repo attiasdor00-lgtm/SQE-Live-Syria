@@ -26,6 +26,7 @@ local function make_group(data,category,country)
         function u:getGroup() return self.group end
         function u:getLife() return self.life end
         function u:getPoint() return self.point end
+        function u:getVelocity() return self.velocity or {x=0,y=0,z=0} end
         function u:inAir() return self.point.y>110 end
         function u:destroy() self.alive=false end
         M.units[d.name]=u;g.units[#g.units+1]=u
@@ -42,7 +43,7 @@ coalition={
     end,
     getPlayers=function(side)return M.player and {M.player} or {} end
 }
-land={getHeight=function()return 100 end,getSurfaceType=function()return 1 end,
+land={getHeight=function()return 100 end,SurfaceType={RUNWAY=5},getSurfaceType=function()return M.surface or 1 end,
     findPathOnRoads=function(kind,x,y,tx,ty)
         assert(kind=="roads")
         M.road_queries=(M.road_queries or 0)+1
@@ -62,7 +63,7 @@ timer={
 }
 world={
     event={S_EVENT_DEAD=8,S_EVENT_CRASH=5,S_EVENT_EJECTION=6,S_EVENT_UNIT_LOST=30,
-        S_EVENT_TAKEOFF=3,S_EVENT_LAND=4,S_EVENT_MISSION_END=12},
+        S_EVENT_TAKEOFF=3,S_EVENT_LAND=4,S_EVENT_RUNWAY_TAKEOFF=54,S_EVENT_RUNWAY_TOUCH=55,S_EVENT_MISSION_END=12},
     addEventHandler=function(h)M.handlers[#M.handlers+1]=h end
 }
 env={error=function(t)M.error=t end,warning=function(t)M.warning=t end}

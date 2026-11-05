@@ -1,4 +1,4 @@
-# SQE Live 0.1.8 — Syria
+# SQE Live 0.1.9 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -52,7 +52,10 @@ has not been verified. This release targets local single-player use.
   AWACS and tanker requests. Hold/Push control requested blue combat flights.
 - Finite AI airframes and abstract fuel/ammunition/supply budgets. A failed spawn
   spends nothing. Surviving AI landings return airframes after ten minutes of
-  maintenance; destroyed/missing aircraft do not return.
+  maintenance; destroyed/missing aircraft do not return. Runway touch alone is
+  confirmed only after fifteen continuous seconds on the ground below 5 m/s.
+  Touch-and-go does not return stock; AI recovery needs the assigned friendly
+  airfield and every surviving member physically grounded.
 - Physical supply convoys. Only surviving vehicles which actually reach the
   destination deliver supplies; each arriving vehicle delivers its own share,
   even while another vehicle is delayed. Fuel replenishment also requires a surviving,

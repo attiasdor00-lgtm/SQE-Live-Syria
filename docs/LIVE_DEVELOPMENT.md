@@ -33,7 +33,7 @@ installation test is not an installation pass. Real DCS behavior remains pending
 Commit the reviewed source and retain successful live/upstream test logs. Then:
 
 ```sh
-python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.8.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
+python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.9.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
 ```
 
 The archive includes the install bundle, all tracked source and the logs, plus a

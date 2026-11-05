@@ -190,6 +190,116 @@ class ReleaseCase(unittest.TestCase):
             assert(flight.status=="COMPLETE" and c.state.maintenance[1].count==1)
         """)
 
+    def test_runway_events_player_settles_and_deduplicates(self):
+        self.h.run("""
+            mock.emit({id=54,initiator=mock.player})
+            mock.emit({id=3,initiator=mock.player})
+            assert(c.state.pilot.sorties==1)
+            mock.emit({id=55,initiator=mock.player})
+            mock.advance(10);assert(c.state.pilot.landings==0)
+            mock.advance(10);assert(c.state.pilot.landings==1)
+            mock.emit({id=4,initiator=mock.player})
+            assert(c.state.pilot.landings==1)
+        """)
+
+    def test_runway_touch_requires_settled_ai_at_assigned_base(self):
+        self.h.command("support", role="CAP")
+        self.h.run("""
+            for _,f in pairs(c.state.flights) do flight=f end
+            local b=c.base_defs[flight.base]
+            for _,u in ipairs(mock.groups[a.air_groups[flight.id]].units) do
+                u.point={x=b.x,y=100,z=b.y};u.velocity={x=40,y=0,z=0}
+                mock.emit({id=55,initiator=u,place={getID=function()return b.airport_id end}})
+            end
+            mock.advance(30);assert(flight.status~="COMPLETE")
+            for _,u in ipairs(mock.groups[a.air_groups[flight.id]].units) do u.velocity={x=0,y=0,z=0} end
+            mock.advance(10);assert(flight.status~="COMPLETE")
+            mock.advance(10);assert(flight.status=="COMPLETE")
+            assert(#c.state.maintenance==1 and c.state.maintenance[1].count==2)
+        """)
+
+    def test_touch_and_go_does_not_recover_aircraft(self):
+        self.h.command("support", role="CAP")
+        self.h.run("""
+            for _,f in pairs(c.state.flights) do flight=f end
+            local b=c.base_defs[flight.base]
+            for _,u in ipairs(mock.groups[a.air_groups[flight.id]].units) do
+                u.point={x=b.x,y=100,z=b.y}
+                mock.emit({id=55,initiator=u,place={getID=function()return b.airport_id end}})
+            end
+            mock.advance(6)
+            for _,u in ipairs(mock.groups[a.air_groups[flight.id]].units) do
+                u.point.y=500;mock.emit({id=54,initiator=u})
+            end
+            mock.advance(30)
+            assert(flight.status~="COMPLETE" and #c.state.maintenance==0)
+            assert(next(a.contacts)==nil)
+        """)
+
+    def test_departed_wingman_cannot_be_recovered_by_later_landing(self):
+        self.h.command("support", role="CAP")
+        self.h.run("""
+            for _,f in pairs(c.state.flights) do flight=f end
+            local b=c.base_defs[flight.base]
+            local units=mock.groups[a.air_groups[flight.id]].units
+            units[1].point={x=b.x,y=100,z=b.y}
+            mock.emit({id=4,initiator=units[1]})
+            units[1].point.y=500;mock.emit({id=54,initiator=units[1]})
+            units[2].point={x=b.x,y=100,z=b.y}
+            mock.emit({id=4,initiator=units[2]})
+            a:observe()
+            assert(flight.status~="COMPLETE" and #c.state.maintenance==0)
+            mock.kill(units[1].name);a:observe()
+            assert(flight.status=="COMPLETE" and c.state.maintenance[1].count==1)
+        """)
+
+    def test_touch_without_place_requires_runway_and_velocity(self):
+        self.h.command("support", role="CAP")
+        self.h.run("""
+            for _,f in pairs(c.state.flights) do flight=f end
+            local b=c.base_defs[flight.base]
+            local units=mock.groups[a.air_groups[flight.id]].units
+            for _,u in ipairs(units) do
+                u.point={x=b.x,y=100,z=b.y};mock.emit({id=55,initiator=u})
+            end
+            mock.advance(20);assert(flight.status~="COMPLETE")
+            mock.surface=land.SurfaceType.RUNWAY
+            for _,u in ipairs(units) do
+                mock.emit({id=55,initiator=u});u.getVelocity=false
+            end
+            mock.advance(20);assert(flight.status~="COMPLETE")
+            for _,u in ipairs(units) do u.getVelocity=function()return {x=0/0,y=0,z=0} end end
+            mock.advance(20);assert(flight.status~="COMPLETE")
+            for _,u in ipairs(units) do u.getVelocity=function()return {x=0,y=0,z=0} end end
+            mock.advance(20);assert(flight.status=="COMPLETE")
+        """)
+
+    def test_touch_cannot_recover_at_wrong_or_captured_airfield(self):
+        self.h.command("support", role="CAP")
+        self.h.run("""
+            for _,f in pairs(c.state.flights) do flight=f end
+            local b=c.base_defs[flight.base]
+            local units=mock.groups[a.air_groups[flight.id]].units
+            for _,u in ipairs(units) do
+                u.point={x=b.x,y=100,z=b.y}
+                mock.emit({id=55,initiator=u,place={getID=function()return 999 end}})
+            end
+            mock.advance(20);assert(flight.status~="COMPLETE")
+            for _,u in ipairs(units) do
+                mock.emit({id=55,initiator=u,place={getID=function()return b.airport_id end}})
+            end
+            c.state.zones[b.zone].owner="red"
+            a:observe()
+            assert(next(a.contacts)==nil and #c.state.maintenance==0)
+        """)
+
+    def test_legacy_event_constants_still_work_without_runway_events(self):
+        self.h.run("""
+            world.event.S_EVENT_RUNWAY_TAKEOFF=nil;world.event.S_EVENT_RUNWAY_TOUCH=nil
+            mock.emit({id=3,initiator=mock.player});mock.emit({id=4,initiator=mock.player})
+            assert(c.state.pilot.sorties==1 and c.state.pilot.landings==1)
+        """)
+
     def test_rtb_clears_engagement_tasks(self):
         self.h.command("support", role="CAP")
         self.h.run("""

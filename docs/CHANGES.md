@@ -1,5 +1,17 @@
 # CHANGES.md
 
+## SQE Live 0.1.9 — runway event integration
+
+Handles both legacy and available runtime runway takeoff/touch events. Runway
+touch alone requires fifteen continuous seconds of slow, grounded observation
+before credit. AI recovery requires the assigned friendly base; unidentified
+touch locations need runway surface evidence. Takeoff clears old landing flags,
+and physical ground/base checks prevent airborne survivors from being retired.
+Seven new Lua regression tests cover these boundaries, including missing event
+constants, invalid velocity, wrong/captured fields and touch-and-go. Static
+aircraft/task inspection is documented in LIVE_INTEGRATION_AUDIT.md. No Foothold
+source/assets are redistributed. Actual DCS acceptance remains pending.
+
 ## SQE Live 0.1.8 — Israel blue rear area
 
 The default Syria campaign starts with fifteen named Israeli airfields blue,

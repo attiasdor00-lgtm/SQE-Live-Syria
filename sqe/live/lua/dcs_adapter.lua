@@ -17,7 +17,7 @@ local function option(name,value)
 end
 function A.new(config,copy)
     return setmetatable({config=config,copy=copy,registry={},ground_groups={},air_groups={},
-        ship_groups={},landed={},save_status="Not saved yet"},A)
+        ship_groups={},landed={},contacts={},save_status="Not saved yet"},A)
 end
 function A:attach(core,director,operations,ground) self.core,self.director,self.operations,self.ground=core,director,operations,ground end
 function A:cleanup()
@@ -259,6 +259,11 @@ function A:control_flight(f,action)
     return true
 end
 function A:retire_flight(f)
+    self.landed[f.id]=nil
+    for name in pairs(self.contacts) do
+        local r=self.registry[name]
+        if r and r.kind=="flight" and r.id==f.id then self.contacts[name]=nil end
+    end
     local g=Group.getByName(self.air_groups[f.id] or "")
     if exists(g) then g:destroy() end
 end
@@ -362,6 +367,7 @@ function A:retire_shipment(s)
     if exists(g) then g:destroy() end
 end
 function A:lost(name)
+    self.contacts[name]=nil
     local r=self.registry[name]
     if not r then return false end
     if r.kind=="target" then
@@ -414,15 +420,8 @@ function A:observe()
             end
         end
     end
-    for id,landed in pairs(self.landed) do
-        local f=self.core.state.flights[id]
-        if not f or f.status=="COMPLETE" then self.landed[id]=nil
-        else
-            local all=self.core.count(f.alive)>0
-            for k,alive in pairs(f.alive) do if alive and not landed[k] then all=false end end
-            if all then self.core:recover_flight(id);self:retire_flight(f) end
-        end
-    end
+    self:observe_contacts()
+    for id in pairs(self.landed) do self:recover_ready(id) end
     for id,name in pairs(self.air_groups) do if not self.core.state.flights[id] then self.air_groups[id]=nil end end
     for id,name in pairs(self.ship_groups) do if not self.core.state.shipments[id] then self.ship_groups[id]=nil end end
     self:refresh_marks()
@@ -500,6 +499,70 @@ function A:brief(d,mark)
     end
     self:notify(text);return text,true
 end
+-- Touchdown is only a contact notification. The fallback waits for a sustained,
+-- slow ground roll; these thresholds are conservative game policy, not DCS rules.
+local function finite(n) return type(n)=="number" and n==n and math.abs(n)<math.huge end
+function A:at_home(r,u,place,require_runway)
+    local f=self.core.state.flights[r.id]
+    if not f or f.status=="COMPLETE" or not f.alive[tostring(r.index)] then return false end
+    local b=self.core.base_defs[f.base]
+    local p=u:getPoint()
+    if not b or self.core.state.zones[b.zone].owner~=f.side
+        or self.core.distance({x=p.x,y=p.z},b)>6000 then return false end
+    if place and place.getID then return place:getID()==b.airport_id end
+    if require_runway then
+        return land.SurfaceType and land.SurfaceType.RUNWAY and land.getSurfaceType
+            and land.getSurfaceType({x=p.x,y=p.z})==land.SurfaceType.RUNWAY
+    end
+    return true
+end
+function A:record_landing(name)
+    self.contacts[name]=nil
+    if name==self.config.player_unit and self.core.state.pilot.airborne then
+        self.core.state.pilot.airborne=false
+        self.core.state.pilot.landings=self.core.state.pilot.landings+1
+        self.core:note("Player landed. Rearm and select another task in this session.")
+    end
+    local r=self.registry[name]
+    if r and r.kind=="flight" then
+        self.landed[r.id]=self.landed[r.id] or {}
+        self.landed[r.id][tostring(r.index)]=true
+        self:recover_ready(r.id)
+    end
+end
+function A:recover_ready(id)
+    local f=self.core.state.flights[id]
+    if not f or f.status=="COMPLETE" then self.landed[id]=nil;return end
+    local landed=self.landed[id]
+    if not landed or self.core.count(f.alive)==0 then return end
+    for k,alive in pairs(f.alive) do if alive then
+        if not landed[k] then return end
+        local u=Unit.getByName((self.air_groups[id] or "").."-"..k)
+        local r=u and self.registry[u:getName()]
+        if not exists(u) or u:getLife()<=0 or not u.inAir or u:inAir()
+            or not r or not self:at_home(r,u) then
+            landed[k]=nil;return
+        end
+    end end
+    self.core:recover_flight(id);self:retire_flight(f)
+end
+function A:observe_contacts()
+    for name,contact in pairs(self.contacts) do
+        local u=Unit.getByName(name)
+        local r=self.registry[name]
+        if not exists(u) or u:getLife()<=0 or not u.inAir or u:inAir()
+            or (r and r.kind=="flight" and not self:at_home(r,u)) then
+            self.contacts[name]=nil
+        else
+            local v=u.getVelocity and u:getVelocity()
+            if v and finite(v.x) and finite(v.y) and finite(v.z)
+                and v.x*v.x+v.z*v.z<=25 and math.abs(v.y)<=2 then
+                contact.since=contact.since or timer.getTime()
+                if timer.getTime()-contact.since>=15 then self:record_landing(name) end
+            else contact.since=nil end
+        end
+    end
+end
 function A:on_event(e)
     if not e.initiator or not e.initiator.getName then return end
     local ok,name=pcall(function()return e.initiator:getName()end);if not ok then return end
@@ -511,31 +574,27 @@ function A:on_event(e)
             self.player_lost=true;self.core.state.pilot.losses=self.core.state.pilot.losses+1
             self.core.state.pilot.airborne=false;self.core:note("Player aircraft lost. Campaign progress is retained.")
         end
-    elseif e.id==events.S_EVENT_TAKEOFF and name==self.config.player_unit then
-        if not self.core.state.pilot.airborne then
+    elseif e.id==events.S_EVENT_TAKEOFF
+        or (events.S_EVENT_RUNWAY_TAKEOFF and e.id==events.S_EVENT_RUNWAY_TAKEOFF) then
+        self.contacts[name]=nil
+        local r=self.registry[name]
+        if r and r.kind=="flight" and self.landed[r.id] then self.landed[r.id][tostring(r.index)]=nil end
+        if name==self.config.player_unit and not self.core.state.pilot.airborne then
             self.player_lost=false;self.core.state.pilot.airborne=true
             self.core.state.pilot.sorties=self.core.state.pilot.sorties+1;self.core:note("Player sortie airborne.")
         end
-    elseif e.id==events.S_EVENT_LAND then
-        if name==self.config.player_unit and self.core.state.pilot.airborne then
-            self.core.state.pilot.airborne=false;self.core.state.pilot.landings=self.core.state.pilot.landings+1
-            self.core:note("Player landed. Rearm and select another task in this session.")
-        end
+    elseif e.id==events.S_EVENT_LAND
+        or (events.S_EVENT_RUNWAY_TOUCH and e.id==events.S_EVENT_RUNWAY_TOUCH) then
+        local touch=events.S_EVENT_RUNWAY_TOUCH and e.id==events.S_EVENT_RUNWAY_TOUCH
         local r=self.registry[name]
         if r and r.kind=="flight" then
-            local f=self.core.state.flights[r.id]
-            if not f or f.status=="COMPLETE" then return end
-            local b=self.core.base_defs[f.base]
-            local p=e.initiator:getPoint()
-            -- Only a landing at the assigned, still friendly airfield recovers stock.
-            if self.core.state.zones[b.zone].owner~=f.side
-                or self.core.distance({x=p.x,y=p.z},b)>6000
-                or (e.place and e.place.getID and e.place:getID()~=b.airport_id) then return end
-            self.landed[r.id]=self.landed[r.id] or {};self.landed[r.id][tostring(r.index)]=true
-            if f and f.status~="COMPLETE" then
-                local all=true;for k,v in pairs(f.alive) do if v and not self.landed[r.id][k] then all=false end end
-                if all then self.core:recover_flight(r.id);self:retire_flight(f) end
-            end
+            if not self:at_home(r,e.initiator,e.place,touch) then return end
+        elseif name~=self.config.player_unit then return end
+        if touch then
+            -- Duplicate notifications must not restart the settling interval.
+            self.contacts[name]=self.contacts[name] or {}
+        elseif e.initiator.inAir and not e.initiator:inAir() then
+            self:record_landing(name)
         end
     end
 end

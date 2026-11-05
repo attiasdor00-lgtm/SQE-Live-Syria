@@ -35,16 +35,23 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.8
+## Continuation after 0.1.9
 
-### Next task — I01: integration audit using the supplied mission reference
+### Next task — I02: native window, startup and storage boundary
 
-Status: READY. Compare complete generated flight/task/event records against
-native mission data and representative supplied Foothold patterns. Keep raw DCS
-calls distinct from MOOSE helpers. Inspect startup, storage and native UI against
-their own APIs; the supplied multiplayer mission is not evidence for our custom
-window. Fix concrete mismatches before expanding systems further. Real DCS
-flight/driving/native-rendering acceptance remains pending.
+Status: READY. Review mission transitions, focus and native widget lifecycle,
+then hook/storage initialization against the DCS environments. The narrow
+Scratchpad API-pattern comparison is insufficient to establish rendering.
+Israel-profile balance and L12 long-session/product checks follow.
+
+### Completed task — I01: aircraft/task/event integration pass
+
+Representative flight records and native task structures were compared against
+ED documentation and supplied mission data. Seven new regressions cover runway
+and legacy events, conservative touchdown fallback and stale landing flags.
+Two failures were reproduced against 0.1.8 and fixed. See
+LIVE_INTEGRATION_AUDIT.md. The remaining UI/startup/storage scope is explicit I02,
+not claimed complete. No actual DCS flight or rendering acceptance is implied.
 
 ### Completed task — G01: Israel blue starting footprint
 

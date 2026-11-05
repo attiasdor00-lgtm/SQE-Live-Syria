@@ -36,8 +36,9 @@ runtime use the same ownership records. Existing campaigns keep a separate
 Legacy mission. The changes are implemented independently, without copying the
 reference's scripts, initial coalition settings or dependency stack.
 
-The next integration audit should compare complete generated aircraft/task
-records and event handling against native mission data and representative
-reference patterns. MOOSE-backed behavior must not be assumed to exist in our
-standalone Lua code. Foothold does not supply evidence for our custom native
-Operations window, storage bridge or long-session performance.
+The first aircraft/task/event integration pass is recorded in
+[LIVE_INTEGRATION_AUDIT.md](LIVE_INTEGRATION_AUDIT.md), including two reproduced
+failures and the independent runway-event fix. MOOSE-backed behavior must not
+be assumed to exist in our standalone Lua code. Foothold does not supply evidence
+for our custom native Operations window, storage bridge or long-session performance;
+those remain separate work.
