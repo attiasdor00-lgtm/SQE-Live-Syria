@@ -35,13 +35,21 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.10
+## Continuation after 0.1.11
 
-### Next task — G02: Israel-profile solo attrition balance
+### Next task — L12: bounded long-session and product checks
 
-Status: READY. Measure support availability across five bases with aircraft
-losses, a captured base and interrupted corridors. Compare existing rules and
-fix reproducible recovery gaps without manufacturing stock. L12 follows.
+Status: READY. Measure update cost, save size, registry/queue growth and repeated
+installation/recovery in the contract environment. Address concrete failures,
+retain actual DCS flight/rendering/FPS/Windows acceptance as pending.
+
+### Completed task — G02: Israel-profile solo support attrition accounting
+
+Manual blue combat support searches funded pairs across all friendly compatible
+bases, then permits one survivor at full sortie cost. Automatic/red rules and
+finite stock remain intact. Ten tests and eight paired regional workloads cover
+attrition, capture, corridor isolation and exhaustion. See
+LIVE_ISRAEL_BALANCE.md; the historical legacy report remains separate.
 
 ### Completed task — I02: native window, startup and storage contract audit
 

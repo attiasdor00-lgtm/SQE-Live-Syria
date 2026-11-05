@@ -1,5 +1,17 @@
 # CHANGES.md
 
+## SQE Live 0.1.11 — usable surviving aircraft across Israel bases
+
+Explicit blue combat-support requests prefer a funded pair at any friendly base,
+then permit a single survivor at full sortie cost. Automatic/red dispatch and
+AWACS/tanker sizing are unchanged. No aircraft/resources are granted or moved
+between bases. The shared UI/F10 quote and acknowledgement expose the size.
+Ten added tests cover finite stock, capture, limits, failed creation, recovery,
+resume and eight six-hour Israel accounting workloads. A paired 0.1.10 comparison
+records 3/8 to 8/8 scripted attrition requests and 0/8 to 8/8 fragmented-survivor
+requests; this measures access, not combat effectiveness or DCS acceptance.
+See LIVE_ISRAEL_BALANCE.md and its machine-readable report.
+
 ## SQE Live 0.1.10 — native window session and shutdown boundaries
 
 The UI excludes the observed pre-load session and last observed ended session,

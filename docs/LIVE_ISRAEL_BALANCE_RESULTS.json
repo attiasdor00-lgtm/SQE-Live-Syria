@@ -1,0 +1,7117 @@
+{
+  "boundary": "Lua accounting fixtures: twenty-minute convoy travel, twenty-five-minute flight recovery, scripted losses and sector events; no combat/terrain/AI/FPS prediction.",
+  "baseline_ref": "5432deae6372e325a3703238ac1c872f7f611970",
+  "scenario_profile": "israel",
+  "scenario_suite": "regional",
+  "workload_note": "Steady/attrition include automatic air. Other regional cases disable automatic air, preserve logistics and script ownership; assault groups receive no injected arrivals; corridor period counters exclude the unaffected Ramat David base.",
+  "current": [
+    {
+      "first_south_capture_minute": 110,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 12
+          },
+          "ready": {
+            "F-15C": 2,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 84,
+            "supply": 100,
+            "ammo": 76
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 153,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 35,
+      "final_strike_offer": {
+        "reason": "STRIKE already assigned",
+        "code": "ASSIGNED",
+        "available": false
+      },
+      "supply_convoys": 28,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 64,
+            "supply": 100,
+            "ammo": 48
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 88,
+            "ammo": 12
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 72,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 12
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 10,
+      "accepted": 8,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "depot_health": 1,
+      "scenario": "steady",
+      "resources": {
+        "fuel": 80,
+        "supply": 100,
+        "ammo": 12
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": 110,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 0
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 91,
+            "supply": 100,
+            "ammo": 91
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 1
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 77
+          },
+          "ready": {
+            "F-15C": 0,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        }
+      },
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 153,
+      "first_rebuild_minute": false,
+      "cargo_losses": 31,
+      "valid": true,
+      "blue_automatic_launches": 26,
+      "final_strike_offer": {
+        "reason": "STRIKE already assigned",
+        "code": "ASSIGNED",
+        "available": false
+      },
+      "supply_convoys": 32,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 67,
+            "supply": 100,
+            "ammo": 51
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 65,
+            "supply": 100,
+            "ammo": 41
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 79,
+            "supply": 88,
+            "ammo": 51
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 61
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 91,
+            "supply": 100,
+            "ammo": 63
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 77
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 10,
+      "accepted": 8,
+      "aircraft_losses": 17,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "depot_health": 1,
+      "scenario": "attrition",
+      "resources": {
+        "fuel": 92,
+        "supply": 100,
+        "ammo": 77
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "deliveries_after_reconnect": 16,
+      "seeded_aircraft_losses": 10,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 0
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 1,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 1,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 1,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 1,
+          "base": "nevatim",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 1,
+          "base": "nevatim",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 1,
+          "base": "nevatim",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 1,
+          "base": "nevatim",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 1,
+          "base": "nevatim",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 82,
+                "supply": 90,
+                "ammo": 78
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 15
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 14
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 14
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 14
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 14
+        }
+      ],
+      "single_requests": 8,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 20,
+      "delivered": {
+        "hatzerim": 8,
+        "tel_nof": 4,
+        "ramat": 4,
+        "hatzor": 16,
+        "nevatim": 20
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 14,
+      "scenario": "fragmented_survivors",
+      "aircraft_losses": 2
+    },
+    {
+      "deliveries_after_reconnect": 20,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": false,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 78,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 82,
+                "supply": 90,
+                "ammo": 78
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 86,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 24
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 20,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 12,
+        "hatzor": 32,
+        "hatzerim": 8
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 24,
+      "scenario": "ramat_captured",
+      "aircraft_losses": 2
+    },
+    {
+      "deliveries_after_reconnect": 16,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": false,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 4
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 88,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 26
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 16,
+      "delivered": {
+        "hatzerim": 8,
+        "tel_nof": 4,
+        "ramat": 28,
+        "hatzor": 4,
+        "nevatim": 4
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 26,
+      "scenario": "central_captured",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 48,
+      "seeded_aircraft_losses": 6,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 90,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 84
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 131,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 88,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 52,
+                "supply": 60,
+                "ammo": 48
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 44,
+                "supply": 60,
+                "ammo": 36
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 28,
+                "supply": 60,
+                "ammo": 12
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 50,
+                "ammo": 80
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 100,
+                "ammo": 40
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 70,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 68
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 90,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 84
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 20
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 0,
+      "delivered": {
+        "hatzerim": 12,
+        "tel_nof": 12,
+        "ramat": 12,
+        "hatzor": 28,
+        "nevatim": 12
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 20,
+      "scenario": "corridor_isolation",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 0,
+      "seeded_aircraft_losses": 14,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 0
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 90,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 135,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 180,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 225,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 270,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 315,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 360,
+          "code": "AIRCRAFT",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 12
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 0,
+      "automatic_air": false,
+      "deliveries_during_cut": 8,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 4,
+        "hatzor": 8,
+        "hatzerim": 8
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 12,
+      "scenario": "exhausted_aircraft",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 0,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": false,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": false,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": false,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 4
+          }
+        },
+        "hatzerim": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 135,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 180,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 225,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 270,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 315,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 360,
+          "code": "BASE_LOST",
+          "count": 1,
+          "base": false,
+          "accepted": false
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 24
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 1,
+      "automatic_air": false,
+      "deliveries_during_cut": 0,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 4,
+        "hatzor": 4,
+        "hatzerim": 4
+      },
+      "status": "DEFEAT",
+      "final_aircraft": 24,
+      "scenario": "all_bases_lost",
+      "aircraft_losses": 2
+    }
+  ],
+  "baseline_tree": "e2560779808285a2b1121ee3a5a6ade4f8b84367",
+  "baseline": [
+    {
+      "first_south_capture_minute": 110,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 12
+          },
+          "ready": {
+            "F-15C": 2,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 84,
+            "supply": 100,
+            "ammo": 76
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 153,
+      "first_rebuild_minute": false,
+      "cargo_losses": 0,
+      "valid": true,
+      "blue_automatic_launches": 35,
+      "final_strike_offer": {
+        "reason": "STRIKE already assigned",
+        "code": "ASSIGNED",
+        "available": false
+      },
+      "supply_convoys": 28,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 64,
+            "supply": 100,
+            "ammo": 48
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 56,
+            "supply": 88,
+            "ammo": 12
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 72,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 24
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 80,
+            "supply": 100,
+            "ammo": 12
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 10,
+      "accepted": 8,
+      "aircraft_losses": 0,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "depot_health": 1,
+      "scenario": "steady",
+      "resources": {
+        "fuel": 80,
+        "supply": 100,
+        "ammo": 12
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "first_south_capture_minute": 110,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 98
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 1
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 91,
+            "supply": 100,
+            "ammo": 91
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 1
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 95
+          },
+          "ready": {
+            "F-15C": 1,
+            "F-16C": 1
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 98
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        }
+      },
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 153,
+      "first_rebuild_minute": false,
+      "cargo_losses": 27,
+      "valid": true,
+      "blue_automatic_launches": 23,
+      "final_strike_offer": {
+        "reason": "Ramat David: needs 2 ready aircraft for STRIKE; Tel Nof: needs 2 ready aircraft for STRIKE; Hatzor: needs 2 ready aircraft for STRIKE; Nevatim: needs 2 ready aircraft for STRIKE; Hatzerim: needs 2 ready aircraft for STRIKE",
+        "code": "AIRCRAFT",
+        "available": false
+      },
+      "supply_convoys": 27,
+      "status": "ACTIVE",
+      "samples": [
+        {
+          "resources": {
+            "fuel": 67,
+            "supply": 100,
+            "ammo": 51
+          },
+          "minute": 60,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 65,
+            "supply": 100,
+            "ammo": 41
+          },
+          "minute": 120,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 79,
+            "supply": 88,
+            "ammo": 51
+          },
+          "minute": 180,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 73
+          },
+          "minute": 240,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 95
+          },
+          "minute": 300,
+          "depot_generation": 1
+        },
+        {
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 95
+          },
+          "minute": 360,
+          "depot_generation": 1
+        }
+      ],
+      "blue_sectors": 10,
+      "accepted": 3,
+      "aircraft_losses": 16,
+      "depot_generation": 1,
+      "fuel_generation": 1,
+      "fuel_health": 1,
+      "depot_health": 1,
+      "scenario": "attrition",
+      "resources": {
+        "fuel": 100,
+        "supply": 100,
+        "ammo": 95
+      },
+      "first_supply_minute": 35
+    },
+    {
+      "deliveries_after_reconnect": 0,
+      "seeded_aircraft_losses": 10,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 1
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 1
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 1
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 90,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 135,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 180,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 225,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 270,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 315,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 360,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 16
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 1
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 1
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 1
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 16
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 0,
+      "automatic_air": false,
+      "deliveries_during_cut": 8,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 4,
+        "hatzor": 8,
+        "hatzerim": 8
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 16,
+      "scenario": "fragmented_survivors",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 20,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": false,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 78,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 82,
+                "supply": 90,
+                "ammo": 78
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 98,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 86,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 24
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 20,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 12,
+        "hatzor": 32,
+        "hatzerim": 8
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 24,
+      "scenario": "ramat_captured",
+      "aircraft_losses": 2
+    },
+    {
+      "deliveries_after_reconnect": 16,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": false,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 4
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 88,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 26
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 16,
+      "delivered": {
+        "hatzerim": 8,
+        "tel_nof": 4,
+        "ramat": 28,
+        "hatzor": 4,
+        "nevatim": 4
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 26,
+      "scenario": "central_captured",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 48,
+      "seeded_aircraft_losses": 6,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 90,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 84
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 135,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 180,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 225,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 270,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 315,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        },
+        {
+          "minute": 360,
+          "code": "READY",
+          "count": 2,
+          "base": "hatzor",
+          "accepted": true
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 131,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 88,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 52,
+                "supply": 60,
+                "ammo": 48
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 44,
+                "supply": 60,
+                "ammo": 36
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 28,
+                "supply": 60,
+                "ammo": 12
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 60,
+                "ammo": 60
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 50,
+                "ammo": 80
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 60,
+                "supply": 100,
+                "ammo": 40
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 70,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 68
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 20
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 90,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 84
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 20
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 8,
+      "automatic_air": false,
+      "deliveries_during_cut": 0,
+      "delivered": {
+        "hatzerim": 12,
+        "tel_nof": 12,
+        "ramat": 12,
+        "hatzor": 28,
+        "nevatim": 12
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 20,
+      "scenario": "corridor_isolation",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 0,
+      "seeded_aircraft_losses": 14,
+      "bases": {
+        "nevatim": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 0
+          }
+        },
+        "tel_nof": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": true,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 0
+          }
+        },
+        "hatzor": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        },
+        "hatzerim": {
+          "operational": true,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "F-16C": 0
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 90,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 135,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 180,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 225,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 270,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 315,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 360,
+          "code": "AIRCRAFT",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 12
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 0
+              }
+            },
+            "tel_nof": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": true,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 0
+              }
+            },
+            "hatzor": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            },
+            "hatzerim": {
+              "operational": true,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "F-16C": 0
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 12
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 0,
+      "automatic_air": false,
+      "deliveries_during_cut": 8,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 4,
+        "hatzor": 8,
+        "hatzerim": 8
+      },
+      "status": "ACTIVE",
+      "final_aircraft": 12,
+      "scenario": "exhausted_aircraft",
+      "aircraft_losses": 0
+    },
+    {
+      "deliveries_after_reconnect": 0,
+      "seeded_aircraft_losses": 0,
+      "bases": {
+        "nevatim": {
+          "operational": false,
+          "resources": {
+            "fuel": 100,
+            "supply": 100,
+            "ammo": 100
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-16C": 2
+          }
+        },
+        "tel_nof": {
+          "operational": false,
+          "resources": {
+            "fuel": 90,
+            "supply": 90,
+            "ammo": 90
+          },
+          "ready": {
+            "KC-135": 1,
+            "E-3A": 1,
+            "F-15C": 4
+          }
+        },
+        "ramat": {
+          "operational": false,
+          "resources": {
+            "fuel": 92,
+            "supply": 100,
+            "ammo": 88
+          },
+          "ready": {
+            "F-15C": 4,
+            "F-16C": 4
+          }
+        },
+        "hatzor": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 4
+          }
+        },
+        "hatzerim": {
+          "operational": false,
+          "resources": {
+            "fuel": 70,
+            "supply": 70,
+            "ammo": 70
+          },
+          "ready": {
+            "F-16C": 2
+          }
+        }
+      },
+      "requests": [
+        {
+          "minute": 45,
+          "code": "READY",
+          "count": 2,
+          "base": "ramat",
+          "accepted": true
+        },
+        {
+          "minute": 90,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 135,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 180,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 225,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 270,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 315,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        },
+        {
+          "minute": 360,
+          "code": "BASE_LOST",
+          "count": 2,
+          "base": false,
+          "accepted": false
+        }
+      ],
+      "minutes": 360,
+      "requested": 8,
+      "peak_units": 133,
+      "valid": true,
+      "initial_aircraft": 26,
+      "deliveries_before_cut": 16,
+      "samples": [
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 60,
+          "aircraft_stock": 26
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 120,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 180,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 240,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 300,
+          "aircraft_stock": 24
+        },
+        {
+          "bases": {
+            "nevatim": {
+              "operational": false,
+              "resources": {
+                "fuel": 100,
+                "supply": 100,
+                "ammo": 100
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-16C": 2
+              }
+            },
+            "tel_nof": {
+              "operational": false,
+              "resources": {
+                "fuel": 90,
+                "supply": 90,
+                "ammo": 90
+              },
+              "ready": {
+                "KC-135": 1,
+                "E-3A": 1,
+                "F-15C": 4
+              }
+            },
+            "ramat": {
+              "operational": false,
+              "resources": {
+                "fuel": 92,
+                "supply": 100,
+                "ammo": 88
+              },
+              "ready": {
+                "F-15C": 4,
+                "F-16C": 4
+              }
+            },
+            "hatzor": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 4
+              }
+            },
+            "hatzerim": {
+              "operational": false,
+              "resources": {
+                "fuel": 70,
+                "supply": 70,
+                "ammo": 70
+              },
+              "ready": {
+                "F-16C": 2
+              }
+            }
+          },
+          "minute": 360,
+          "aircraft_stock": 24
+        }
+      ],
+      "single_requests": 0,
+      "accepted": 1,
+      "automatic_air": false,
+      "deliveries_during_cut": 0,
+      "delivered": {
+        "nevatim": 4,
+        "tel_nof": 4,
+        "hatzor": 4,
+        "hatzerim": 4
+      },
+      "status": "DEFEAT",
+      "final_aircraft": 24,
+      "scenario": "all_bases_lost",
+      "aircraft_losses": 2
+    }
+  ]
+}

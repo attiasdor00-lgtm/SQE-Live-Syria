@@ -115,6 +115,11 @@ def simulate(config, scenario, baseline_ref=None):
                 report.samples[#report.samples+1]={minute=minute,resources=c.copy(c.state.bases.ramat.resources),depot_generation=c.state.targets.blue_depot.generation}
             end
         end
+        report.bases={}
+        for _,b in ipairs(cfg.bases)do if b.side=='blue' then
+            report.bases[b.id]={ready=c.copy(c.state.bases[b.id].ready),resources=c.copy(c.state.bases[b.id].resources),
+                operational=c.state.zones[b.zone].owner==b.side}
+        end end
         report.resources=c.copy(c.state.bases.ramat.resources)
         report.depot_health=c:target_health('blue_depot');report.depot_generation=c.state.targets.blue_depot.generation
         report.fuel_health=c:target_health('blue_fuel');report.fuel_generation=c.state.targets.blue_fuel.generation

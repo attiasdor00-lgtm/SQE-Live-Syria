@@ -1,4 +1,4 @@
-# SQE Live 0.1.10 — Syria
+# SQE Live 0.1.11 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -410,3 +410,12 @@ before widget updates, and hiding attempts cursor/focus release before skin and
 visibility calls. Retry Ctrl+Shift+Q after a temporary widget failure; F10 uses
 the campaign independently. These are contract-tested behaviors; native DCS
 focus/rendering and actual-engine transitions remain unverified.
+
+## Support after aircraft attrition
+
+Explicit blue CAP, Escort, SEAD and Strike requests prefer a funded pair at any
+friendly compatible base, then permit one ready aircraft if no funded pair exists.
+The offer and acknowledgement state the size. Singles pay the full sortie cost
+and have less payload/backup. Automatic dispatch does not use this fallback.
+No aircraft are granted, transferred or replaced; captured bases and exhausted
+compatible stock still block support. Existing saves keep their finite inventory.

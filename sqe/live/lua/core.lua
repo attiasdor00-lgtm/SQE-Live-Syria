@@ -375,38 +375,46 @@ function Core:flight_offer(role,side,target,automatic)
     end
     if role=="SEAD" and (d.kind~="SAM" or self:suppressed(target)) then return blocked("TARGET","No operating radar at this target") end
     local n=(role=="AWACS" or role=="TANKER") and 1 or 2
-    out.count=n
+    -- Project policy: explicit blue requests may use a surviving single only
+    -- after every funded pair has been considered. Automatic/red flights keep
+    -- their normal size; a single still pays the full sortie resource cost.
+    local sizes=(n==2 and side=="blue" and not automatic) and {2,1} or {n}
     local selected,aircraft
-    local reasons={};local resource_shortage=false;local reserve_shortage=false
-    for _, b in ipairs(self.config.bases) do
-        if b.side==side and self.state.zones[b.zone].owner==side then
-            local ready
-            for _, ac in ipairs(self.config.role_aircraft[side][role] or {}) do
-                if (self.state.bases[b.id].ready[ac] or 0)>=n then ready=ac;break end
-            end
-            if ready then
-                local missing={};local protected={};local reserve=self:automation_reserve(b)
-                for _,r in ipairs({"fuel","ammo","supply"}) do
-                    local remaining=self.state.bases[b.id].resources[r]-cost[r]
-                    if remaining<0 then missing[#missing+1]=r
-                    elseif automatic and cost[r]>0 and remaining<reserve[r] then protected[#protected+1]=r end
+    local reasons,resource_shortage,reserve_shortage
+    for _,size in ipairs(sizes) do
+        n=size;out.count=n
+        reasons={};resource_shortage=false;reserve_shortage=false
+        for _, b in ipairs(self.config.bases) do
+            if b.side==side and self.state.zones[b.zone].owner==side then
+                local ready
+                for _, ac in ipairs(self.config.role_aircraft[side][role] or {}) do
+                    if (self.state.bases[b.id].ready[ac] or 0)>=n then ready=ac;break end
                 end
-                if #missing==0 and #protected==0 then selected,aircraft=b,ready;break end
-                if #missing>0 then
-                    resource_shortage=true;reasons[#reasons+1]=b.name..": insufficient "..table.concat(missing," / ")
+                if ready then
+                    local missing={};local protected={};local reserve=self:automation_reserve(b)
+                    for _,r in ipairs({"fuel","ammo","supply"}) do
+                        local remaining=self.state.bases[b.id].resources[r]-cost[r]
+                        if remaining<0 then missing[#missing+1]=r
+                        elseif automatic and cost[r]>0 and remaining<reserve[r] then protected[#protected+1]=r end
+                    end
+                    if #missing==0 and #protected==0 then selected,aircraft=b,ready;break end
+                    if #missing>0 then
+                        resource_shortage=true;reasons[#reasons+1]=b.name..": insufficient "..table.concat(missing," / ")
+                    else
+                        reserve_shortage=true;reasons[#reasons+1]=b.name..": automatic dispatch preserves solo reserve ("..table.concat(protected," / ")..")"
+                    end
                 else
-                    reserve_shortage=true;reasons[#reasons+1]=b.name..": automatic dispatch preserves solo reserve ("..table.concat(protected," / ")..")"
+                    local compatible={};local maintenance=0
+                    for _,ac in ipairs(self.config.role_aircraft[side][role] or {}) do compatible[ac]=true end
+                    for _,m in ipairs(self.state.maintenance) do
+                        if m.base==b.id and compatible[m.aircraft] then maintenance=maintenance+m.count end
+                    end
+                    reasons[#reasons+1]=b.name..": needs "..n.." ready aircraft for "..role
+                        ..(maintenance>0 and ("; "..maintenance.." in maintenance") or "")
                 end
-            else
-                local compatible={};local maintenance=0
-                for _,ac in ipairs(self.config.role_aircraft[side][role] or {}) do compatible[ac]=true end
-                for _,m in ipairs(self.state.maintenance) do
-                    if m.base==b.id and compatible[m.aircraft] then maintenance=maintenance+m.count end
-                end
-                reasons[#reasons+1]=b.name..": needs "..n.." ready aircraft for "..role
-                    ..(maintenance>0 and ("; "..maintenance.." in maintenance") or "")
             end
         end
+        if selected then break end
     end
     if not selected then
         if #reasons==0 then return blocked("BASE_LOST","No friendly operating base remains") end
@@ -425,6 +433,7 @@ function Core:flight_offer(role,side,target,automatic)
     if active>=self.config.max_flights then return blocked("FLIGHT_LIMIT","Airspace is at its flight limit") end
     out.available=true;out.code="READY";out.base=selected.id;out.base_name=selected.name;out.aircraft=aircraft
     out.reason=n.." "..aircraft.." ready at "..selected.name
+        ..((n==1 and role~="AWACS" and role~="TANKER") and "; single-aircraft support, no funded pair available; full sortie cost" or "")
     return out
 end
 function Core:support_offer(role,selected)
@@ -468,7 +477,7 @@ function Core:launch(role,side,target,automatic)
     for r,v in pairs(cost) do b.resources[r]=b.resources[r]-v end
     self.state.flights[f.id]=f
     self:note(f.label.." launched from "..selected.name..".")
-    return true,f.label.." dispatched"
+    return true,f.label.." dispatched ("..n.." aircraft)"
 end
 
 function Core:command(cmd)

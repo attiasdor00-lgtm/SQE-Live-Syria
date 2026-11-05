@@ -81,8 +81,8 @@ bundles. Existing UI/map fixtures now model the load
 boundary explicitly. Full suite results are in LIVE_VALIDATION.md and the release
 Validation logs. No checkpoint content ID/schema changes are needed.
 
-I02's source/contract scope is complete. Next: G02, Israel-profile solo attrition
-balance, followed by L12 bounded long-session/product checks. Real widget skins,
+I02's source/contract scope is complete. G02 accounting results are now in
+LIVE_ISRAEL_BALANCE.md; L12 bounded long-session/product checks follow. Real widget skins,
 hotkey registration/focus, DCS startup/sanitization, process shutdown and Windows
 installation still require actual-engine observation. No FPS or flight assurance
 is inferred from these tests.

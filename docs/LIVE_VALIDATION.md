@@ -1,11 +1,11 @@
-# SQE Live 0.1.10 — validation boundary
+# SQE Live 0.1.11 — validation boundary
 
 Release date: 2026-11-05. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **167 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **177 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,6 +15,11 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- Ten Israel attrition/support cases cover manual singles at full cost, funded
+  pair preference, captured/empty bases, conservation and failed dispatch,
+  recovery/reload, shared native/F10 quotes and eight six-hour regional workloads.
+  The paired 0.1.10 comparison is in LIVE_ISRAEL_BALANCE_RESULTS.json; simulated
+  requests improve 3/8 to 8/8 under attrition, not measured combat effectiveness.
 - Nine UI/startup boundary cases were added: cold/same-second stale status,
   long-load session exclusion, stop/load widget failures, callback/log/report
   exceptions, non-finite timestamps and execution of the installed storage bridge
@@ -138,8 +143,8 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   slot, armed F-16, one live trigger, package hashes and supported vehicle types
   are checked.
 
-Final test output and the paired solo accounting report are included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.10 and passed.
+Final test output and the current Israel paired accounting report are included in the release's Validation folder.
+The original SQE headless smoke suite was rerun separately for 0.1.11 and passed.
 
 ## Required real-game validation
 

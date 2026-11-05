@@ -33,7 +33,7 @@ installation test is not an installation pass. Real DCS behavior remains pending
 Commit the reviewed source and retain successful live/upstream test logs. Then:
 
 ```sh
-python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.10.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
+python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.11.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_ISRAEL_BALANCE_RESULTS.json
 ```
 
 The archive includes the install bundle, all tracked source and the logs, plus a
@@ -69,3 +69,13 @@ Use `python tools/live_balance.py --scenario israel --output israel-results.json
 for new-profile accounting fixtures. The tool defaults to legacy so historical
 0.1.7 comparisons remain reproducible. The regional profile has larger starting
 stocks and additional depots; historical balance results are not its playtest.
+
+## Israel regional accounting comparison
+
+```sh
+python tools/live_balance.py --scenario israel --regional --baseline-ref 404f985a66d66242879d9a7ad2eb5e3b6794b730 --output israel-balance.json
+```
+
+Use a full clone for the public baseline. This measures scripted access and
+conservation, not combat. --regional requires --scenario israel; the original
+legacy fixtures/report remain separate. See LIVE_ISRAEL_BALANCE.md for inputs.
