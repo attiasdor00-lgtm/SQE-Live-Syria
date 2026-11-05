@@ -30,7 +30,8 @@ function Director.air(c,side)
 end
 local function shipment_active(c,base,kind,zone)
     for _,s in pairs(c.state.shipments) do
-        if s.status=="MOVING" and s.base==base and s.kind==kind and s.zone==zone then return true end
+        local same_origin=s.base==base or (kind=="ASSAULT" and s.side==c.base_defs[base].side)
+        if s.status=="MOVING" and same_origin and s.kind==kind and s.zone==zone then return true end
     end
     return false
 end

@@ -79,6 +79,8 @@ foreach ($dir in @($scriptsDir,$hooksDir,$missionsDir)) {
 Copy-Item -Path (Join-Path $bundle 'Scripts\SQE-Live\*') -Destination $scriptsDir -Force
 Copy-Item -LiteralPath (Join-Path $bundle 'Scripts\Hooks\SQE-Live.lua') -Destination $hooksDir -Force
 Copy-Item -LiteralPath (Join-Path $bundle 'Missions\SQE_Live_Syria.miz') -Destination $missionsDir -Force
+$legacyMission = Join-Path $bundle 'Missions\SQE_Live_Syria_Legacy.miz'
+if (Test-Path -LiteralPath $legacyMission) { Copy-Item -LiteralPath $legacyMission -Destination $missionsDir -Force }
 
 # Keep a uniquely named copy and preserve all unrelated changes. The uninstall
 # removes our marked block; it does not restore an old whole-file backup.

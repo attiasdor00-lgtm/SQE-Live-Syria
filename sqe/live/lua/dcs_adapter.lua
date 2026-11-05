@@ -45,14 +45,17 @@ function A:world_health()
 end
 function A:sync_bases()
     self.base_owners=self.base_owners or {}
-    for _,b in ipairs(self.config.bases) do
+    local fields={}
+    for _,field in ipairs(self.config.airfields or {}) do fields[#fields+1]=field end
+    for _,base in ipairs(self.config.bases) do fields[#fields+1]=base end
+    for _,b in ipairs(fields) do
         local owner=self.core.state.zones[b.zone].owner
-        if self.base_owners[b.id]~=owner then
+        if self.base_owners[b.airport]~=owner then
             local airbase=Airbase.getByName(b.airport)
             if airbase then
                 airbase:autoCapture(false)
                 airbase:setCoalition(owner=="blue" and 2 or 1)
-                self.base_owners[b.id]=owner
+                self.base_owners[b.airport]=owner
             end
         end
     end

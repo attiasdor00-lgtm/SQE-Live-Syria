@@ -61,7 +61,7 @@ function O.sectors(c)
         end
     end
     for _,z in ipairs(c.config.zones) do
-        local s={id=z.id,name=z.name,map_label=z.map_label or z.name,x=z.x,y=z.y,neighbors=c.copy(z.neighbors),base_names={},
+        local s={id=z.id,name=z.name,map_label=z.map_label or z.name,x=z.x,y=z.y,neighbors=c.copy(z.neighbors),base_names={},airfield_names={},
             owner=c.state.zones[z.id].owner,defenders=c:defenders(z.id,"blue",false),
             resistance=c:defenders(z.id,"blue",true),frontline=false,
             friendly_columns=0,enemy_columns=0,delayed_columns=0,garrison=0,base_effects={}}
@@ -80,6 +80,9 @@ function O.sectors(c)
                     s.garrison=s.garrison+c.count(ship.alive)
                 end
             end
+        end
+        for _,field in ipairs(c.config.airfields or {}) do
+            if field.zone==z.id then s.airfield_names[#s.airfield_names+1]=field.airport end
         end
         for _,b in ipairs(c.config.bases) do
             if b.zone==z.id then

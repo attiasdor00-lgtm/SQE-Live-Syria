@@ -27,6 +27,7 @@ losses and resources. No Python process or network service while flying.
 10. Debugging and dynamic ground-force task cards (0.1.5 / L09) — IMPLEMENTED; LIFECYCLE/RELOAD/AI-REFERENCE/NATIVE-CALLBACK TESTS PASS.
 11. Controlled supply connectivity (0.1.6 / L10) — IMPLEMENTED; CUT/RESUME/CARGO/RELOAD/VIEW TESTS PASS.
 12. Solo reserves and recovery (0.1.7 / L11) — IMPLEMENTED; PAIRED ACCOUNTING/FAILURE/RELOAD TESTS PASS.
+13. Israel blue rear area (0.1.8 / G01) — IMPLEMENTED; DEFAULT-PROFILE/OWNERSHIP/MULTI-BASE/LEGACY TESTS PASS.
 
 Actual DCS acceptance is outstanding for the complete release. See
 LIVE_VALIDATION.md for the test boundary and LIVE_USER_GUIDE.md for limitations.
@@ -34,9 +35,28 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.7
+## Continuation after 0.1.8
 
-### Next task — L12: load checks and product completion
+### Next task — I01: integration audit using the supplied mission reference
+
+Status: READY. Compare complete generated flight/task/event records against
+native mission data and representative supplied Foothold patterns. Keep raw DCS
+calls distinct from MOOSE helpers. Inspect startup, storage and native UI against
+their own APIs; the supplied multiplayer mission is not evidence for our custom
+window. Fix concrete mismatches before expanding systems further. Real DCS
+flight/driving/native-rendering acceptance remains pending.
+
+### Completed task — G01: Israel blue starting footprint
+
+User priority change after L11: Israel is the blue rear area. Implemented the
+fifteen named Israeli airfields available in the pinned Syria data, eleven
+sectors, five support bases and regional logistics. Same-side advances share a
+destination gate across bases. Old campaigns retain a separate Legacy mission
+and unchanged checkpoint identity. The supplied Foothold archive received a
+selective static inspection; its code/assets are not distributed. See
+LIVE_ISRAEL.md and LIVE_FOOTHOLD_REFERENCE.md.
+
+### Following task — L12: load checks and product completion
 
 Status: READY. Inspect measured Lua/update/registry costs, packaging and startup
 failure modes; finish the install/release workflow and record the game-validation

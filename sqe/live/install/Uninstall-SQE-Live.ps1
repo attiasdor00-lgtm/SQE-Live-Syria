@@ -29,7 +29,7 @@ foreach ($name in @('json.lua','storage.lua','storage_boot.lua','view.lua','map.
     $path = Join-Path $SavedGamesPath "Scripts\SQE-Live\$name"
     if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path }
 }
-foreach ($relative in @('Scripts\Hooks\SQE-Live.lua','Missions\SQE-Live\SQE_Live_Syria.miz')) {
+foreach ($relative in @('Scripts\Hooks\SQE-Live.lua','Missions\SQE-Live\SQE_Live_Syria.miz','Missions\SQE-Live\SQE_Live_Syria_Legacy.miz')) {
     $path = Join-Path $SavedGamesPath $relative
     if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path }
 }

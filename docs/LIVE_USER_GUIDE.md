@@ -1,4 +1,4 @@
-# SQE Live 0.1.7 — Syria
+# SQE Live 0.1.8 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -36,13 +36,13 @@ has not been verified. This release targets local single-player use.
 
 ## What is implemented
 
-- One reusable mission with six connected sectors from Galilee through southern
-  Syria to Damascus and Shayrat, and 17 persistent target groups.
+- One default mission with eleven sectors, fifteen blue Israeli airfields,
+  five support bases and 27 persistent target groups. A Legacy mission is included.
 - F-16C player sorties; blue and red AI CAP, SEAD and strike missions generated
   during play. Actual DCS unit deaths determine losses and task completion.
 - Native clickable in-game window: front, aircraft/resources, targets,
   coordinates, progress, active support flights, campaign log and save status.
-- Map tab with six clickable sectors, control colours, front connections and
+- Map tab with eleven clickable sectors, control colours, front connections and
   base markers. Sector selection filters the task list; task selection opens
   the matching briefing. Browsing does not assign tasks or spend resources.
 - Front plan, Resources and Support tabs: sector objectives, pending ground
@@ -212,6 +212,23 @@ polygons constrain the native road path to friendly territory. Default Syria
 depots share their base sectors; red fuel from Marj and ground staging have
 connections through other sectors. Scenario geography is unchanged in 0.1.6.
 
+## Israel starting territory and existing campaigns
+
+The default `SQE_Live_Syria` mission now uses eleven sectors, fifteen initially
+blue Israeli airfields and five blue support bases: Ramat David, Tel Nof, Hatzor,
+Nevatim and Hatzerim. Other fields, including Palmachim and Ben Gurion, are blue
+without becoming additional fighter wings. The original total of 14 F-16C,
+8 F-15C, 2 E-3A and 2 KC-135 is distributed across those bases. Central/Negev
+logistics are added. Sector details list both launch bases and controlled fields.
+
+The new profile starts a separate `syria_israel_solo` / `syria-israel-1` campaign.
+To resume 0.1.0–0.1.7 checkpoints, open `SQE_Live_Syria_Legacy` from the same
+installed missions folder. It retains `syria_cedar_current` / `syria-1`. No old
+checkpoint is reset or silently converted to the expanded map. Both missions
+share the same hook and window. Detailed terrain/airports absent from the Syria
+map are not added; this is a schematic game layout, not exact national boundaries.
+See LIVE_ISRAEL.md for the complete field list and validation boundary.
+
 ## Solo reserves and recovery
 
 Automatic blue air dispatch leaves 8 fuel and 22 ammo at the selected base.
@@ -272,7 +289,9 @@ effectiveness of retries still require DCS observation.
 
 Save location:
 
-    Saved Games\DCS\SQE-Live\campaigns\syria_cedar_current.json
+    Saved Games\DCS\SQE-Live\campaigns\syria_israel_solo.json
+
+Legacy: Saved Games\DCS\SQE-Live\campaigns\syria_cedar_current.json
 
 The previous checkpoint has a **.prev** suffix. A bad primary recovered from a
 valid checkpoint is retained as **.invalid**. If neither checkpoint is valid,
@@ -342,7 +361,7 @@ save failure/reload, UI callbacks with a fake DCS API, and the generated mission
 They cannot prove real DCS behavior. Development can continue without a manual
 test from the user. When a DCS test environment is available, acceptance covers:
 
-1. Mission opens, 17 ground groups spawn without terrain/building conflicts,
+1. Mission opens, 27 ground groups spawn (17 in Legacy) without terrain/building conflicts,
    player can start, and the window renders and returns mouse control.
 2. Assignment, brief/coordinates and map marks agree with targets on terrain.
 3. AI SEAD/strike attacks, CAP/escort, AWACS and tanker task/radio behavior.

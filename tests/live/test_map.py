@@ -228,7 +228,7 @@ class MapCase(unittest.TestCase):
             ui.window.MapTab.click();layout_check()
             local count=#ui.widgets
             for i=1,100 do mock.clock=mock.clock+1;rt:publish();ui.handler.onSimulationFrame() end
-            assert(#ui.widgets==count and #ui.window.MapCanvas.children==56)
+            assert(#ui.widgets==count and #ui.window.MapCanvas.children==84)
             ui.window.Close.click();assert(not ui.window.cursor)
             for _,w in ipairs(ui.window.children) do assert(not w.visible,w.name) end
             for _,w in ipairs(ui.window.MapCanvas.children) do assert(not w.visible) end

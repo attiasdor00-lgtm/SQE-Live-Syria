@@ -20,6 +20,7 @@ function V.front(s)
     for _,z in ipairs(front.sectors) do
         lines[#lines+1]="";lines[#lines+1]=string.upper(z.owner).." / "..z.name
         lines[#lines+1]=z.stage:gsub("_"," ")
+        if #(z.airfield_names or {})>0 then lines[#lines+1]="Airfields: "..table.concat(z.airfield_names,", ") end
         if z.frontline or z.friendly_columns>0 or z.enemy_columns>0 or #(z.base_names or {})>0 then
             lines[#lines+1]=z.instruction
             if z.garrison>0 then lines[#lines+1]=z.garrison.." occupying garrison vehicle(s) included in the capture requirement." end

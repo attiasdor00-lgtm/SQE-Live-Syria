@@ -20,13 +20,14 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--baseline-ref", help="Optional local git ref to compare against")
     p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--scenario",choices=("israel","legacy"),default="legacy")
     args = p.parse_args()
     with tempfile.TemporaryDirectory() as temporary:
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            build(Path(temporary))
+            build(Path(temporary),scenario=args.scenario)
         config = json.loads((Path(temporary) / "content.json").read_text())
     report = {"boundary":"Lua accounting fixtures: twenty-minute convoy travel, twenty-five-minute flight recovery, scripted losses and sector events; no combat/terrain/AI/FPS prediction.",
-              "baseline_ref":args.baseline_ref,
+              "baseline_ref":args.baseline_ref,"scenario_profile":args.scenario,
               "current":[simulate(config, case) for case in SCENARIOS]}
     if args.baseline_ref:
         report["baseline_tree"] = subprocess.check_output(["git", "rev-parse", args.baseline_ref + "^{tree}"], cwd=ROOT, text=True).strip()

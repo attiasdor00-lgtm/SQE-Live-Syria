@@ -9,6 +9,7 @@ import json
 import re
 import shutil
 import subprocess
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from . import VERSION
@@ -36,10 +37,14 @@ def lua_literal(value):
     raise TypeError(type(value))
 
 
-def content(campaign_id: str):
+def content(campaign_id: str | None = None, scenario="israel"):
     from dcs.terrain import Syria
     from dcs import vehicles
-    spec = json.loads((HERE / "syria.json").read_text())
+    profiles={"israel":"syria.json","legacy":"syria_legacy.json"}
+    if scenario not in profiles:
+        raise ValueError("Unknown Syria scenario")
+    spec = json.loads((HERE / profiles[scenario]).read_text())
+    campaign_id=campaign_id or spec["id"]
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", campaign_id):
         raise ValueError("Campaign ID must contain only letters, digits, underscores or hyphens")
     spec["id"] = campaign_id
@@ -50,6 +55,11 @@ def content(campaign_id: str):
         airport = terrain.airports[zone["airport"]]
         zone.update(x=airport.position.x + zone.pop("dx"), y=airport.position.y + zone.pop("dy"))
     zones = {z["id"]: z for z in spec["zones"]}
+    for field in spec.get("airfields", []):
+        a=terrain.airports[field["airport"]]
+        if field["zone"] not in zones:
+            raise ValueError("Unknown airfield sector")
+        field.update(airport_id=a.id,x=a.position.x,y=a.position.y)
     for base in spec["bases"]:
         a = terrain.airports[base["airport"]]
         base.update(x=a.position.x, y=a.position.y, airport_id=a.id)
@@ -126,7 +136,7 @@ end
     return "".join(parts)
 
 
-def build(output: Path, campaign_id="syria_cedar_current"):
+def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True):
     from dcs import Mission, planes, task
     from dcs.mission import StartType
     from dcs.unit import Skill
@@ -137,8 +147,12 @@ def build(output: Path, campaign_id="syria_cedar_current"):
     from sqe.loadouts import LoadoutLibrary
     from sqe.models import Role
 
-    config, terrain = content(campaign_id)
+    config, terrain = content(campaign_id,scenario)
     m = Mission(terrain=terrain)
+    owners={z["id"]:z["owner"] for z in config["zones"]}
+    for field in config.get("airfields", []):
+        a=m.terrain.airports[field["airport"]]
+        (a.set_blue if owners[field["zone"]]=="blue" else a.set_red)()
     for base in config["bases"]:
         a = m.terrain.airports[base["airport"]]
         (a.set_blue if base["side"] == "blue" else a.set_red)()
@@ -161,7 +175,7 @@ def build(output: Path, campaign_id="syria_cedar_current"):
     m.weather.qnh = 760
     m.weather.season_temperature = 24
     m.description_text = String(
-        "SQE LIVE — OPERATION CEDAR CURRENT\n"
+        config["name"]+"\n"
         "Continuous fictional single-player campaign on Syria. F-16C at Ramat David.\n"
         "Open operations: Ctrl+Shift+Q (installed UI) or radio F10 > SQE Live.\n"
         "Accept a task, read its coordinates, request support, fly, land and rearm, then accept another task.\n"
@@ -201,6 +215,10 @@ def build(output: Path, campaign_id="syria_cedar_current"):
     except (OSError, subprocess.CalledProcessError):
         source_commit = "source archive; see included VERSION.txt"
     (output / "VERSION.txt").write_text(f"SQE Live {VERSION}\nUpstream 807643b33fa88f19329177c6c420a5f8feb942e8\nSource {source_commit}\n")
+    if scenario=="israel" and include_legacy:
+        with tempfile.TemporaryDirectory() as temporary:
+            previous=build(Path(temporary),scenario="legacy",include_legacy=False)
+            shutil.copy2(previous,missions/"SQE_Live_Syria_Legacy.miz")
     hashes = {str(p.relative_to(output)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in sorted(output.rglob("*")) if p.is_file() and p.name != "SHA256SUMS.json"}
     (output / "SHA256SUMS.json").write_text(json.dumps(hashes, indent=2))
@@ -210,10 +228,11 @@ def build(output: Path, campaign_id="syria_cedar_current"):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "dist" / "SQE-Live-Syria")
-    parser.add_argument("--campaign-id", default="syria_cedar_current")
+    parser.add_argument("--campaign-id")
+    parser.add_argument("--scenario",choices=("israel","legacy"),default="israel")
     args = parser.parse_args()
     with contextlib.redirect_stdout(io.StringIO()):
-        result = build(args.output, args.campaign_id)
+        result = build(args.output, args.campaign_id,args.scenario)
     print(result)
 
 

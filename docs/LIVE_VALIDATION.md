@@ -1,11 +1,11 @@
-# SQE Live 0.1.7 — validation boundary
+# SQE Live 0.1.8 — validation boundary
 
 Release date: 2026-11-05. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **137 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **151 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,13 +15,25 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- The shipped Israel profile is checked separately from legacy regressions:
+  fifteen field IDs and BLUE mission warehouse coalitions agree with runtime
+  ownership; loss/recapture affects the correct fields; regional bases/supply
+  remain available independently; eleven map nodes fit; duplicate advances are
+  blocked; old checkpoint identity remains separate. Both missions are installed
+  and uninstalled while unrelated files are preserved. Three six-hour profile
+  scenarios run in the contract suite, with seven scripted runs in the included
+  current-profile report. Those runs peak at 153 active units, not a measured FPS.
+- Foothold was selectively inspected as supplied static data. Its native group
+  and Mission/route patterns are useful references; its MOOSE helpers, client
+  slots and scripts are not execution evidence for SQE Live. See
+  LIVE_FOOTHOLD_REFERENCE.md for the exact scope and hashes.
 - Fifteen solo-balance tests cover automatic reserve boundaries versus explicit
   requests, last advances, red costs, partial-site recovery, outage migration,
   failed creation after a group exists, retirement failure/rollback/retry, finite
   stock, depot priority, incoming cargo, terminal exhaustion and read-only reports.
   Seven paired six-hour accounting fixtures compare 0.1.6 and 0.1.7, including
-  scripted attrition and a two-hour corridor interruption. Support requests in
-  the steady fixture improve from 2/8 to 8/8; depot repair restores first cargo
+  scripted attrition and a two-hour corridor interruption. These historical legacy-profile results do not establish balance of the expanded map.
+  Support requests in the steady fixture improve from 2/8 to 8/8; depot repair restores first cargo
   at minute 275 in the low-stock/partial-site fixtures. Travel/returns/combat events
   are prescribed inputs; these are not DCS difficulty or navigation estimates.
 - Seventeen supply-connectivity scenarios cover disconnected depots, deterministic
@@ -118,7 +130,7 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   are checked.
 
 Final test output and the paired solo accounting report are included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.7 and passed.
+The original SQE headless smoke suite was rerun separately for 0.1.8 and passed.
 
 ## Required real-game validation
 

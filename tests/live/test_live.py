@@ -13,7 +13,11 @@ import unittest
 import zipfile
 from pathlib import Path
 from lupa.lua51 import LuaRuntime
-from sqe.live.build import HERE, ROOT, build, lua_literal, mission_script
+from sqe.live.build import HERE, ROOT, build as build_scenario, lua_literal, mission_script
+
+def build(output, campaign_id=None):
+    """Retain legacy regression fixtures; test_geography covers the shipped default."""
+    return build_scenario(output,campaign_id,scenario="legacy")
 
 LUA = HERE / "lua"
 

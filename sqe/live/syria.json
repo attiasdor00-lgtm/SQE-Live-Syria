@@ -1,45 +1,808 @@
 {
-  "id": "syria_cedar_current",
-  "name": "SQE Live — Operation Cedar Current",
-  "content_version": "syria-1",
+  "id": "syria_israel_solo",
+  "name": "SQE Live \u2014 Israel / Syria",
+  "content_version": "syria-israel-1",
   "seed": 1971,
   "unit_budget": 180,
   "max_flights": 9,
   "player_slots": 1,
-  "date": [2026, 6, 12],
+  "date": [
+    2026,
+    6,
+    12
+  ],
   "zones": [
-    {"id":"galilee","map_label":"Ramat D.","name":"Galilee / Ramat David","airport":"Ramat David","dx":7000,"dy":4000,"owner":"blue","neighbors":["golan"]},
-    {"id":"golan","map_label":"Golan","name":"Golan approach","airport":"Ramat David","dx":35000,"dy":45000,"owner":"blue","neighbors":["galilee","south"]},
-    {"id":"south","map_label":"South","name":"Southern corridor","airport":"Khalkhalah","dx":-15000,"dy":-20000,"owner":"red","neighbors":["golan","marj"]},
-    {"id":"marj","map_label":"Marj","name":"Marj Ruhayyil","airport":"Marj Ruhayyil","dx":4000,"dy":-6000,"owner":"red","neighbors":["south","damascus"]},
-    {"id":"damascus","map_label":"Damascus","name":"Damascus sector","airport":"Damascus","dx":10000,"dy":8000,"owner":"red","neighbors":["marj","shayrat"]},
-    {"id":"shayrat","map_label":"Shayrat","name":"Shayrat rear area","airport":"Shayrat","dx":-6000,"dy":-6000,"owner":"red","neighbors":["damascus"]}
+    {
+      "id": "galilee",
+      "map_label": "Ramat D.",
+      "name": "Galilee / Ramat David",
+      "airport": "Ramat David",
+      "dx": 7000,
+      "dy": 4000,
+      "owner": "blue",
+      "neighbors": [
+        "golan",
+        "haifa",
+        "upper_galilee",
+        "sharon"
+      ]
+    },
+    {
+      "id": "golan",
+      "map_label": "Golan",
+      "name": "Golan approach",
+      "airport": "Ramat David",
+      "dx": 35000,
+      "dy": 45000,
+      "owner": "blue",
+      "neighbors": [
+        "galilee",
+        "upper_galilee",
+        "south"
+      ]
+    },
+    {
+      "id": "south",
+      "map_label": "South",
+      "name": "Southern corridor",
+      "airport": "Khalkhalah",
+      "dx": -15000,
+      "dy": -20000,
+      "owner": "red",
+      "neighbors": [
+        "golan",
+        "marj"
+      ]
+    },
+    {
+      "id": "marj",
+      "map_label": "Marj",
+      "name": "Marj Ruhayyil",
+      "airport": "Marj Ruhayyil",
+      "dx": 4000,
+      "dy": -6000,
+      "owner": "red",
+      "neighbors": [
+        "south",
+        "damascus"
+      ]
+    },
+    {
+      "id": "damascus",
+      "map_label": "Damascus",
+      "name": "Damascus sector",
+      "airport": "Damascus",
+      "dx": 10000,
+      "dy": 8000,
+      "owner": "red",
+      "neighbors": [
+        "marj",
+        "shayrat"
+      ]
+    },
+    {
+      "id": "shayrat",
+      "map_label": "Shayrat",
+      "name": "Shayrat rear area",
+      "airport": "Shayrat",
+      "dx": -6000,
+      "dy": -6000,
+      "owner": "red",
+      "neighbors": [
+        "damascus"
+      ]
+    },
+    {
+      "id": "haifa",
+      "map_label": "Haifa",
+      "name": "Haifa / northern coast",
+      "airport": "Haifa",
+      "dx": 0,
+      "dy": 0,
+      "owner": "blue",
+      "neighbors": [
+        "galilee",
+        "upper_galilee",
+        "sharon"
+      ]
+    },
+    {
+      "id": "upper_galilee",
+      "map_label": "Upper Galilee",
+      "name": "Upper Galilee / Rosh Pina",
+      "airport": "Rosh Pina",
+      "dx": 0,
+      "dy": 0,
+      "owner": "blue",
+      "neighbors": [
+        "galilee",
+        "haifa",
+        "golan"
+      ]
+    },
+    {
+      "id": "sharon",
+      "map_label": "Sharon",
+      "name": "Sharon / Eyn Shemer",
+      "airport": "Eyn Shemer",
+      "dx": 0,
+      "dy": 0,
+      "owner": "blue",
+      "neighbors": [
+        "haifa",
+        "galilee",
+        "central"
+      ]
+    },
+    {
+      "id": "central",
+      "map_label": "Central Israel",
+      "name": "Central Israel / Tel Nof",
+      "airport": "Tel Nof",
+      "dx": 0,
+      "dy": 0,
+      "owner": "blue",
+      "neighbors": [
+        "sharon",
+        "negev"
+      ]
+    },
+    {
+      "id": "negev",
+      "map_label": "Negev",
+      "name": "Negev / Nevatim",
+      "airport": "Nevatim",
+      "dx": 0,
+      "dy": 0,
+      "owner": "blue",
+      "neighbors": [
+        "central"
+      ]
+    }
   ],
   "bases": [
-    {"id":"ramat","name":"Ramat David","airport":"Ramat David","zone":"galilee","side":"blue",
-     "aircraft":{"F-16C":14,"F-15C":8,"E-3A":2,"KC-135":2},"resources":{"fuel":100,"ammo":100,"supply":100}},
-    {"id":"damascus","name":"Damascus","airport":"Damascus","zone":"damascus","side":"red",
-     "aircraft":{"MiG-29S":12,"Su-24M":12},"resources":{"fuel":100,"ammo":100,"supply":100}},
-    {"id":"shayrat","name":"Shayrat","airport":"Shayrat","zone":"shayrat","side":"red",
-     "aircraft":{"MiG-29S":8,"Su-24M":8},"resources":{"fuel":80,"ammo":80,"supply":80}}
+    {
+      "id": "ramat",
+      "name": "Ramat David",
+      "airport": "Ramat David",
+      "zone": "galilee",
+      "side": "blue",
+      "aircraft": {
+        "F-16C": 6,
+        "F-15C": 4
+      },
+      "resources": {
+        "fuel": 100,
+        "ammo": 100,
+        "supply": 100
+      }
+    },
+    {
+      "id": "damascus",
+      "name": "Damascus",
+      "airport": "Damascus",
+      "zone": "damascus",
+      "side": "red",
+      "aircraft": {
+        "MiG-29S": 12,
+        "Su-24M": 12
+      },
+      "resources": {
+        "fuel": 100,
+        "ammo": 100,
+        "supply": 100
+      }
+    },
+    {
+      "id": "shayrat",
+      "name": "Shayrat",
+      "airport": "Shayrat",
+      "zone": "shayrat",
+      "side": "red",
+      "aircraft": {
+        "MiG-29S": 8,
+        "Su-24M": 8
+      },
+      "resources": {
+        "fuel": 80,
+        "ammo": 80,
+        "supply": 80
+      }
+    },
+    {
+      "id": "tel_nof",
+      "name": "Tel Nof",
+      "airport": "Tel Nof",
+      "zone": "central",
+      "side": "blue",
+      "aircraft": {
+        "F-15C": 4,
+        "E-3A": 1,
+        "KC-135": 1
+      },
+      "resources": {
+        "fuel": 70,
+        "ammo": 70,
+        "supply": 70
+      }
+    },
+    {
+      "id": "hatzor",
+      "name": "Hatzor",
+      "airport": "Hatzor",
+      "zone": "central",
+      "side": "blue",
+      "aircraft": {
+        "F-16C": 4
+      },
+      "resources": {
+        "fuel": 50,
+        "ammo": 50,
+        "supply": 50
+      }
+    },
+    {
+      "id": "nevatim",
+      "name": "Nevatim",
+      "airport": "Nevatim",
+      "zone": "negev",
+      "side": "blue",
+      "aircraft": {
+        "F-16C": 2,
+        "E-3A": 1,
+        "KC-135": 1
+      },
+      "resources": {
+        "fuel": 80,
+        "ammo": 80,
+        "supply": 80
+      }
+    },
+    {
+      "id": "hatzerim",
+      "name": "Hatzerim",
+      "airport": "Hatzerim",
+      "zone": "negev",
+      "side": "blue",
+      "aircraft": {
+        "F-16C": 2
+      },
+      "resources": {
+        "fuel": 50,
+        "ammo": 50,
+        "supply": 50
+      }
+    }
   ],
   "targets": [
-    {"id":"blue_depot","name":"Blue logistics depot","kind":"DEPOT","side":"blue","zone":"galilee","dx":-4000,"dy":2000,"types":["M 818","M 818","M978 HEMTT Tanker","M 818"],"priority":4},
-    {"id":"blue_fuel","name":"Blue fuel storage","kind":"FUEL","side":"blue","zone":"galilee","dx":2500,"dy":-2500,"types":["M978 HEMTT Tanker","M978 HEMTT Tanker","M 818"],"priority":5},
-    {"id":"blue_hawk","name":"Ramat David HAWK battery","kind":"SAM","side":"blue","zone":"galilee","dx":0,"dy":5000,"types":["Hawk sr","Hawk tr","Hawk cwar","Hawk ln","Hawk ln","Hawk ln"],"radars":[1,2,3],"priority":6},
-    {"id":"blue_home_guard","name":"Galilee garrison","kind":"ARMOR","side":"blue","zone":"galilee","dx":3000,"dy":3000,"types":["M-1 Abrams","M-2 Bradley","M-2 Bradley","Vulcan"],"priority":3},
-    {"id":"blue_front","name":"Golan forward battlegroup","kind":"ARMOR","side":"blue","zone":"golan","dx":0,"dy":0,"types":["M-1 Abrams","M-1 Abrams","M-2 Bradley","M-2 Bradley","Vulcan"],"priority":10},
-    {"id":"south_armor","name":"Southern armoured battlegroup","kind":"ARMOR","side":"red","zone":"south","dx":0,"dy":0,"types":["T-72B","T-72B","BMP-2","BMP-2","ZSU-23-4 Shilka"],"priority":12},
-    {"id":"south_sam","name":"Southern SA-6 battery","kind":"SAM","side":"red","zone":"south","dx":2500,"dy":3000,"types":["Kub 1S91 str","Kub 2P25 ln","Kub 2P25 ln","Kub 2P25 ln","Ural-375"],"radars":[1],"priority":14,"threat":"SA-6 radar battery; Shilka with nearby armour"},
-    {"id":"marj_armor","name":"Marj mechanised reserve","kind":"ARMOR","side":"red","zone":"marj","dx":0,"dy":0,"types":["T-72B","BMP-2","BMP-2","ZSU-23-4 Shilka"],"priority":10},
-    {"id":"marj_sam","name":"Marj SA-3 site","kind":"SAM","side":"red","zone":"marj","dx":3000,"dy":2000,"types":["snr s-125 tr","p-19 s-125 sr","5p73 s-125 ln","5p73 s-125 ln","5p73 s-125 ln"],"radars":[1,2],"priority":12},
-    {"id":"marj_fuel","name":"Marj fuel supply","kind":"FUEL","side":"red","zone":"marj","dx":-3000,"dy":-2000,"types":["ATZ-10","ATZ-10","ATZ-10","Ural-375"],"priority":9},
-    {"id":"damascus_armor","name":"Damascus airfield security","kind":"ARMOR","side":"red","zone":"damascus","dx":0,"dy":0,"types":["T-72B","T-72B","BMP-2","BMP-2","ZSU-23-4 Shilka"],"priority":8},
-    {"id":"damascus_sam","name":"Damascus SA-11 battery","kind":"SAM","side":"red","zone":"damascus","dx":4000,"dy":4000,"types":["SA-11 Buk SR 9S18M1","SA-11 Buk CC 9S470M1","SA-11 Buk LN 9A310M1","SA-11 Buk LN 9A310M1"],"radars":[1,3,4],"priority":11},
-    {"id":"damascus_depot","name":"Damascus supply depot","kind":"DEPOT","side":"red","zone":"damascus","dx":-3500,"dy":3000,"types":["Ural-375","Ural-375","Ural-375","ATZ-10"],"priority":9},
-    {"id":"damascus_c2","name":"Damascus command detachment","kind":"C2","side":"red","zone":"damascus","dx":3500,"dy":-3000,"types":["SKP-11","Ural-375","BRDM-2"],"priority":8},
-    {"id":"shayrat_armor","name":"Shayrat reserve battlegroup","kind":"ARMOR","side":"red","zone":"shayrat","dx":0,"dy":0,"types":["T-72B","T-72B","BMP-2","BMP-2","ZSU-23-4 Shilka"],"priority":6},
-    {"id":"shayrat_sam","name":"Shayrat SA-6 battery","kind":"SAM","side":"red","zone":"shayrat","dx":-3000,"dy":2000,"types":["Kub 1S91 str","Kub 2P25 ln","Kub 2P25 ln","Kub 2P25 ln"],"radars":[1],"priority":7},
-    {"id":"shayrat_depot","name":"Shayrat rear supply depot","kind":"DEPOT","side":"red","zone":"shayrat","dx":3000,"dy":-3000,"types":["Ural-375","Ural-375","ATZ-10","ATZ-10"],"priority":5}
+    {
+      "id": "blue_depot",
+      "name": "Blue logistics depot",
+      "kind": "DEPOT",
+      "side": "blue",
+      "zone": "galilee",
+      "dx": -4000,
+      "dy": 2000,
+      "types": [
+        "M 818",
+        "M 818",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 4
+    },
+    {
+      "id": "blue_fuel",
+      "name": "Blue fuel storage",
+      "kind": "FUEL",
+      "side": "blue",
+      "zone": "galilee",
+      "dx": 2500,
+      "dy": -2500,
+      "types": [
+        "M978 HEMTT Tanker",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_hawk",
+      "name": "Ramat David HAWK battery",
+      "kind": "SAM",
+      "side": "blue",
+      "zone": "galilee",
+      "dx": 0,
+      "dy": 5000,
+      "types": [
+        "Hawk sr",
+        "Hawk tr",
+        "Hawk cwar",
+        "Hawk ln",
+        "Hawk ln",
+        "Hawk ln"
+      ],
+      "radars": [
+        1,
+        2,
+        3
+      ],
+      "priority": 6
+    },
+    {
+      "id": "blue_home_guard",
+      "name": "Galilee garrison",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "galilee",
+      "dx": 3000,
+      "dy": 3000,
+      "types": [
+        "M-1 Abrams",
+        "M-2 Bradley",
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 3
+    },
+    {
+      "id": "blue_front",
+      "name": "Golan forward battlegroup",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "golan",
+      "dx": 0,
+      "dy": 0,
+      "types": [
+        "M-1 Abrams",
+        "M-1 Abrams",
+        "M-2 Bradley",
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "south_armor",
+      "name": "Southern armoured battlegroup",
+      "kind": "ARMOR",
+      "side": "red",
+      "zone": "south",
+      "dx": 0,
+      "dy": 0,
+      "types": [
+        "T-72B",
+        "T-72B",
+        "BMP-2",
+        "BMP-2",
+        "ZSU-23-4 Shilka"
+      ],
+      "priority": 12
+    },
+    {
+      "id": "south_sam",
+      "name": "Southern SA-6 battery",
+      "kind": "SAM",
+      "side": "red",
+      "zone": "south",
+      "dx": 2500,
+      "dy": 3000,
+      "types": [
+        "Kub 1S91 str",
+        "Kub 2P25 ln",
+        "Kub 2P25 ln",
+        "Kub 2P25 ln",
+        "Ural-375"
+      ],
+      "radars": [
+        1
+      ],
+      "priority": 14,
+      "threat": "SA-6 radar battery; Shilka with nearby armour"
+    },
+    {
+      "id": "marj_armor",
+      "name": "Marj mechanised reserve",
+      "kind": "ARMOR",
+      "side": "red",
+      "zone": "marj",
+      "dx": 0,
+      "dy": 0,
+      "types": [
+        "T-72B",
+        "BMP-2",
+        "BMP-2",
+        "ZSU-23-4 Shilka"
+      ],
+      "priority": 10
+    },
+    {
+      "id": "marj_sam",
+      "name": "Marj SA-3 site",
+      "kind": "SAM",
+      "side": "red",
+      "zone": "marj",
+      "dx": 3000,
+      "dy": 2000,
+      "types": [
+        "snr s-125 tr",
+        "p-19 s-125 sr",
+        "5p73 s-125 ln",
+        "5p73 s-125 ln",
+        "5p73 s-125 ln"
+      ],
+      "radars": [
+        1,
+        2
+      ],
+      "priority": 12
+    },
+    {
+      "id": "marj_fuel",
+      "name": "Marj fuel supply",
+      "kind": "FUEL",
+      "side": "red",
+      "zone": "marj",
+      "dx": -3000,
+      "dy": -2000,
+      "types": [
+        "ATZ-10",
+        "ATZ-10",
+        "ATZ-10",
+        "Ural-375"
+      ],
+      "priority": 9
+    },
+    {
+      "id": "damascus_armor",
+      "name": "Damascus airfield security",
+      "kind": "ARMOR",
+      "side": "red",
+      "zone": "damascus",
+      "dx": 0,
+      "dy": 0,
+      "types": [
+        "T-72B",
+        "T-72B",
+        "BMP-2",
+        "BMP-2",
+        "ZSU-23-4 Shilka"
+      ],
+      "priority": 8
+    },
+    {
+      "id": "damascus_sam",
+      "name": "Damascus SA-11 battery",
+      "kind": "SAM",
+      "side": "red",
+      "zone": "damascus",
+      "dx": 4000,
+      "dy": 4000,
+      "types": [
+        "SA-11 Buk SR 9S18M1",
+        "SA-11 Buk CC 9S470M1",
+        "SA-11 Buk LN 9A310M1",
+        "SA-11 Buk LN 9A310M1"
+      ],
+      "radars": [
+        1,
+        3,
+        4
+      ],
+      "priority": 11
+    },
+    {
+      "id": "damascus_depot",
+      "name": "Damascus supply depot",
+      "kind": "DEPOT",
+      "side": "red",
+      "zone": "damascus",
+      "dx": -3500,
+      "dy": 3000,
+      "types": [
+        "Ural-375",
+        "Ural-375",
+        "Ural-375",
+        "ATZ-10"
+      ],
+      "priority": 9
+    },
+    {
+      "id": "damascus_c2",
+      "name": "Damascus command detachment",
+      "kind": "C2",
+      "side": "red",
+      "zone": "damascus",
+      "dx": 3500,
+      "dy": -3000,
+      "types": [
+        "SKP-11",
+        "Ural-375",
+        "BRDM-2"
+      ],
+      "priority": 8
+    },
+    {
+      "id": "shayrat_armor",
+      "name": "Shayrat reserve battlegroup",
+      "kind": "ARMOR",
+      "side": "red",
+      "zone": "shayrat",
+      "dx": 0,
+      "dy": 0,
+      "types": [
+        "T-72B",
+        "T-72B",
+        "BMP-2",
+        "BMP-2",
+        "ZSU-23-4 Shilka"
+      ],
+      "priority": 6
+    },
+    {
+      "id": "shayrat_sam",
+      "name": "Shayrat SA-6 battery",
+      "kind": "SAM",
+      "side": "red",
+      "zone": "shayrat",
+      "dx": -3000,
+      "dy": 2000,
+      "types": [
+        "Kub 1S91 str",
+        "Kub 2P25 ln",
+        "Kub 2P25 ln",
+        "Kub 2P25 ln"
+      ],
+      "radars": [
+        1
+      ],
+      "priority": 7
+    },
+    {
+      "id": "shayrat_depot",
+      "name": "Shayrat rear supply depot",
+      "kind": "DEPOT",
+      "side": "red",
+      "zone": "shayrat",
+      "dx": 3000,
+      "dy": -3000,
+      "types": [
+        "Ural-375",
+        "Ural-375",
+        "ATZ-10",
+        "ATZ-10"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_central_depot",
+      "name": "Central depot",
+      "kind": "DEPOT",
+      "side": "blue",
+      "zone": "central",
+      "dx": 4000,
+      "dy": 3000,
+      "types": [
+        "M 818",
+        "M 818",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_central_fuel",
+      "name": "Central fuel",
+      "kind": "FUEL",
+      "side": "blue",
+      "zone": "central",
+      "dx": 4000,
+      "dy": -3000,
+      "types": [
+        "M978 HEMTT Tanker",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_central_armor",
+      "name": "Central armor",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "central",
+      "dx": 4000,
+      "dy": 6000,
+      "types": [
+        "M-1 Abrams",
+        "M-2 Bradley",
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_central_sam",
+      "name": "Central sam",
+      "kind": "SAM",
+      "side": "blue",
+      "zone": "central",
+      "dx": 4000,
+      "dy": -6000,
+      "types": [
+        "Hawk sr",
+        "Hawk tr",
+        "Hawk cwar",
+        "Hawk ln",
+        "Hawk ln",
+        "Hawk ln"
+      ],
+      "priority": 5,
+      "radars": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "blue_negev_depot",
+      "name": "Negev depot",
+      "kind": "DEPOT",
+      "side": "blue",
+      "zone": "negev",
+      "dx": 6000,
+      "dy": 3000,
+      "types": [
+        "M 818",
+        "M 818",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_negev_fuel",
+      "name": "Negev fuel",
+      "kind": "FUEL",
+      "side": "blue",
+      "zone": "negev",
+      "dx": 6000,
+      "dy": -3000,
+      "types": [
+        "M978 HEMTT Tanker",
+        "M978 HEMTT Tanker",
+        "M 818"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_negev_armor",
+      "name": "Negev armor",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "negev",
+      "dx": 6000,
+      "dy": 6000,
+      "types": [
+        "M-1 Abrams",
+        "M-2 Bradley",
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 5
+    },
+    {
+      "id": "blue_negev_sam",
+      "name": "Negev sam",
+      "kind": "SAM",
+      "side": "blue",
+      "zone": "negev",
+      "dx": 6000,
+      "dy": -6000,
+      "types": [
+        "Hawk sr",
+        "Hawk tr",
+        "Hawk cwar",
+        "Hawk ln",
+        "Hawk ln",
+        "Hawk ln"
+      ],
+      "priority": 5,
+      "radars": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "blue_haifa_guard",
+      "name": "Haifa guard",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "haifa",
+      "dx": 3000,
+      "dy": 2000,
+      "types": [
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 3
+    },
+    {
+      "id": "blue_upper_galilee_guard",
+      "name": "Upper Galilee guard",
+      "kind": "ARMOR",
+      "side": "blue",
+      "zone": "upper_galilee",
+      "dx": 3000,
+      "dy": 2000,
+      "types": [
+        "M-2 Bradley",
+        "Vulcan"
+      ],
+      "priority": 3
+    }
+  ],
+  "airfields": [
+    {
+      "airport": "Ramat David",
+      "zone": "galilee"
+    },
+    {
+      "airport": "Megiddo",
+      "zone": "galilee"
+    },
+    {
+      "airport": "Haifa",
+      "zone": "haifa"
+    },
+    {
+      "airport": "Rosh Pina",
+      "zone": "upper_galilee"
+    },
+    {
+      "airport": "Kiryat Shmona",
+      "zone": "upper_galilee"
+    },
+    {
+      "airport": "Eyn Shemer",
+      "zone": "sharon"
+    },
+    {
+      "airport": "Herzliya",
+      "zone": "sharon"
+    },
+    {
+      "airport": "Tel Nof",
+      "zone": "central"
+    },
+    {
+      "airport": "Hatzor",
+      "zone": "central"
+    },
+    {
+      "airport": "Ben Gurion",
+      "zone": "central"
+    },
+    {
+      "airport": "Palmachim",
+      "zone": "central"
+    },
+    {
+      "airport": "Nevatim",
+      "zone": "negev"
+    },
+    {
+      "airport": "Hatzerim",
+      "zone": "negev"
+    },
+    {
+      "airport": "Teyman",
+      "zone": "negev"
+    },
+    {
+      "airport": "Kedem",
+      "zone": "negev"
+    }
   ]
 }

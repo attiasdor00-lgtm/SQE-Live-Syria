@@ -33,7 +33,7 @@ installation test is not an installation pass. Real DCS behavior remains pending
 Commit the reviewed source and retain successful live/upstream test logs. Then:
 
 ```sh
-python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.7.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
+python -m sqe.live.package --output dist/SQE-Live-Syria-v0.1.8.zip --live-log live-tests.txt --upstream-log upstream-smoke.txt --balance-report docs/LIVE_BALANCE_RESULTS.json
 ```
 
 The archive includes the install bundle, all tracked source and the logs, plus a
@@ -57,3 +57,15 @@ The baseline ref is the public 0.1.6 import and must be available in local Git
 history (use a full clone). Omit `--baseline-ref` to measure the current rules
 only. The report uses scripted travel, returns and losses, not a DCS combat model.
 See LIVE_BALANCE.md for the fixtures and limits.
+
+## Scenario profiles
+
+`python -m sqe.live.build` defaults to the Israel profile and includes a separate
+Legacy mission. `--scenario legacy` builds the previous campaign only. Existing
+regression fixtures use that legacy profile; `test_geography.py` checks the
+shipped default, ownership, multi-base logistics and both installed missions.
+
+Use `python tools/live_balance.py --scenario israel --output israel-results.json`
+for new-profile accounting fixtures. The tool defaults to legacy so historical
+0.1.7 comparisons remain reproducible. The regional profile has larger starting
+stocks and additional depots; historical balance results are not its playtest.

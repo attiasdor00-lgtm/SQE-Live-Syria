@@ -1,5 +1,15 @@
 # CHANGES.md
 
+## SQE Live 0.1.8 — Israel blue rear area
+
+The default Syria campaign starts with fifteen named Israeli airfields blue,
+eleven sectors, five support bases and regional logistics. Blue aircraft totals
+remain finite and unchanged; moving same-side advances are deduplicated across
+bases. Airfield ownership agrees between mission export and runtime. The old
+profile is installed as a separate Legacy mission, preserving existing saves.
+Includes a selective static inspection of the supplied Foothold reference; no
+Foothold code/assets are copied or published. Actual DCS acceptance is pending.
+
 ## SQE Live 0.1.7 — solo reserves and recoverable supply sites
 
 Automatic blue dispatch preserves resources for requested support and site repair.

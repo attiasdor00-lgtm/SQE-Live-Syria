@@ -1,5 +1,5 @@
 -- Pure sector schematic and local browsing state. No DCS or campaign mutations.
-local M={MAX_SECTORS=8,MAX_EDGES=16,PAGE_SIZE=4}
+local M={MAX_SECTORS=12,MAX_EDGES=24,PAGE_SIZE=4}
 local function finite(v)return type(v)=="number" and v==v and math.abs(v)<5000000 end
 function M.sector(view,id)
     for _,s in ipairs(view.front and view.front.sectors or {}) do if s.id==id then return s end end
@@ -101,6 +101,7 @@ function M.detail(view,current,V)
         "No player target selected in this sector."}
     if #M.tasks(view,s.id)==0 then lines[#lines+1]="No current task cards in this sector." end
     if #(s.base_names or {})>0 then lines[#lines+1]="Bases: "..table.concat(s.base_names,", ") end
+    if #(s.airfield_names or {})>0 then lines[#lines+1]="Airfields: "..table.concat(s.airfield_names,", ") end
     lines[#lines+1]="Enemy ground defenders: "..s.defenders
     lines[#lines+1]="Friendly / enemy columns: "..s.friendly_columns.." / "..s.enemy_columns
     for _,effect in ipairs(s.base_effects) do lines[#lines+1]=effect end
