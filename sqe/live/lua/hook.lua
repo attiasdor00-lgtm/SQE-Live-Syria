@@ -20,25 +20,44 @@ local function start()
     local selected_zone,map_ui,map_error=false,nil,false
     local row_ids={}
     local mission_started,serial,last_poll,last_attempt=0,0,-1,-10
+    local retired_session,preload_session=false,false
     local last_report,creation_error,poll_error=-1000,false,false
     local widgets={"Overview","Target","Journal","Status","Previous","Next","Accept","Brief","Mark","Abort",
         "CAP","ESCORT","SEAD","STRIKE","AWACS","TANKER","Hold","Push","Save","Close",
         "MapTab","FrontTab","ResourcesTab","SupportTab","Recommended",
         "MapCanvas","MapLegend","MapFilter","AllSectors","MapTask1","MapTask2","MapTask3","MapTask4"}
     local actions={"Accept","Brief","Mark","Abort","CAP","ESCORT","SEAD","STRIKE","AWACS","TANKER","Hold","Push","Save"}
+    local function finite(n) return type(n)=="number" and n==n and math.abs(n)<math.huge end
+    local function envelope(s)
+        return type(s)=="table" and finite(s.heartbeat) and finite(s.started_at)
+    end
+    local function current(s)
+        return in_mission and envelope(s) and s.started_at>=mission_started
+            and (type(s.session)~="string" or (s.session~=retired_session and s.session~=preload_session))
+    end
     local function connected()
-        return in_mission and latest and latest.protocol==1 and latest.running==true
-            and type(latest.session)=="string" and latest.started_at>=mission_started
+        return current(latest) and latest.protocol==1 and latest.running==true
+            and type(latest.session)=="string" and #latest.session>0
             and os.time()-latest.heartbeat>=0 and os.time()-latest.heartbeat<=10 and true or false
+    end
+    -- User callbacks must return nothing: a return value can stop DCS's hook chain.
+    local function guard(fn,label)
+        return function(...)
+            local ok,err=pcall(fn,...)
+            if not ok then
+                poll_error=label..": "..tostring(err)
+                pcall(net.log,"[SQE Live] UI callback failed: "..poll_error)
+            end
+        end
     end
     local function report(force)
         local now=os.time()
         if not force and now-last_report<5 then return end
         last_report=now
         if type(fs.report)~="function" then return end
-        local current=latest and latest.started_at>=mission_started
+        local is_current=current(latest)
         local ok,written,why=pcall(function()
-            return fs.report("ui",json.encode({protocol=1,session=current and latest.session or false,
+            return fs.report("ui",json.encode({protocol=1,session=is_current and latest.session or (not in_mission and retired_session or false),
                 heartbeat=now,in_mission=in_mission,window_created=window~=nil,
                 status_connected=connected() and true or false,visible=visible,
                 error=creation_error or poll_error or map_error}))
@@ -49,13 +68,17 @@ local function start()
     local function show(on)
         visible=on and in_mission
         if not window then return end
+        -- Release input before optional skin/widget updates can fail. Keep the
+        -- top-level window alive so its hotkey remains registered while hidden.
+        window:setHasCursor(visible)
+        if not visible then
+            for _,name in ipairs({"Overview","Target","Journal","Status"}) do
+                pcall(function()window[name]:setFocused(false)end)
+            end
+        end
         window:setVisible(true)
         window:setSkin(visible and normal_skin or hidden_skin)
-        window:setHasCursor(visible)
         for _,name in ipairs(widgets) do window[name]:setVisible(visible) end
-        if not visible then
-            for _,name in ipairs({"Overview","Target","Journal","Status"}) do window[name]:setFocused(false) end
-        end
         if render then render() end
     end
     local function selection()return {zone=selected_zone,task=selected} end
@@ -140,51 +163,54 @@ local function start()
         if not connected() then return end
         choose(M.step(latest,selection(),delta));render()
     end
+    local function click(name,fn)
+        window[name]:addMouseUpCallback(guard(fn,"Button "..name))
+    end
     local function create()
         window=DialogLoader.spawnDialogFromFile(base.."Operations.dlg")
         normal_skin=window:getSkin();hidden_skin=Skin.windowSkinChatMin()
         local sw,sh=dxgui.GetScreenSize()
         window:setBounds(math.max(0,math.floor((sw-940)/2)),math.max(0,math.floor((sh-710)/2)),940,710)
         local ok,value=pcall(function()
-            return MapUI.new(window.MapCanvas,window.Accept:getSkin(),require("Panel"),require("Button"),M,function(id)
+            return MapUI.new(window.MapCanvas,window.Accept:getSkin(),require("Panel"),require("Button"),M,guard(function(id)
                 if connected() then choose(M.select_sector(latest,id));render() end
-            end)
+            end,"Map selection"))
         end)
         map_ui=ok and value or nil;map_error=not ok and tostring(value) or false
-        window.Previous:addMouseUpCallback(function()step(-1)end)
-        window.Next:addMouseUpCallback(function()step(1)end)
-        window.Close:addMouseUpCallback(function()show(false)end)
+        click("Previous",function()step(-1)end)
+        click("Next",function()step(1)end)
+        click("Close",function()show(false)end)
         for name,value in pairs({MapTab="map",FrontTab="front",ResourcesTab="resources",SupportTab="support"}) do
-            local page=value;window[name]:addMouseUpCallback(function()tab=page;render()end)
+            local page=value;click(name,function()tab=page;render()end)
         end
-        window.Recommended:addMouseUpCallback(function()
+        click("Recommended",function()
             if connected() and latest.front and latest.front.recommended_task then
                 local t=M.task(latest,latest.front.recommended_task)
                 if t then selected=t.id;selected_zone=t.zone;tab="map";render() end
             end
         end)
-        window.AllSectors:addMouseUpCallback(function()
+        click("AllSectors",function()
             if connected() then selected_zone=false;render() end
         end)
         for i=1,M.PAGE_SIZE do
-            local row=i;window["MapTask"..i]:addMouseUpCallback(function()
+            local row=i;click("MapTask"..i,function()
                 if connected() then choose(M.select_task(latest,selection(),row_ids[row]));render() end
             end)
         end
         for name,action in pairs({Accept="accept",Brief="brief",Mark="mark",Abort="abort",Hold="hold",Push="push",Save="save"}) do
-            local a=action;window[name]:addMouseUpCallback(function()send(a)end)
+            local a=action;click(name,function()send(a)end)
         end
         for _,role in ipairs({"CAP","ESCORT","SEAD","STRIKE","AWACS","TANKER"}) do
-            local r=role;window[role]:addMouseUpCallback(function()send("support",r)end)
+            local r=role;click(role,function()send("support",r)end)
         end
-        window:addHotKeyCallback("Ctrl+Shift+q",function()show(not visible)end)
+        window:addHotKeyCallback("Ctrl+Shift+q",guard(function()show(not visible)end,"Toggle"))
         show(false)
     end
     local function poll()
         local raw=fs.status()
         if raw then
             local ok,s=pcall(json.decode,raw)
-            if ok and type(s)=="table" and type(s.heartbeat)=="number" and type(s.started_at)=="number" then
+            if ok and current(s) then
                 if not latest or s.session~=latest.session then
                     selected_zone=false;selected=(s.tasks or {})[1] and s.tasks[1].id or false
                     if not pending and s.running==true then message="Select a sector or target; Accept assigns it." end
@@ -205,8 +231,19 @@ local function start()
     end
     local handler={}
     function handler.onMissionLoadBegin()
+        -- A fresh timestamp alone cannot distinguish two loads in one second.
+        -- Remember both the last observed session and the pre-load disk session.
+        retired_session=latest and latest.session or retired_session
+        preload_session=false
+        local read,raw=pcall(fs.status)
+        if read and raw then
+            local ok,s=pcall(json.decode,raw)
+            if ok and envelope(s) and type(s.session)=="string" then preload_session=s.session end
+        end
         message="Waiting for SQE Live..."
-        in_mission=false;mission_started=os.time();latest=nil;pending=nil;selected=false;selected_zone=false;tab="map";show(false)
+        in_mission=false;mission_started=os.time();latest=nil;pending=nil
+        selected=false;selected_zone=false;tab="map"
+        guard(show,"Load hide")(false)
     end
     function handler.onMissionLoadEnd()
         in_mission=true
@@ -214,7 +251,9 @@ local function start()
         if mission_started==0 then mission_started=os.time() end
     end
     function handler.onSimulationStop()
-        in_mission=false;pending=nil;show(false);report(true);latest=nil
+        retired_session=latest and latest.session or retired_session
+        in_mission=false;pending=nil;latest=nil
+        guard(show,"Stop hide")(false);report(true)
     end
     function handler.onSimulationFrame()
         local now=os.clock()
@@ -235,6 +274,7 @@ local function start()
         end
         report(false)
     end
+    for name,callback in pairs(handler) do handler[name]=guard(callback,name) end
     DCS.setUserCallbacks(handler)
     net.log("[SQE Live] Operations hook loaded; Ctrl+Shift+Q")
 end

@@ -1,11 +1,11 @@
-# SQE Live 0.1.9 — validation boundary
+# SQE Live 0.1.10 — validation boundary
 
 Release date: 2026-11-05. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **158 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **167 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,10 +15,15 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- Nine UI/startup boundary cases were added: cold/same-second stale status,
+  long-load session exclusion, stop/load widget failures, callback/log/report
+  exceptions, non-finite timestamps and execution of the installed storage bridge
+  after standard API sanitization. The native DCS environment initializer is
+  supplied as a contract, not executed. See LIVE_UI_STORAGE_AUDIT.md.
 - Seven runway-event regression cases cover both event families, duplicate
   notifications, touchdown versus stable ground roll, touch-and-go, stale landed
   wingmen, wrong/captured airfields, absent runway evidence and invalid velocity.
-  See LIVE_INTEGRATION_AUDIT.md for primary sources, fixes and remaining I02 work.
+  See LIVE_INTEGRATION_AUDIT.md for primary sources, fixes; the separate I02 audit is in LIVE_UI_STORAGE_AUDIT.md.
 - The shipped Israel profile is checked separately from legacy regressions:
   fifteen field IDs and BLUE mission warehouse coalitions agree with runtime
   ownership; loss/recapture affects the correct fields; regional bases/supply
@@ -134,7 +139,7 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   are checked.
 
 Final test output and the paired solo accounting report are included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.9 and passed.
+The original SQE headless smoke suite was rerun separately for 0.1.10 and passed.
 
 ## Required real-game validation
 

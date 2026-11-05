@@ -67,10 +67,11 @@ The test double provides no independent evidence about real event timing.
 
 ## Remaining work
 
-The initial I01 aircraft/task/event pass is complete. I02 must review native GUI
-lifecycle/focus and the startup/storage boundary independently; a Foothold mission
-cannot validate our custom window. The narrow Scratchpad comparison is not a
-complete UI audit. Israel-profile balance and L12 long-session checks follow.
+The initial I01 aircraft/task/event pass is complete. The later I02 source/
+contract audit is recorded in LIVE_UI_STORAGE_AUDIT.md; a Foothold mission cannot
+validate our custom window. Neither the narrow Scratchpad comparison nor the
+I02 contract fixtures establish native rendering/focus. Israel-profile balance
+and L12 long-session checks follow.
 DCS execution remains necessary to establish actual task acceptance, aircraft
 flight/landing, radio/tanker behavior, rendering and performance. No precise
 probability of trouble-free operation follows from these static checks.

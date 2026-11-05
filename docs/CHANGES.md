@@ -1,5 +1,17 @@
 # CHANGES.md
 
+## SQE Live 0.1.10 — native window session and shutdown boundaries
+
+The UI excludes the observed pre-load session and last observed ended session,
+including same-second transitions, instead of relying solely on wall timestamps.
+Old disk status is not accepted while loading or after stop. Lifecycle state is
+cleared before widget updates; hiding releases cursor/focus first. DCS, button,
+map-selection and toggle callbacks contain errors and return no values.
+Nine added test cases cover lifecycle failures and execution of the installed bridge
+through the standard sanitization boundary. Five initial UI regressions failed
+against 0.1.9 and pass after correction. Native rendering and actual DCS startup
+remain unverified; see LIVE_UI_STORAGE_AUDIT.md.
+
 ## SQE Live 0.1.9 — runway event integration
 
 Handles both legacy and available runtime runway takeoff/touch events. Runway

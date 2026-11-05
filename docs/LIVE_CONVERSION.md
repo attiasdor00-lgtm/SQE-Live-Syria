@@ -35,14 +35,22 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.9
+## Continuation after 0.1.10
 
-### Next task — I02: native window, startup and storage boundary
+### Next task — G02: Israel-profile solo attrition balance
 
-Status: READY. Review mission transitions, focus and native widget lifecycle,
-then hook/storage initialization against the DCS environments. The narrow
-Scratchpad API-pattern comparison is insufficient to establish rendering.
-Israel-profile balance and L12 long-session/product checks follow.
+Status: READY. Measure support availability across five bases with aircraft
+losses, a captured base and interrupted corridors. Compare existing rules and
+fix reproducible recovery gaps without manufacturing stock. L12 follows.
+
+### Completed task — I02: native window, startup and storage contract audit
+
+Observed pre-load/ended sessions are excluded from the new UI connection;
+state cleanup precedes fallible widget updates. Callbacks contain exceptions
+and return no values. Nine new cases cover lifecycle failures and execution of
+the installed bridge across API sanitization. See LIVE_UI_STORAGE_AUDIT.md for
+sources and limitations. Actual DCS rendering/startup/Windows acceptance remains
+pending; this does not declare the integration tested in game.
 
 ### Completed task — I01: aircraft/task/event integration pass
 

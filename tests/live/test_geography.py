@@ -107,7 +107,7 @@ class GeographyCase(unittest.TestCase):
             local detail=mods.map.detail(view,{zone='central',task=false},mods.view)
             assert(detail:find('Palmachim',1,true) and detail:find('Ben Gurion',1,true))
             assert(mods.view.front(view):find('Kiryat Shmona',1,true))
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             assert(ui.window and mods.json.encode(c:snapshot())==before)
         ''')
 

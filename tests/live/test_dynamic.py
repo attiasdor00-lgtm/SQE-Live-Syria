@@ -55,7 +55,7 @@ class DynamicCase(unittest.TestCase):
         self.h.g.ui = self.h.lua.execute((Path(__file__).parent / "ui_mock.lua").read_text())
         self.h.lua.execute((LUA / "hook.lua").read_text())
         self.h.run('''
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             ui.hotkeys['Ctrl+Shift+q']()
         ''')
 

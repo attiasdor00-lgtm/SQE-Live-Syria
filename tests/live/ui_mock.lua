@@ -41,6 +41,14 @@ package.preload.DialogLoader=function()return {
         return U.window
     end
 }end
+-- The runtime fixture already exists; expose its status only after LoadBegin,
+-- matching a newly started mission rather than a previous mission's disk file.
+function U.load_mission()
+    local status=fs.status_text;fs.status_text=nil
+    U.handler.onMissionLoadBegin()
+    fs.status_text=status
+    U.handler.onMissionLoadEnd();U.handler.onSimulationFrame()
+end
 function U.sector(caption)
     for _,w in ipairs(U.window.MapCanvas.children) do
         if w.kind=="Button" and w.visible and w.text:find(caption,1,true) then return w end

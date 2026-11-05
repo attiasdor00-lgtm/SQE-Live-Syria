@@ -1,4 +1,4 @@
-# SQE Live 0.1.9 — Syria
+# SQE Live 0.1.10 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -401,3 +401,12 @@ Based on SQE commit 807643b33fa88f19329177c6c420a5f8feb942e8 (0.41.135).
 MIT license; original SQE, rxi/json.lua and dcs-scratchpad notices are included.
 This project is not affiliated with Eagle Dynamics or presented as an upstream
 SQE release.
+
+## Mission transitions and temporary window faults
+
+A new load waits for a new session instead of reusing the observed prior status.
+Selection and pending commands clear at the load boundary. Stop clears state
+before widget updates, and hiding attempts cursor/focus release before skin and
+visibility calls. Retry Ctrl+Shift+Q after a temporary widget failure; F10 uses
+the campaign independently. These are contract-tested behaviors; native DCS
+focus/rendering and actual-engine transitions remain unverified.

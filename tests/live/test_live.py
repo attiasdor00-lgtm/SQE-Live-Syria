@@ -464,7 +464,7 @@ class ReleaseCase(unittest.TestCase):
         self.h.lua.execute((LUA/"hook.lua").read_text())
         self.h.run("""
             assert(ui.handler,ui.last_log)
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             ui.hotkeys["Ctrl+Shift+q"]()
             assert(ui.window.cursor and ui.window.Accept.enabled)
             ui.window.Accept.click()
@@ -638,7 +638,7 @@ class ReleaseCase(unittest.TestCase):
         """)
         self.h.lua.execute((LUA/"hook.lua").read_text())
         self.h.run("""
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             rt.diagnostics:inspect(rt)
             assert(rt.diagnostics.checks.ui_hook.status=='FAIL')
             assert(not mods.json.decode(fs.reports.ui).window_created)
@@ -821,7 +821,7 @@ class ReleaseCase(unittest.TestCase):
         self.h.g.ui=self.h.lua.execute((Path(__file__).parent/"ui_mock.lua").read_text())
         self.h.lua.execute((LUA/"hook.lua").read_text())
         self.h.run("""
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             assert(ui.window.Overview.text:find('FRONT PLAN',1,true))
             ui.window.Next.click();ui.window.Recommended.click()
             assert(ui.window.Target.text:find('Southern armoured',1,true))
@@ -987,6 +987,51 @@ class InstallerCase(unittest.TestCase):
         else:
             self.assertNotEqual(0,p.returncode)
         return p
+
+    def test_installed_bootstrap_executes_before_standard_sanitization(self):
+        self.install()
+        lua = LuaRuntime(unpack_returned_tuples=True)
+        g = lua.globals()
+        def mkdir(path):
+            Path(path).mkdir(exist_ok=True)
+            return True
+        def attributes(path):
+            p=Path(path)
+            if not p.exists():
+                return None
+            return lua.table_from({"mode":"directory" if p.is_dir() else "file", "size":p.stat().st_size})
+        g.py_mkdir=mkdir;g.py_attributes=attributes
+        g.py_names=lambda path: lua.table_from(os.listdir(path))
+        g.profile_root=self.profile.as_posix()+"/"
+        lua.execute("""
+            lfs={mkdir=py_mkdir,attributes=py_attributes,writedir=function()return profile_root end,
+                dir=function(path)
+                    local names=py_names(path);local i=0
+                    return function()i=i+1;return names[i]end
+                end}
+            local native_dofile=dofile
+            dofile=function(path)
+                -- DCS's native environment initialization is unavailable here.
+                -- Supply its lfs contract, then execute every installed SQE file.
+                if path=='Scripts/ScriptingSystem.lua' then return end
+                return native_dofile(path)
+            end
+        """)
+        lua.execute(self.script.read_text()+"\nrequire=nil;package=nil;loadlib=nil")
+        lua.execute("""
+            assert(io==nil and os==nil and lfs==nil and require==nil and package==nil)
+            assert(SQE_LIVE_STORAGE and SQE_LIVE_STORAGE.session())
+            local f=SQE_LIVE_STORAGE
+            assert(f.save('bootstrap','first') and f.save('bootstrap','second'))
+            assert(f.load('bootstrap')=='second' and f.load('bootstrap',true)=='first')
+            assert(f.publish('status') and f.status()=='status')
+            assert(f.enqueue('command','{}') and #f.commands()==1)
+            assert(f.ack('command') and #f.commands()==0)
+            assert(f.report('runtime','boot-ok') and f.read_report('runtime')=='boot-ok')
+            assert(io==nil and os==nil and lfs==nil and require==nil and package==nil)
+        """)
+        self.assertEqual('second',(self.profile/'SQE-Live/campaigns/bootstrap.json').read_text())
+        self.assertEqual('first',(self.profile/'SQE-Live/campaigns/bootstrap.json.prev').read_text())
 
     def test_install_idempotent_uninstall_preserves_other_edits_and_saves(self):
         self.install()

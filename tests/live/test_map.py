@@ -32,7 +32,7 @@ class MapCase(unittest.TestCase):
         self.h.lua.execute((LUA / "hook.lua").read_text())
         self.h.run('''
             assert(ui.handler,ui.last_log)
-            ui.handler.onMissionLoadBegin();ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.load_mission()
             ui.hotkeys['Ctrl+Shift+q']()
         ''')
 
