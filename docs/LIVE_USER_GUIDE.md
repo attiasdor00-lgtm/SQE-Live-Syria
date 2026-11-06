@@ -1,4 +1,4 @@
-# SQE Live 0.1.12 — Syria
+# SQE Live 0.1.13 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -427,3 +427,14 @@ on the next observation, even if the object still exists. A surviving wingman
 is preserved; loss does not return stock. Cleanup failure stops campaign updates
 and retains the last checkpoint. This is contract-tested policy; actual DCS
 object/event ordering and full-session behavior remain unverified.
+
+## Updating after SAVE ERROR: nil (0.1.13 candidate)
+
+Close DCS, extract the complete archive and rerun Install.cmd for the same
+installation/profile. The bridge is captured at startup, so the running session
+cannot pick up this update. Existing checkpoints are preserved; progress from
+a session whose save failed is not confirmed persisted. On restart, check for
+LIVE and a Saved acknowledgement. Temporary-file byte verification precedes
+checkpoint replacement; failures now include their operation stage. An updated
+native run is still needed. Sector geometry remains in Operations; F10 has
+requested target marks, not a sector polygon overlay.

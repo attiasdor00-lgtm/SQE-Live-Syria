@@ -1,11 +1,11 @@
-# SQE Live 0.1.12 — validation boundary
+# SQE Live 0.1.13 — validation boundary
 
 Release date: 2026-11-06. Target: local Windows DCS, Syria, F-16C.
 Upstream base: 807643b33fa88f19329177c6c420a5f8feb942e8 (SQE 0.41.135).
 
 ## Automated checks
 
-Result: **186 live/installation tests passed**, plus all **95 original SQE smoke
+Result: **192 live/installation tests passed**, plus all **95 original SQE smoke
 sections passed**. Python 3.12.14, Lupa 2.8 / Lua 5.1; pydcs pinned by requirements.
 The ZIP and every install-file checksum were verified after packaging.
 
@@ -15,6 +15,13 @@ callbacks, assignments and duplicate/stale commands, force and inventory
 limits, deaths, landing/recovery, logistics/capture, persistence and installation.
 The double deliberately has no flight model, ballistics, AI or terrain data.
 
+- Six IO compatibility/integrity cases cover nil/no-detail returns, partial
+  writes, explicit failures and silent existing-file read failure. An actual-file
+  compiled-runtime/fake-UI pipeline reaches LIVE and Saved under the synthetic
+  return convention. Native 0.1.12 logs show a real shared writer failure, but do
+  not identify its exact native cause. The 0.1.13 candidate awaits an updated DCS
+  run; see LIVE_NATIVE_IO.md. Historical L12 reports remain 0.1.12 memory-bridge
+  measurements and exclude the new real-file readback cost.
 - Nine runtime-retention/recovery cases cover recorded-loss cleanup, failed
   retirement, live wingmen, bounded one-hour callbacks/queues, twenty Israel
   resumes and a 600-command actual-file backlog/recovery fixture. A separate
@@ -150,7 +157,7 @@ The double deliberately has no flight model, ballistics, AI or terrain data.
   are checked.
 
 Final test output and the current Israel paired accounting report are included in the release's Validation folder.
-The original SQE headless smoke suite was rerun separately for 0.1.12 and passed.
+The original SQE headless smoke suite was rerun separately for 0.1.13 and passed.
 
 ## Required real-game validation
 

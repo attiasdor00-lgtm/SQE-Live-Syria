@@ -1,5 +1,19 @@
 # CHANGES.md
 
+## SQE Live 0.1.13 — verified temporary writes and actionable IO errors
+
+The first supplied native-run diagnostics show checkpoint SAVE ERROR: nil,
+failed status publication and missing runtime/UI reports. The bridge loaded;
+the exact failing native IO operation/return convention is not established.
+Temporary writes now close through protected calls and require byte-for-byte
+readback before rotating a checkpoint or acknowledging any channel write.
+Nil/no-detail write/close returns are accepted only with verified bytes; explicit
+errors/false returns, exceptions and partial output still fail. Open/read/write/
+close failures report a nonempty stage-specific reason. Six added cases include
+an end-to-end actual-file runtime/UI save flow with synthetic nil-return IO.
+This is a candidate fix pending an updated DCS run, not proof of root cause or
+completion of native acceptance. No user diagnostic archive/paths are published.
+
 ## SQE Live 0.1.12 — recorded-loss cleanup and runtime retention checks
 
 Aircraft recorded lost through ejection/unit-loss events are retired on the next

@@ -35,15 +35,18 @@ Real-game acceptance is deferred and does not block further implementation.
 The user is not assigned a manual test task. Continue one development task at a
 time, with automated checks, and keep unobserved DCS behavior explicitly pending.
 
-## Continuation after 0.1.12
+## Continuation after 0.1.13
 
-### Next task — V01: actual DCS acceptance
+### Active task — V01: native IO failure, then actual DCS acceptance
 
-Status: PENDING ENGINE OBSERVATION. Observe mission startup, native UI/focus,
-loss/destruction ordering, AI support/landing, roads, save/exit/reload and frame
-time on target hardware. No manual task is assigned to the user. Specific code
-fixes may continue, but cannot be called actual-engine acceptance. This remains
-a development candidate, not 1.0 or a game-validated beta.
+Status: IN PROGRESS / CANDIDATE AWAITS NATIVE RETEST. The user reports the window
+and F10 menus open; supplied 0.1.12 logs confirm shared checkpoint/status/report
+write failures with missing detail. 0.1.13 verifies temporary file bytes before
+promotion and reports IO stages. Six synthetic IO cases include the actual-file
+runtime/UI command pipeline. The exact native cause and success after update
+remain unverified. See LIVE_NATIVE_IO.md; raw user logs/paths are not published.
+Engine startup, rendering/focus, flight/landing, roads and full persistence/frame
+time acceptance are still incomplete. No 1.0/game-validated beta claim is made.
 
 ### Completed task — L12: build-environment retention and recovery checks
 

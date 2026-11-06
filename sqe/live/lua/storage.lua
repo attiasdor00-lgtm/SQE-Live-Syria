@@ -17,17 +17,41 @@ function FS.new(root)
         local a=attributes(path)
         if not a then return nil,"missing" end
         if a.mode~="file" or a.size>limit then return nil,"file too large or not regular" end
-        local f,err=open(path,"rb");if not f then return nil,err end
-        local s=f:read(limit+1);f:close()
-        if not s or #s>limit then return nil,"read limit exceeded" end
-        return s
+        local opened,f,err=pcall(open,path,"rb")
+        if not opened or not f then return nil,"Read open failed: "..tostring(opened and err or f or "no IO error detail") end
+        local got,value,rerr=pcall(f.read,f,limit+1)
+        local closed,c,cerr=pcall(f.close,f)
+        if not got then return nil,"Read failed: "..tostring(value) end
+        if not closed or c==false or (c==nil and cerr~=nil) then
+            return nil,"Read close failed: "..tostring(closed and cerr or c or "no IO error detail")
+        end
+        if value==nil and rerr==nil and a.size==0 then value="" end
+        if type(value)~="string" or #value>limit then return nil,"Read failed or limit exceeded: "..tostring(rerr or "no IO error detail") end
+        return value
     end
     local function write(path,text,limit,backup,rotation)
         if type(text)~="string" or #text>limit then return false,"write limit exceeded" end
         local tmp=path..".tmp"
-        local f,err=open(tmp,"wb");if not f then return false,err end
-        local written,werr=f:write(text);local closed,cerr=f:close()
-        if not written or not closed then remove(tmp);return false,werr or cerr end
+        local opened,f,err=pcall(open,tmp,"wb")
+        if not opened or not f then return false,"Temporary open failed: "..tostring(opened and err or f or "no IO error detail") end
+        local wrote,w,werr=pcall(f.write,f,text)
+        -- Always attempt close, including after an exception in write.
+        local closed,c,cerr=pcall(f.close,f)
+        if not wrote or w==false or (w==nil and werr~=nil) then
+            remove(tmp);return false,"Temporary write failed: "..tostring(wrote and werr or w or "no IO error detail")
+        end
+        if not closed or c==false or (c==nil and cerr~=nil) then
+            remove(tmp);return false,"Temporary close failed: "..tostring(closed and cerr or c or "no IO error detail")
+        end
+        -- A nil/no-detail return is ambiguous in an embedded IO implementation.
+        -- Never turn it into an acknowledgement without byte-for-byte evidence.
+        -- Verify every temporary write, including conventional success returns,
+        -- before touching the last valid primary/backup checkpoint.
+        local checked,actual,why=pcall(read,tmp,limit)
+        if not checked or actual~=text then
+            remove(tmp)
+            return false,"Temporary verification failed: "..tostring(not checked and actual or why or "content mismatch")
+        end
         local had=attributes(path)~=nil
         local previous=path..(rotation or ".prev")
         if had then

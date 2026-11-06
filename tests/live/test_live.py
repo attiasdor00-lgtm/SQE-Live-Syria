@@ -927,6 +927,115 @@ class StorageCase(unittest.TestCase):
         """)
         self.assertFalse(list(folder.rglob('*.tmp')))
 
+    def compat_io(self):
+        self.lua.execute("""
+            local native_open=io.open
+            io.open=function(path,mode)
+                if (mode=='wb' and deny_open) or (mode=='rb' and deny_read) then return nil end
+                local f,why=native_open(path,mode)
+                if not f or mode~='wb' then return f,why end
+                return {
+                    write=function(_,text)
+                        if throw_write then error('injected write exception') end
+                        if explicit_write_error then return nil,'injected disk full' end
+                        f:write(truncate_write and text:sub(1,1) or text)
+                        if not nil_write then return true end
+                    end,
+                    close=function()
+                        local ok,err=f:close();was_closed=true
+                        if throw_close then error('injected close exception') end
+                        if false_close then return false end
+                        if not nil_close then return ok,err end
+                    end
+                }
+            end
+        """)
+        self.lua.globals().factory=self.lua.execute((LUA/'storage.lua').read_text())
+        self.lua.execute('fs=factory.new(root)')
+
+    def test_nil_write_and_close_require_exact_readback_before_success(self):
+        self.compat_io()
+        self.lua.execute("""
+            nil_write=true;nil_close=true
+            io=nil;os=nil;lfs=nil;require=nil;package=nil
+            assert(fs.save('compat','one'))
+            assert(fs.save('compat','two'))
+            assert(fs.load('compat')=='two' and fs.load('compat',true)=='one')
+            assert(fs.publish('live') and fs.status()=='live')
+            assert(fs.report('ui','ok') and fs.read_report('ui')=='ok')
+            assert(fs.enqueue('command','{}') and fs.commands()[1].text=='{}')
+        """)
+
+    def test_silent_partial_write_does_not_rotate_valid_checkpoints(self):
+        self.compat_io()
+        self.lua.execute("""
+            assert(fs.save('compat','first') and fs.save('compat','second'))
+            nil_write=true;nil_close=true;truncate_write=true
+            local ok,why=fs.save('compat','a new checkpoint')
+            assert(not ok and type(why)=='string' and #why>0)
+            assert(fs.load('compat')=='second' and fs.load('compat',true)=='first')
+            assert(was_closed)
+        """)
+        self.assertFalse(list(Path(self.temp.name).rglob('*.tmp')))
+
+    def test_explicit_io_failures_are_not_treated_as_nil_compatibility(self):
+        self.compat_io()
+        self.lua.execute("""
+            assert(fs.save('compat','first') and fs.save('compat','second'))
+            for _,flag in ipairs({'explicit_write_error','false_close','throw_write','throw_close','deny_open'})do
+                _G[flag]=true
+                local ok,why=fs.save('compat','replacement')
+                _G[flag]=nil
+                assert(not ok and type(why)=='string' and #why>0,flag)
+                assert(fs.load('compat')=='second' and fs.load('compat',true)=='first')
+            end
+            assert(was_closed)
+        """)
+        self.assertFalse(list(Path(self.temp.name).rglob('*.tmp')))
+
+    def test_silent_read_open_failure_reports_an_error_for_existing_file(self):
+        self.compat_io()
+        self.lua.execute("""
+            assert(fs.save('compat','valid'))
+            deny_read=true
+            local value,why=fs.load('compat')
+            assert(value==nil and type(why)=='string' and #why>0 and why~='missing')
+        """)
+
+    def test_nil_io_contract_connects_actual_bridge_runtime_and_ui_save(self):
+        self.compat_io()
+        bundle=Path(self.temp.name)/'bundle'
+        with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):
+            build_scenario(bundle)
+        config=json.loads((bundle/'content.json').read_text())
+        g=self.lua.globals();g.cfg=self.lua.eval(lua_literal(config));g.lua_path=str(LUA)
+        g.mock=self.lua.execute((Path(__file__).parent/'dcs_mock.lua').read_text())
+        self.lua.execute('mock.add_player(cfg);nil_write=true;nil_close=true;SQE_LIVE_STORAGE=fs')
+        g.ui=self.lua.execute((Path(__file__).parent/'ui_mock.lua').read_text())
+        self.lua.execute((LUA/'hook.lua').read_text())
+        self.lua.execute('ui.handler.onMissionLoadBegin()')
+        self.lua.execute(mission_script(config))
+        self.lua.execute("""
+            assert(SQE_LIVE_RUNTIME and not SQE_LIVE_RUNTIME.failed)
+            ui.handler.onMissionLoadEnd();ui.handler.onSimulationFrame()
+            ui.hotkeys['Ctrl+Shift+q']()
+            assert(ui.window.Save.enabled and ui.window.Status.text:find('LIVE',1,true))
+            ui.window.Save.click();mock.advance(2);ui.handler.onSimulationFrame()
+            assert(ui.window.Status.text:find('Saved',1,true))
+            assert(fs.read_report('runtime') and fs.read_report('ui'))
+            assert(fs.load(cfg.id) and #fs.commands()==0)
+        """)
+
+    def test_ordinary_and_mixed_io_success_conventions_work(self):
+        self.compat_io()
+        self.lua.execute("""
+            for _,flag in ipairs({'nil_write','nil_close'})do
+                _G[flag]=true
+                assert(fs.save('compat',flag));assert(fs.load('compat')==flag)
+                _G[flag]=nil
+            end
+        """)
+
     def test_path_and_payload_limits(self):
         self.lua.execute("""
             assert(not fs.save("../outside","x"))
