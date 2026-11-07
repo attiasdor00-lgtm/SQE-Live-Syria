@@ -39,14 +39,10 @@ time, with automated checks, and keep unobserved DCS behavior explicitly pending
 
 ### Active task — V01: native IO failure, then actual DCS acceptance
 
-Status: IN PROGRESS / CANDIDATE AWAITS NATIVE RETEST. The user reports the window
-and F10 menus open; supplied 0.1.12 logs confirm shared checkpoint/status/report
-write failures with missing detail. 0.1.13 verifies temporary file bytes before
-promotion and reports IO stages. Six synthetic IO cases include the actual-file
-runtime/UI command pipeline. The exact native cause and success after update
-remain unverified. See LIVE_NATIVE_IO.md; raw user logs/paths are not published.
-Engine startup, rendering/focus, flight/landing, roads and full persistence/frame
-time acceptance are still incomplete. No 1.0/game-validated beta claim is made.
+The user reported LIVE in Operations and successful saving on 0.1.13 on
+2026-11-07. V01 now moves to checkpoint loading after exiting and reopening
+the mission. Native flight, landing, roads and frame-time checks remain open.
+See LIVE_NATIVE_IO.md for the earlier 0.1.12 write failure and the IO fix.
 
 ### Completed task — L12: build-environment retention and recovery checks
 

@@ -60,11 +60,10 @@ Existing checkpoint files are preserved by installation. The failed native save
 was not acknowledged; current-session progress may be absent on exit. No rescue
 or hot-reload of that volatile session is claimed.
 
-After the update, Operations should receive current state and a Save command
-should acknowledge Saved. If the write is genuinely blocked or another IO
-operation fails, the new stage-specific error should replace the unhelpful nil;
-Collect-Diagnostics.cmd remains the collection route. These expected outcomes
-still require an updated native observation. V01 remains IN PROGRESS.
+On 2026-11-07 the user reported LIVE in Operations and successful saving in
+0.1.13. The next V01 check is to exit, reopen the same mission, and verify that
+campaign state loads from the saved checkpoint. The exact native IO operation
+behind the 0.1.12 failure remains undetermined.
 
 Sector geometry is currently in the Operations schematic. Native DCS F10 supports
 requested target marks; sector polygons are not implemented by this fix.
