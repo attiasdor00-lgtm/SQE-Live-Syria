@@ -218,6 +218,8 @@ def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True
                          (ROOT / "docs" / "LIVE_VALIDATION.md", "VALIDATION.md")):
         shutil.copy2(source, output / name)
     notices = output / "licenses"; notices.mkdir(exist_ok=True)
+    manual_images = Path("images") / "northern-watch"
+    shutil.copytree(ROOT / "docs" / manual_images, output / manual_images, dirs_exist_ok=True)
     shutil.copy2(HERE / "lua" / "JSON_LICENSE.txt", notices / "json-MIT.txt")
     shutil.copy2(HERE / "lua" / "SCRATCHPAD_LICENSE.txt", notices / "scratchpad-MIT.txt")
     (output / "content.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
