@@ -99,6 +99,7 @@ class DynamicCase(unittest.TestCase):
         self.ui()
         self.h.run('''
             local before=mods.json.encode(c:snapshot())
+            ui.window.MapTab.click()
             ui.sector('Golan').click();ui.window.MapTask1.click()
             assert(ui.window.Target.text:find('Assault column '..ship.id,1,true))
             assert(next(fs.queue)==nil and mods.json.encode(c:snapshot())==before)
@@ -291,6 +292,7 @@ class DynamicCase(unittest.TestCase):
         self.convoy("SUPPLY")
         self.ui()
         self.h.run('''
+            ui.window.MapTab.click()
             ui.sector('Damascus').click()
             for i=1,20 do
                 if ui.window.Target.text:find('Supply convoy '..ship.id,1,true) then break end

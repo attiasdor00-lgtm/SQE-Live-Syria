@@ -48,7 +48,7 @@ class GeographyCase(unittest.TestCase):
         for b in bases:
             for ac, n in b["aircraft"].items(): totals[ac] = totals.get(ac, 0) + n
         self.assertEqual({"F-16C":14,"F-15C":8,"E-3A":2,"KC-135":2}, totals)
-        self.assertEqual(113, self.h.run("return c:active_count()"))
+        self.assertEqual(114, self.h.run("return c:active_count()"))
         self.assertEqual(27, len(cfg["targets"]))
 
     def test_miz_warehouses_and_runtime_agree_on_blue_airfield_ownership(self):
@@ -60,6 +60,15 @@ class GeographyCase(unittest.TestCase):
         for f in self.config["airfields"]:
             self.assertEqual("BLUE", warehouses["airports"][f["airport_id"]]["coalition"], f["airport"])
         self.assertEqual("Syria", mission["theatre"])
+        flights = [group for country in mission["coalition"]["blue"]["country"].values()
+                   for group in country.get("plane", {}).get("group", {}).values()]
+        flight = next(group for group in flights if group["name"] == "Viper Live")
+        lead, wingman = flight["units"][1], flight["units"][2]
+        self.assertEqual((self.config["player_unit"], "Player"), (lead["name"], lead["skill"]))
+        self.assertEqual((self.config["wingman_unit"], "High"), (wingman["name"], wingman["skill"]))
+        self.assertNotEqual(lead["parking"], wingman["parking"])
+        self.assertEqual(lead["payload"], wingman["payload"])
+        self.assertEqual(("Viper11", "Viper12"), (lead["callsign"]["name"], wingman["callsign"]["name"]))
         self.h.run('''
             for _,f in ipairs(cfg.airfields)do
                 assert(mock.bases[f.airport].side==2 and mock.bases[f.airport].auto==false)
@@ -109,6 +118,52 @@ class GeographyCase(unittest.TestCase):
             assert(mods.view.front(view):find('Kiryat Shmona',1,true))
             ui.load_mission()
             assert(ui.window and mods.json.encode(c:snapshot())==before)
+            ui.hotkeys['Ctrl+Shift+q']()
+            assert(ui.window.Overview.text:find('Operation Northern Watch',1,true))
+            assert(not ui.window.Accept.visible and not ui.window.CAP.visible)
+            ui.window.Recommended.click()
+            assert(ui.window.Accept.visible and ui.window.Target.text:find('CAMPAIGN EFFECT',1,true))
+            assert(not c.state.task and next(fs.queue)==nil)
+        ''')
+
+    def test_native_f10_drawings_follow_campaign_and_keep_task_markers(self):
+        self.h.run('''
+            local function field(name)
+                for _,d in pairs(mock.drawings) do
+                    assert(d.side==2)
+                    if d.kind=='text' and d.args[6]==name then return d.args[2] end
+                end
+            end
+            local function lines()
+                local n=0
+                for _,d in pairs(mock.drawings) do if d.kind=='line' then n=n+1 end end
+                return n
+            end
+            local before=mock.draw_calls
+            assert(before>0 and lines()>0 and field('[BASE] Tel Nof')[3]==1)
+            assert(a:campaign_map(mods.json.encode) and mock.draw_calls==before)
+            trigger.action.markToCoalition(870001,'Player task',{x=0,y=0,z=0},2,true)
+            c.state.zones.central.owner='red'
+            assert(a:campaign_map(mods.json.encode) and mock.draw_calls>before)
+            assert(field('[BASE] Tel Nof')[1]==1 and mock.marks[870001])
+            for _,t in ipairs(cfg.targets) do
+                if t.kind=='DEPOT' then c.state.targets[t.id].alive={} end
+            end
+            assert(a:campaign_map(mods.json.encode) and lines()==0)
+        ''')
+
+    def test_ai_operations_continue_without_an_assignment_if_map_api_fails(self):
+        self.h.run('''
+            local draw=trigger.action.circleToAll
+            trigger.action.circleToAll=function()error('injected map failure')end
+            c.state.zones.central.owner='red'
+            mock.advance(30)
+            assert(not rt.failed and not c.state.task)
+            assert(rt.diagnostics.checks.f10_campaign_map.status=='FAIL')
+            trigger.action.circleToAll=draw
+            mock.advance(300)
+            assert(rt.diagnostics.checks.f10_campaign_map.status=='PASS')
+            assert(not c.state.task and next(c.state.flights))
         ''')
 
     def test_new_campaign_does_not_consume_or_reset_legacy_checkpoint(self):

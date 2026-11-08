@@ -52,10 +52,18 @@ land={getHeight=function()return 100 end,SurfaceType={RUNWAY=5},getSurfaceType=f
         return {{x=x,y=y},{x=(x+tx)/2,y=(y+ty)/2},{x=tx,y=ty}}
     end}
 coord={LOtoLL=function(p)return 33+p.x/111000,36+p.z/100000 end}
+M.drawings={};M.draw_calls=0
+local function draw(kind,side,id,...)
+    M.draw_calls=M.draw_calls+1
+    M.drawings[id]={kind=kind,side=side,args={...}}
+end
 trigger={action={
     outText=function(t,seconds)M.messages[#M.messages+1]=t end,
     markToCoalition=function(id,text,p,side,readonly)M.marks[id]={text=text,point=p}end,
-    removeMark=function(id)M.marks[id]=nil end
+    circleToAll=function(...)draw("circle",...)end,
+    lineToAll=function(...)draw("line",...)end,
+    textToAll=function(...)draw("text",...)end,
+    removeMark=function(id)M.marks[id]=nil;M.drawings[id]=nil end
 }}
 timer={
     getTime=function()return M.clock end,

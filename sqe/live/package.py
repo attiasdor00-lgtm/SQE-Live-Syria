@@ -40,6 +40,7 @@ def package(output: Path, live_log: Path | None = None, upstream_log: Path | Non
         z.writestr("START_HERE.txt",
                    f"SQE Live / Syria {VERSION}\n\n"
                    "Open SQE-Live-Syria/START_HERE_HE.md for Hebrew instructions.\n"
+                   "Pilot manual and mission pool: SQE-Live-Syria/MISSION_MANUAL_HE.md.\n"
                    "English: SQE-Live-Syria/START_HERE.md.\n"
                    "Install: extract ALL files, then run SQE-Live-Syria/Install.cmd.\n"
                    "Source/ contains the complete source checkout for continued development.\n"

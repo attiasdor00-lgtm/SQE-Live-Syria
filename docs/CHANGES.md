@@ -1,5 +1,16 @@
 # CHANGES.md
 
+## SQE Live 0.1.14 — Operation Northern Watch
+
+The Israel/Syria mission now opens on a campaign briefing and presents the
+active front, progress and suggested assignment. Missions, support and
+resources have separate screens. Task briefings lead with their campaign
+effect. AI operations run continuously, including between player assignments.
+Viper 2 starts alongside the player at Ramat David as a native AI wingman.
+The DCS F10 map displays sector control, airfield ownership and open supply
+corridors. Drawings refresh after changes and coexist with target marks.
+Native rendering and wingman behavior await a DCS flight check.
+
 ## SQE Live 0.1.13 — verified temporary writes and actionable IO errors
 
 The first supplied native-run diagnostics show checkpoint SAVE ERROR: nil,

@@ -157,10 +157,16 @@ def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True
         a = m.terrain.airports[base["airport"]]
         (a.set_blue if base["side"] == "blue" else a.set_red)()
     home = m.terrain.airports["Ramat David"]
+    player_flight = {"callsign_name": "Viper", "callsign_nr": 1, "group_size": 2} if scenario=="israel" else {}
     g = m.flight_group_from_airport(m.country("USA"), "Viper Live", planes.F_16C_50,
-                                   home, start_type=StartType.Cold, group_size=1)
+                                   home, start_type=StartType.Cold, **player_flight)
     g.units[0].skill = Skill.Player
-    g.units[0].pylons = LoadoutLibrary().for_role("F-16C", Role.STRIKE)
+    loadouts = LoadoutLibrary()
+    g.units[0].pylons = loadouts.for_role("F-16C", Role.STRIKE)
+    if len(g.units)>1:
+        g.units[1].skill = Skill.High
+        g.units[1].pylons = copy.deepcopy(g.units[0].pylons)
+        config["wingman_unit"] = g.units[1].name
     g.frequency = 305
     config["player_unit"] = g.units[0].name
     config["flight_types"] = make_aircraft_templates(m)
@@ -174,12 +180,16 @@ def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True
     m.start_time = datetime(*config["date"], 8, 0)
     m.weather.qnh = 760
     m.weather.season_temperature = 24
+    operation = config.get("operation")
+    briefing = "\n\n".join(operation[k] for k in ("name", "background", "objective")) if operation else config["name"]
+    wingman = "Viper 2 is your AI wingman. Use the standard DCS Wingman / Flight radio menus.\n" if "wingman_unit" in config else ""
     m.description_text = String(
-        config["name"]+"\n"
+        briefing+"\n\n"+
         "Continuous fictional single-player campaign on Syria. F-16C at Ramat David.\n"
         "Open operations: Ctrl+Shift+Q (installed UI) or radio F10 > SQE Live.\n"
-        "Accept a task, read its coordinates, request support, fly, land and rearm, then accept another task.\n"
-        "No next-day button or new mission is required during the session.\n"
+        "Read the campaign briefing, choose a mission, then fly its objective. AI operations continue between assignments.\n"
+        "The F10 map shows sector control, airfields and supply links.\n"+
+        wingman+
         "AWACS 251.000 AM; tanker 252.000 AM; flight 305.000 AM.\n"
         "Check the on-screen SAVE status before quitting. Persistent destroyed units are restored next session.\n"
         "This is a development release: actual DCS flight and GUI validation remain outstanding.\n"
@@ -204,6 +214,7 @@ def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True
     for source, name in ((ROOT / "LICENSE", "LICENSE.txt"),
                          (ROOT / "docs" / "LIVE_USER_GUIDE.md", "START_HERE.md"),
                          (ROOT / "docs" / "LIVE_USER_GUIDE_HE.md", "START_HERE_HE.md"),
+                         (ROOT / "docs" / "MISSION_MANUAL_HE.md", "MISSION_MANUAL_HE.md"),
                          (ROOT / "docs" / "LIVE_VALIDATION.md", "VALIDATION.md")):
         shutil.copy2(source, output / name)
     notices = output / "licenses"; notices.mkdir(exist_ok=True)

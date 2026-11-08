@@ -9,6 +9,40 @@ function V.selected(s,id)
     for _,t in ipairs(s.tasks or {}) do if t.id==id then return t end end
     if id==nil then return (s.tasks or {})[1] end
 end
+function V.campaign(s)
+    local op=s.operation
+    if not op then return V.front(s) end
+    local status=s.status=="ACTIVE" and "LIVE" or s.status
+    local lines={op.name, status.."  /  "..V.time(s.time), "",
+        "SITUATION",op.background,"","CAMPAIGN OBJECTIVE",op.objective,"",
+        string.format("Sectors held %d / %d    Objectives completed %d",op.held,op.total,s.completed or 0)}
+    if op.wingman then
+        lines[#lines+1]="";lines[#lines+1]="YOUR FLIGHT"
+        lines[#lines+1]="Viper 1 and Viper 2, F-16C, Ramat David. Use the standard DCS Wingman / Flight radio menus."
+    end
+    return table.concat(lines,"\n")
+end
+function V.campaign_actions(s)
+    local lines={"FLY THE CAMPAIGN","","Open Missions, pick a task, review its campaign effect, then select Accept.",
+        "AI aircraft and ground forces keep operating between player assignments.","",
+        "F10 MAP","Blue and red rings show sector control. Dashed lines show open supply links.",
+        "Airfield labels show current control. Gold rings identify frontline sectors.",
+        "Sector rings and supply links are schematic.","","YOUR ASSIGNMENT"}
+    local active=s.task and V.selected(s,s.task.target)
+    if active then
+        lines[#lines+1]=active.role.." / "..active.name
+    else
+        lines[#lines+1]="No active assignment."
+        if s.front and s.front.recommended_name then lines[#lines+1]="Suggested mission: "..s.front.recommended_name end
+    end
+    if s.front then
+        lines[#lines+1]="";lines[#lines+1]="ACTIVE FRONT"
+        for _,z in ipairs(s.front.sectors) do
+            if z.frontline then lines[#lines+1]=z.name.." / "..z.stage:gsub("_"," "):lower() end
+        end
+    end
+    return table.concat(lines,"\n")
+end
 function V.front(s)
     local front=s.front
     if not front then return "Front plan unavailable. Update the mission and Operations hook together." end
@@ -93,14 +127,15 @@ end
 function V.task(s,id)
     local t=V.selected(s,id)
     if not t then return "No remaining taskable targets. Watch the front and ground advances." end
-    local lines={t.role.." / "..t.name, "", "Surviving strength: "..math.floor(t.health*100).."%", "Sector: "..(t.sector_name or t.zone),
-        "", t.threat or "", "", "COORDINATES", t.coordinates or "Use Brief / coordinates or Mark on F10 map.",
+    local lines={t.role.." / "..t.name, "Sector: "..(t.sector_name or t.zone),
+        "", "CAMPAIGN EFFECT",t.impact or "Effect not supplied by this mission.",
+        "", "SECTOR OBJECTIVE",t.sector_instruction or "See the Campaign tab.",
+        "", "COORDINATES", t.coordinates or "Use Brief / coordinates or Mark on F10 map.",
         "Elevation: "..tostring(t.elevation_ft or "?").." ft", "Reference: "..(t.position_reference or "Live group vehicle"), "",
         t.objective and ("Objective: "..t.objective) or t.role=="SEAD" and "Objective: destroy the site's search/tracking radars."
             or t.role=="CAS" and "Objective: eliminate every vehicle in this defending group."
             or "Objective: reduce this group to 25% strength or less.",
-        "", "CAMPAIGN EFFECT",t.impact or "Effect not supplied by this mission.",
-        "", "SECTOR OBJECTIVE",t.sector_instruction or "See Front plan.","", "CURRENT ASSIGNMENT"}
+        "Surviving strength: "..math.floor(t.health*100).."%",t.threat or "","", "CURRENT ASSIGNMENT"}
     if s.task then
         local active=V.selected(s,s.task.target)
         lines[#lines+1]=s.task.role.." / "..(active and active.name or s.task.target)

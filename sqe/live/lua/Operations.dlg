@@ -4,11 +4,11 @@ dialog=
 	["children"]=
 	{
 		["MapTab"]={
-			["params"]={["bounds"]={["x"]=12,["y"]=12,["w"]=86,["h"]=30},["enabled"]=true,["visible"]=true,["text"]="Map"},
+			["params"]={["bounds"]={["x"]=106,["y"]=12,["w"]=86,["h"]=30},["enabled"]=true,["visible"]=true,["text"]="Missions"},
 			["skin"]={["params"]={["name"]="buttonSkinAwacs"}},["type"]="Button"
 		},
 		["FrontTab"]={
-			["params"]={["bounds"]={["x"]=106,["y"]=12,["w"]=86,["h"]=30},["enabled"]=true,["visible"]=true,["text"]="Front plan"},
+			["params"]={["bounds"]={["x"]=12,["y"]=12,["w"]=86,["h"]=30},["enabled"]=true,["visible"]=true,["text"]="Campaign"},
 			["skin"]={["params"]={["name"]="buttonSkinAwacs"}},["type"]="Button"
 		},
 		["ResourcesTab"]={

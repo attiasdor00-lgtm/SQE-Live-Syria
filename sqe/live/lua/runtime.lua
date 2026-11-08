@@ -99,6 +99,11 @@ function Runtime.start(config,modules,storage)
         self:checked("notifications",function()adapter:notify(res.message)end)
         self:publish()
     end
+    function runtime:map()
+        if core.state.time<(self.next_map or 0) then return end
+        self.next_map=core.state.time+15
+        self:checked("f10_campaign_map",function()return adapter:campaign_map(json.encode)end)
+    end
     function runtime:menus()
         local p=adapter:player()
         if not p then return end
@@ -111,17 +116,22 @@ function Runtime.start(config,modules,storage)
         local root=missionCommands.addSubMenuForGroup(gid,"SQE Live")
         self.menu=root
         local function add(label,path,fn) missionCommands.addCommandForGroup(gid,label,path,fn) end
+        add("Campaign briefing",root,function()
+            local view=self:view()
+            adapter:notify(modules.view.campaign(view).."\n\n"..modules.view.campaign_actions(view),40)
+        end)
+        local missions=missionCommands.addSubMenuForGroup(gid,"Missions",root)
         local page
         for i,t in ipairs(tasks) do
-            if (i-1)%6==0 then page=missionCommands.addSubMenuForGroup(gid,"Tasks "..(math.floor((i-1)/6)+1),root) end
+            if (i-1)%6==0 then page=missionCommands.addSubMenuForGroup(gid,"Page "..(math.floor((i-1)/6)+1),missions) end
             local target=t.id
             local sub=missionCommands.addSubMenuForGroup(gid,t.role.." / "..t.name,page)
             add("Accept",sub,function()self:invoke("accept",target)end)
             add("Brief / coordinates",sub,function()self:invoke("brief",target)end)
             add("Mark on map",sub,function()self:invoke("mark",target)end)
         end
-        add("Current task briefing",root,function()self:invoke("brief")end)
-        add("Abort current task",root,function()self:invoke("abort")end)
+        add("Current task briefing",missions,function()self:invoke("brief")end)
+        add("Abort current task",missions,function()self:invoke("abort")end)
         local support=missionCommands.addSubMenuForGroup(gid,"Request support",root)
         for _,r in ipairs({"CAP","ESCORT","SEAD","STRIKE","AWACS","TANKER"}) do
             local role=r;add(role,support,function()self:invoke("support",nil,role)end)
@@ -130,7 +140,7 @@ function Runtime.start(config,modules,storage)
         add("Push supporting flights",support,function()self:invoke("push")end)
         add("Save campaign",root,function()self:invoke("save")end)
         add("Front and sector objectives",root,function()adapter:notify(modules.view.front(self:view()),30)end)
-        add("Suggested task briefing",root,function()
+        add("Suggested task briefing",missions,function()
             local v=self:view()
             if v.front.recommended_task then self:invoke("brief",v.front.recommended_task)
             else adapter:notify(modules.view.front(v)) end
@@ -207,6 +217,7 @@ function Runtime.start(config,modules,storage)
     end
     world.addEventHandler(handler)
     adapter:save(core:snapshot())
+    runtime:map()
     runtime:checked("f10_menu",function()runtime:menus()end)
     runtime:checked("diagnostic_checks",function()diagnostics:inspect(runtime)end)
     runtime:publish();diagnostics:write(runtime,true)
@@ -223,6 +234,7 @@ function Runtime.start(config,modules,storage)
                 Director.tick(core)
                 core:check_task()
                 adapter:sync_bases()
+                runtime:map()
                 runtime:process_commands()
                 runtime:checked("f10_menu",function()runtime:menus()end)
                 if core.state.time-runtime.last_save>=30 or core.state.revision~=runtime.last_save_revision then adapter:save(core:snapshot()) end

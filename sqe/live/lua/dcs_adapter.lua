@@ -60,6 +60,90 @@ function A:sync_bases()
         end
     end
 end
+local sector_colors={blue={0.2,0.58,1,0.9},red={1,0.24,0.22,0.9}}
+local clear_fill={0,0,0,0}
+local function map_point(p) return {x=p.x,y=0,z=p.y} end
+function A:campaign_map(encode)
+    local c=self.core
+    local shapes={}
+    local function add(kind,...)
+        shapes[#shapes+1]={kind,...}
+    end
+    local function label(p,text,color)
+        add("textToAll",map_point(p),color,{0.05,0.08,0.12,0.75},13,true,text)
+    end
+    for _,z in ipairs(self.config.zones) do
+        local side=c.state.zones[z.id].owner
+        local color=sector_colors[side]
+        local radius=16000
+        for _,other in ipairs(self.config.zones) do
+            if other.id~=z.id then radius=math.min(radius,c.distance(z,other)*0.4) end
+        end
+        local frontline=false
+        for _,id in ipairs(z.neighbors) do
+            if c.state.zones[id].owner~=side then frontline=true end
+        end
+        add("circleToAll",map_point(z),radius,color,{color[1],color[2],color[3],0.18},1,true,z.name)
+        if frontline then
+            add("circleToAll",map_point(z),radius*1.05,{1,0.77,0.2,0.88},clear_fill,2,true,"Frontline")
+        end
+    end
+    local links,depots={},{}
+    local function link(a,b,side)
+        if a.x==b.x and a.y==b.y then return end
+        local from,to=a.x..":"..a.y,b.x..":"..b.y
+        local key=from<to and from.."/"..to or to.."/"..from
+        if links[key] then return end
+        links[key]=true
+        add("lineToAll",map_point(a),map_point(b),sector_colors[side],2,true,"Open supply corridor")
+    end
+    for _,b in ipairs(self.config.bases) do
+        if c.state.zones[b.zone].owner==b.side then
+            for _,route in ipairs(c.supply.sources(c,b,"DEPOT")) do
+                local previous=c.target_defs[route.source]
+                depots[route.source]=true
+                if #route.path>1 then
+                    for _,id in ipairs(route.path) do
+                        local z=c.zone_defs[id];link(previous,z,b.side);previous=z
+                    end
+                end
+                link(previous,b,b.side)
+            end
+        end
+    end
+    for _,z in ipairs(self.config.zones) do
+        label(z,z.map_label or z.name,sector_colors[c.state.zones[z.id].owner])
+    end
+    for _,d in ipairs(self.config.targets) do
+        if depots[d.id] then label(d,"[SUPPLY] "..d.name,sector_colors[d.side]) end
+    end
+    local seen={}
+    for _,fields in ipairs({self.config.bases,self.config.airfields or {}}) do
+        for _,b in ipairs(fields) do
+            if not seen[b.airport] then
+                seen[b.airport]=true
+                local side=c.state.zones[b.zone].owner
+                label(b,(b.side and "[BASE] " or "[AIRFIELD] ")..b.airport,sector_colors[side])
+            end
+        end
+    end
+    local signature=encode(shapes)
+    if signature==self.campaign_map_signature then return true end
+    -- Keep these IDs separate from individual task markers (870000+).
+    local actions=trigger.action
+    for _,shape in ipairs(shapes) do
+        if type(actions[shape[1]])~="function" then return false,"F10 drawing unavailable: "..shape[1] end
+    end
+    self.campaign_map_signature=nil
+    for i=1,self.campaign_map_count or 0 do actions.removeMark(850000+i) end
+    self.campaign_map_count=0
+    for i,shape in ipairs(shapes) do
+        self.campaign_map_count=i
+        actions[shape[1]](2,850000+i,unpack(shape,2))
+    end
+    self.campaign_map_signature=signature
+    return true
+end
 function A:notify(text,seconds) trigger.action.outText(text,seconds or 15) end
 function A:ground_point(x,y,offset)
     local start=offset or 0

@@ -1,4 +1,4 @@
-# SQE Live 0.1.13 — Syria
+# SQE Live 0.1.14 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.
@@ -18,9 +18,12 @@ network service or extra aircraft mods are needed to run the supplied mission.
 4. Start DCS. Open **Missions → SQE-Live → SQE_Live_Syria**.
 5. You start cold in an F-16C at Ramat David. Press **Ctrl+Shift+Q** for the
    clickable Operations window, or use radio **F10 → SQE Live**.
-6. Check the save status. Select a target, Accept it, read the coordinates and
-   request support. Fly the sortie, land and rearm, then accept another task.
-   The same world continues while you do this.
+6. Read the Operation Northern Watch briefing in **Campaign**. Open
+   **Missions** and review a task's campaign effect before accepting it.
+   Request extra aircraft in **Support**. AI operations continue between tasks.
+7. Viper 2 is your AI wingman. Use the standard DCS Wingman / Flight radio
+   menus. Open the DCS F10 map for sector control, airfields and dashed
+   supply links. Sector rings and supply links are schematic.
 
 Example explicit installation:
 
@@ -42,10 +45,10 @@ has not been verified. This release targets local single-player use.
   during play. Actual DCS unit deaths determine losses and task completion.
 - Native clickable in-game window: front, aircraft/resources, targets,
   coordinates, progress, active support flights, campaign log and save status.
-- Map tab with eleven clickable sectors, control colours, front connections and
+- Missions tab with eleven clickable sectors, control colours, front connections and
   base markers. Sector selection filters the task list; task selection opens
   the matching briefing. Browsing does not assign tasks or spend resources.
-- Front plan, Resources and Support tabs: sector objectives, pending ground
+- Campaign, Resources and Support tabs: sector objectives, pending ground
   arrival, supply/force-limit blockers, target consequences and launch readiness.
   Select suggested task highlights a target; Accept still requires your action.
 - Target assignment, briefings, F10 map marks, abort, CAP, escort, SEAD, strike,
@@ -113,12 +116,13 @@ to refresh/retry; it does not apply a second time.
 
 ## Reading the front
 
-**Front plan** explains each sector's next step: weaken its defending ground
+The **Missions** map and radio **Front and sector objectives** report explain
+each sector's next step: weaken its defending ground
 forces, cover an advancing column, wait for physical arrival, or resolve a
 resource/unit-limit blocker. Ground capture still requires all defending armour
 and occupying garrisons to be eliminated. An air strike alone does not capture.
 Enemy supply convoys, assault columns and occupying garrisons have their own
-task cards in Map and F10, including newly created forces.
+task cards in Missions and F10, including newly created forces.
 
 Task briefings describe the actual campaign consequence. The last operating
 depot blocks new supply convoys when disabled; the last fuel site blocks fuel
@@ -137,7 +141,8 @@ The same front and availability reports are available under **F10 → SQE Live**
 
 ## Using the front map
 
-Operations opens on **Map**. Click a sector, then a task row to read its briefing.
+Operations opens on **Campaign**. In **Missions**, click a sector, then a task
+row to read its briefing.
 **Previous / Next** cycle through that sector's targets. **All sectors** removes
 the filter; lists longer than four targets show another page as you cycle.
 **Select suggested task** selects the campaign recommendation and its sector.
@@ -156,7 +161,7 @@ silently assigns a target from elsewhere. After ten seconds without a fresh
 status heartbeat, the map turns grey, shows **STALE / last known state**, and
 disables commands until fresh data arrives. This can occur while DCS is paused.
 Starting a different session clears the sector filter and prior selection.
-If the map widget cannot load, Front plan and F10 remain available.
+If the schematic cannot load, the mission list and radio F10 remain available.
 Existing 0.1.0–0.1.6 campaign saves remain compatible when upgrading. Loading a
 new dynamic assignment in an older release is not supported.
 

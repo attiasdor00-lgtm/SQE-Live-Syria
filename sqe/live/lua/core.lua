@@ -283,7 +283,9 @@ function Core:tasks()
     return self.catalog.tasks(self)
 end
 function Core:active_count()
-    local n=self.config.player_slots or 1
+    -- Reserve room for the editor-placed wingman when dispatching new units.
+    -- Checkpoint validation counts the persisted force plus the original player slot.
+    local n=(self.config.player_slots or 1)+(self.config.wingman_unit and 1 or 0)
     for _, t in pairs(self.state.targets) do n=n+count(t.alive) end
     for _, f in pairs(self.state.flights) do if f.status~="COMPLETE" then n=n+count(f.alive) end end
     for _, c in pairs(self.state.shipments) do if c.status=="MOVING" or c.status=="ARRIVED" then n=n+count(c.alive) end end

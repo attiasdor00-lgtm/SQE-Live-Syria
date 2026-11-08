@@ -139,7 +139,18 @@ function O.sectors(c)
 end
 function O.decorate(c,view)
     local sectors=O.sectors(c);local by_id={}
-    for _,s in ipairs(sectors) do by_id[s.id]=s end
+    local held=0
+    for _,s in ipairs(sectors) do
+        by_id[s.id]=s
+        if s.owner=="blue" then held=held+1 end
+    end
+    view.operation=c.copy(c.config.operation or {
+        name=c.config.name,
+        background="Blue and red forces contest the Syria sectors in this fictional campaign.",
+        objective="Help blue ground forces take every campaign sector."
+    })
+    view.operation.held=held;view.operation.total=#sectors
+    view.operation.wingman=c.config.wingman_unit~=nil
     for _,t in ipairs(view.tasks) do
         local sector=by_id[t.zone]
         t.sector_name=sector.name;t.sector_stage=sector.stage;t.sector_instruction=sector.instruction

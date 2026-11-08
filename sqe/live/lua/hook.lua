@@ -14,7 +14,7 @@ local function start()
     -- The UI Lua environment has filesystem access, independently of mission Lua.
     local fs=dofile(base.."storage.lua").new(lfs.writedir().."SQE-Live/")
     local window,normal_skin,hidden_skin
-    local tab="map"
+    local tab="campaign"
     local visible,in_mission=false,false
     local latest,selected,pending,message=nil,nil,nil,"Waiting for SQE Live..."
     local selected_zone,map_ui,map_error=false,nil,false
@@ -92,9 +92,9 @@ local function start()
         local layout,map_reason
         if latest and latest.protocol==1 and latest.tasks then
             choose(M.reconcile(latest,selection()))
-            window.Overview:setText((tab=="front" or tab=="map") and V.front(latest)
+            window.Overview:setText(tab=="campaign" and V.campaign(latest) or tab=="map" and V.front(latest)
                 or tab=="support" and V.support(latest,selected) or V.overview(latest))
-            window.Target:setText(M.detail(latest,selection(),V))
+            window.Target:setText(tab=="campaign" and V.campaign_actions(latest) or M.detail(latest,selection(),V))
             window.Journal:setText(V.log(latest))
             layout,map_reason=M.layout(latest,368,300)
             local rows,first,total=M.page(latest,selection())
@@ -125,7 +125,7 @@ local function start()
         window.MapLegend:setVisible(map_visible and map_ok)
         window.Overview:setVisible(visible and (tab~="map" or not map_ok))
         if tab=="map" and not map_ok then
-            window.Overview:setText("Map unavailable: "..tostring(map_error or "waiting for campaign").."\n\nUse Front plan or F10.")
+            window.Overview:setText("Map unavailable: "..tostring(map_error or "waiting for campaign").."\n\nUse the F10 map. You can still choose a mission here.")
         end
         window.MapLegend:setText((online and "LIVE / sector schematic" or "STALE / last known state")
             .."\nBLUE friendly / RED enemy / * front / [B] base\nLinks are sector connections, not roads.")
@@ -138,9 +138,17 @@ local function start()
         end
         local has_target=latest and M.task(latest,selected)~=nil or false
         for _,name in ipairs({"Accept","Brief","Mark"}) do window[name]:setEnabled(online and not pending and has_target) end
+        window.Accept:setEnabled(online and not pending and has_target and not latest.task)
+        window.Abort:setEnabled(online and not pending and latest.task and true or false)
         local has_tasks=latest and #M.tasks(latest,selected_zone)>0 or false
         window.Previous:setEnabled(online and has_tasks);window.Next:setEnabled(online and has_tasks)
         window.Recommended:setEnabled(online and latest.front and latest.front.recommended_task and true or false)
+        for _,name in ipairs({"Previous","Next","Accept","Brief","Mark","Abort"}) do window[name]:setVisible(map_visible) end
+        for _,name in ipairs({"CAP","ESCORT","SEAD","STRIKE","AWACS","TANKER","Hold","Push"}) do
+            window[name]:setVisible(visible and tab=="support")
+        end
+        window.Recommended:setVisible(visible and (tab=="campaign" or tab=="map"))
+        window.Journal:setVisible(visible and (tab=="campaign" or tab=="resources"))
         local status=online and (latest.save_status or "Save status unknown")
             or (latest and latest.error and tostring(latest.error) or "No live connection. Start SQE_Live_Syria; check the bridge installation.")
         if pending then message="Command queued. Waiting for the mission (unpause if paused)..." end
@@ -180,7 +188,7 @@ local function start()
         click("Previous",function()step(-1)end)
         click("Next",function()step(1)end)
         click("Close",function()show(false)end)
-        for name,value in pairs({MapTab="map",FrontTab="front",ResourcesTab="resources",SupportTab="support"}) do
+        for name,value in pairs({MapTab="map",FrontTab="campaign",ResourcesTab="resources",SupportTab="support"}) do
             local page=value;click(name,function()tab=page;render()end)
         end
         click("Recommended",function()
@@ -242,7 +250,7 @@ local function start()
         end
         message="Waiting for SQE Live..."
         in_mission=false;mission_started=os.time();latest=nil;pending=nil
-        selected=false;selected_zone=false;tab="map"
+        selected=false;selected_zone=false;tab="campaign"
         guard(show,"Load hide")(false)
     end
     function handler.onMissionLoadEnd()

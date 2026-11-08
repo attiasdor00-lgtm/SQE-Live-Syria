@@ -34,6 +34,7 @@ class MapCase(unittest.TestCase):
             assert(ui.handler,ui.last_log)
             ui.load_mission()
             ui.hotkeys['Ctrl+Shift+q']()
+            ui.window.MapTab.click()
         ''')
 
     def test_map_geometry_identity_and_connections_match_campaign(self):
@@ -242,7 +243,7 @@ class MapCase(unittest.TestCase):
             fs.status_text=mods.json.encode(v);mock.clock=mock.clock+1;ui.handler.onSimulationFrame()
             assert(not ui.window.MapCanvas.visible and ui.window.Overview.visible)
             assert(ui.window.Overview.text:find('Invalid sector connection',1,true))
-            ui.window.FrontTab.click();assert(ui.window.Overview.text:find('FRONT PLAN',1,true))
+            ui.window.FrontTab.click();assert(ui.window.Overview.text:find('CAMPAIGN OBJECTIVE',1,true))
             rt:publish();mock.clock=mock.clock+1;ui.handler.onSimulationFrame();ui.window.MapTab.click()
             assert(ui.window.MapCanvas.visible and not ui.window.Overview.visible and not rt.failed)
         ''')
@@ -252,7 +253,8 @@ class MapCase(unittest.TestCase):
         self.h.run('''
             assert(ui.window.Overview.visible and ui.window.Overview.text:find('Panel failure',1,true))
             assert(not ui.window.MapCanvas.visible)
-            ui.window.FrontTab.click();assert(ui.window.Overview.text:find('FRONT PLAN',1,true))
+            ui.window.FrontTab.click();assert(ui.window.Overview.text:find('CAMPAIGN OBJECTIVE',1,true))
+            ui.window.MapTab.click()
             ui.window.Accept.click();mock.advance(2);ui.handler.onSimulationFrame()
             assert(c.state.task.target=='south_armor' and not rt.failed)
         ''')
