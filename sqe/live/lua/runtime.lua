@@ -25,6 +25,7 @@ function Runtime.start(config,modules,storage)
                 local ok,value=pcall(json.decode,raw)
                 if ok then
                     local probe=Core.new(config,adapter,nil,session,modules.targets,modules.supply)
+                    value=probe:upgrade_save(value)
                     local valid,why=probe:validate_save(value)
                     if valid then
                         if previous then
@@ -196,6 +197,7 @@ function Runtime.start(config,modules,storage)
             end
         end
         adapter:sync_bases()
+        core:check_task()
         local registered,why=adapter:world_health()
         if not registered then error("Spawned force registration mismatch: "..why) end
     end)

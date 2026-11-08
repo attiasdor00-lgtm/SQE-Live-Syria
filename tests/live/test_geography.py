@@ -36,7 +36,7 @@ class GeographyCase(unittest.TestCase):
     def test_default_covers_all_fifteen_fields_and_keeps_aircraft_finite(self):
         cfg = self.config
         self.assertEqual("syria_israel_solo", cfg["id"])
-        self.assertEqual("syria-israel-1", cfg["content_version"])
+        self.assertEqual("syria-israel-2", cfg["content_version"])
         self.assertEqual(11, len(cfg["zones"]))
         self.assertEqual(FIELDS, {f["airport"] for f in cfg["airfields"]})
         self.assertEqual(15, len({f["airport_id"] for f in cfg["airfields"]}))
@@ -59,6 +59,10 @@ class GeographyCase(unittest.TestCase):
             mission = lua.loads(z.read("mission").decode())["mission"]
         for f in self.config["airfields"]:
             self.assertEqual("BLUE", warehouses["airports"][f["airport_id"]]["coalition"], f["airport"])
+        red = [b for b in self.config["bases"] if b["side"] == "red"]
+        self.assertEqual({"Damascus","Shayrat","Khalkhalah","Marj Ruhayyil","Tiyas"}, {b["airport"] for b in red})
+        for b in red:
+            self.assertEqual("RED", warehouses["airports"][b["airport_id"]]["coalition"], b["airport"])
         self.assertEqual("Syria", mission["theatre"])
         flights = [group for country in mission["coalition"]["blue"]["country"].values()
                    for group in country.get("plane", {}).get("group", {}).values()]
@@ -189,8 +193,68 @@ class GeographyCase(unittest.TestCase):
             mods.director.logistics(c)
             for i=1,4 do mods.director.air(c,'blue');mods.director.air(c,'red') end
             assert(c:active_count()<=180 and c.count(c.state.flights)<=9)
-            assert(c.count(c.state.shipments)==7)
+            for _,id in ipairs(cfg.added_bases) do
+                local served=false
+                for _,s in pairs(c.state.shipments) do
+                    if s.kind=='SUPPLY' and s.base==id then served=true end
+                end
+                assert(served,id)
+            end
             assert(c:validate_save(c:snapshot()))
+        ''')
+
+    def test_frontline_pool_and_air_tasking_follow_capture_and_counterattack(self):
+        self.h.run('''
+            local function task(id) return mods.map.task(rt:view(),id) end
+            local function flight(side,role,target)
+                for _,f in pairs(c.state.flights) do
+                    if f.side==side and f.role==role and (not target or f.target==target) then return f end
+                end
+            end
+            assert(task('south_armor') and task('south_sam') and task('marj_fuel'))
+            assert(not task('marj_sam') and not task('damascus_armor'))
+            local ok=c:command({id='deep',session=c.session,revision=c.state.revision,action='accept',target='marj_sam'})
+            assert(not ok.ok)
+            assert(mods.director.dispatch(c,c.base_defs.khalkhalah,'ASSAULT','golan','south'))
+            local red
+            for _,s in pairs(c.state.shipments) do red=s end
+            assert(task(red.id))
+            mods.director.air(c,'blue');mods.director.air(c,'red')
+            assert(flight('blue','CAP').station_zone=='golan')
+            assert(flight('red','CAP').station_zone=='south' and flight('red','CAP').base=='khalkhalah')
+            mods.director.air(c,'blue')
+            assert(flight('blue','STRIKE',red.id))
+            for i=1,5 do mock.kill(a.ground_groups.south_armor..'-'..i) end
+            assert(mods.director.dispatch(c,c.base_defs.ramat,'ASSAULT','south','golan'))
+            local blue
+            for _,s in pairs(c.state.shipments) do if s.side=='blue' then blue=s end end
+            mods.director.air(c,'red');assert(flight('red','STRIKE',blue.id))
+            mock.deliver(a,blue);a:observe();a:sync_bases()
+            assert(c.state.zones.south.owner=='blue' and mock.bases.Khalkhalah.side==2)
+            assert(not task('south_sam') and task('marj_sam'))
+            for _,u in ipairs(mock.groups[a.ship_groups[blue.id]].units) do mock.kill(u.name) end
+            assert(mods.director.dispatch(c,c.base_defs.marj_ab,'ASSAULT','south','marj'))
+            local counter
+            for _,s in pairs(c.state.shipments) do if s.side=='red' and s.zone=='south' then counter=s end end
+            mock.deliver(a,counter);a:observe();a:sync_bases()
+            assert(c.state.zones.south.owner=='red' and mock.bases.Khalkhalah.side==1)
+            assert(task(counter.id) and task('south_sam') and not task('marj_sam'))
+            assert(c:validate_save(c:snapshot()))
+        ''')
+
+    def test_previous_checkpoint_migrates_new_bases_without_resetting_the_front(self):
+        h = Harness(self.config)
+        h.run('''
+            local seed=mods.core.new(cfg,nil,nil,'old',mods.targets,mods.supply)
+            local s=seed:snapshot();s.content=cfg.previous_content_version
+            for _,id in ipairs(cfg.added_bases) do s.bases[id]=nil end
+            s.zones.south.owner='blue';s.bases.damascus.resources.ammo=11;s.completed=4
+            fs.files[cfg.id]=mods.json.encode(s)
+        ''')
+        h.start()
+        h.run('''
+            assert(c.state.completed==4 and c.state.bases.damascus.resources.ammo==11)
+            assert(mock.bases.Khalkhalah.side==2 and c.state.bases.khalkhalah.ready['MiG-29S']==2)
         ''')
 
     def test_unknown_scenario_fails_before_export(self):

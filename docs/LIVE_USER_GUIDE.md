@@ -1,4 +1,4 @@
-# SQE Live 0.1.14 — Syria
+# SQE Live 0.1.15 — Syria
 
 A development conversion of SQE to one continuously running DCS mission.
 Code and mission are provided; actual DCS flight/rendering validation is pending.

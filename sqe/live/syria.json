@@ -6,7 +6,10 @@
     "background": "In this fictional scenario, a standoff has escalated into fighting along the Golan. Israel holds the southern approaches from its home airfields. Red forces operate from Syria and are trying to hold the corridor toward Damascus.",
     "objective": "Hold Israel's airfields and supply network, open the southern corridor, and help blue ground forces take every campaign sector."
   },
-  "content_version": "syria-israel-1",
+  "content_version": "syria-israel-2",
+  "previous_content_version": "syria-israel-1",
+  "added_bases": ["khalkhalah", "marj_ab", "tiyas"],
+  "frontline_tasking": true,
   "seed": 1971,
   "unit_budget": 180,
   "max_flights": 9,
@@ -166,6 +169,54 @@
     }
   ],
   "bases": [
+    {
+      "id": "khalkhalah",
+      "name": "Khalkhalah",
+      "airport": "Khalkhalah",
+      "zone": "south",
+      "side": "red",
+      "aircraft": {
+        "MiG-29S": 2,
+        "Su-24M": 2
+      },
+      "resources": {
+        "fuel": 90,
+        "ammo": 90,
+        "supply": 90
+      }
+    },
+    {
+      "id": "marj_ab",
+      "name": "Marj Ruhayyil",
+      "airport": "Marj Ruhayyil",
+      "zone": "marj",
+      "side": "red",
+      "aircraft": {
+        "MiG-29S": 2,
+        "Su-24M": 2
+      },
+      "resources": {
+        "fuel": 90,
+        "ammo": 90,
+        "supply": 90
+      }
+    },
+    {
+      "id": "tiyas",
+      "name": "Tiyas",
+      "airport": "Tiyas",
+      "zone": "shayrat",
+      "side": "red",
+      "aircraft": {
+        "MiG-29S": 2,
+        "Su-24M": 2
+      },
+      "resources": {
+        "fuel": 90,
+        "ammo": 90,
+        "supply": 90
+      }
+    },
     {
       "id": "ramat",
       "name": "Ramat David",

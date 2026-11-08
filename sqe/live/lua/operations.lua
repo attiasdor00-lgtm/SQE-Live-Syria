@@ -167,7 +167,7 @@ function O.decorate(c,view)
         recommended_name=suggested and suggested.name or false,
         recommendation=suggested and (c.state.task and "Continue the current assignment."
             or (by_id[suggested.zone].frontline and "Recommended for the active front; choose another task if preferred."
-                or "No taskable front target remains. Strategic targets are still available."))
+                or suggested.why or "Strategic targets are available."))
             or "No taskable target remains. Follow sector objectives and ground movements."}
     view.support=O.support(c,nil)
     for _,b in ipairs(view.bases) do

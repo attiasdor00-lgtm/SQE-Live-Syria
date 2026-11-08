@@ -19,17 +19,60 @@ function T.active(c,d,s)
     return d~=nil and s~=nil and (not d.shipment or s.status=="MOVING" or s.status=="ARRIVED")
         and c.count(s.alive)>0
 end
+function T.frontline(c,zone)
+    local owner=c.state.zones[zone].owner
+    for _,neighbor in ipairs(c.zone_defs[zone].neighbors) do
+        if c.state.zones[neighbor].owner~=owner then return true end
+    end
+    return false
+end
+local function strategic_sources(c)
+    local sources={}
+    local front={}
+    for _,z in ipairs(c.config.zones) do
+        if c.state.zones[z.id].owner=="red" and T.frontline(c,z.id) then front[#front+1]=z.id end
+    end
+    for _,b in ipairs(c.config.bases) do
+        if b.side=="red" and c.state.zones[b.zone].owner=="red" then
+            for _,zone in ipairs(front) do
+                if c.supply.path(c,"red",b.zone,zone) then
+                    for _,kind in ipairs({"DEPOT","FUEL"}) do
+                        for _,offer in ipairs(c.supply.sources(c,b,kind)) do sources[offer.source]=true end
+                    end
+                    break
+                end
+            end
+        end
+    end
+    return sources
+end
 function T.tasks(c)
     local out={}
+    local live=c.config.frontline_tasking
+    if live and c.state.status~="ACTIVE" then return out end
+    local strategic=live and strategic_sources(c)
     local function add(id)
         local d,s=T.resolve(c,id)
         if not d or d.side~="red" or d.taskable==false or not T.active(c,d,s) then return end
+        local current=c.state.task and c.state.task.target==id and c.state.task
+        local why
+        if live then
+            if d.shipment then
+                why=s.kind=="SUPPLY" and "An enemy convoy still carries supplies."
+                    or s.status=="ARRIVED" and "An enemy garrison is holding this sector."
+                    or "An enemy ground column is advancing on this sector."
+            elseif c.state.zones[d.zone].owner~="red" then return
+            elseif current then why="Your current assignment."
+            elseif T.frontline(c,d.zone) then why="This target is on the active front."
+            elseif strategic[id] then why="This source supplies bases connected to the enemy front."
+            else return end
+        end
         local remaining=c:target_health(id)
         if not d.shipment and remaining<=0.25 and d.kind~="ARMOR"
             and not (d.kind=="SAM" and not c:suppressed(id)) then return end
         local role=d.kind=="SAM" and (c:suppressed(id) and "DEAD" or "SEAD")
             or d.kind=="ARMOR" and "CAS" or "STRIKE"
-        out[#out+1]={id=id,role=role,name=d.name,zone=d.zone,x=d.x,y=d.y,
+        out[#out+1]={id=id,role=live and current and current.role or role,name=d.name,zone=d.zone,x=d.x,y=d.y,why=why,
             health=remaining,priority=d.priority or 1,threat=d.threat or "Enemy fighters and short-range air defences",
             dynamic=d.shipment==true,survivors=c.count(s.alive),
             force_state=d.shipment and (s.status=="ARRIVED" and "GARRISON"
@@ -57,6 +100,9 @@ function T.result(c,task)
     if task.role=="SEAD" and c:suppressed(task.target)
         or task.role=="CAS" and c:target_health(task.target)==0
         or (task.role=="STRIKE" or task.role=="DEAD") and c:target_health(task.target)<=0.25 then return "complete" end
+    if c.config.frontline_tasking and c.state.zones[d.zone].owner~="red" then
+        return "unavailable","Friendly forces now control the sector."
+    end
 end
 function T.referenced(c,id)
     if c.state.task and c.state.task.target==id then return true end

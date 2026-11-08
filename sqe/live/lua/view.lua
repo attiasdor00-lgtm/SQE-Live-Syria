@@ -127,7 +127,7 @@ end
 function V.task(s,id)
     local t=V.selected(s,id)
     if not t then return "No remaining taskable targets. Watch the front and ground advances." end
-    local lines={t.role.." / "..t.name, "Sector: "..(t.sector_name or t.zone),
+    local lines={t.role.." / "..t.name, "Sector: "..(t.sector_name or t.zone)..(t.why and ("\n"..t.why) or ""),
         "", "CAMPAIGN EFFECT",t.impact or "Effect not supplied by this mission.",
         "", "SECTOR OBJECTIVE",t.sector_instruction or "See the Campaign tab.",
         "", "COORDINATES", t.coordinates or "Use Brief / coordinates or Mark on F10 map.",

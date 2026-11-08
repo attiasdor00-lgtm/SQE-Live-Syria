@@ -1,5 +1,15 @@
 # CHANGES.md
 
+## SQE Live 0.1.15 — frontline tasking and more red airbases
+
+Northern Watch offers fixed targets according to frontline control and live
+supply connections. Moving columns, garrisons and convoys add or lose tasks
+with their observed state. Both sides patrol threatened sectors, intercept
+ground advances and strike frontline defenders. Automatic flights prefer the
+nearest funded base. Khalkhalah, Marj Ruhayyil and Tiyas have limited red
+inventories. Previous Israel-profile checkpoints gain the new base records
+while preserving captured sectors, existing inventory and losses.
+
 ## SQE Live 0.1.14 — Operation Northern Watch
 
 The Israel/Syria mission now opens on a campaign briefing and presents the

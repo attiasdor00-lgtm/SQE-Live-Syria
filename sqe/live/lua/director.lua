@@ -4,23 +4,71 @@ local function enemy(side) return side=="blue" and "red" or "blue" end
 local function active_flights(c,side)
     local n=0;for _,f in pairs(c.state.flights) do if f.side==side and f.status~="COMPLETE" then n=n+1 end end;return n
 end
+local function defensive_station(c,side)
+    local best,score=nil,-1
+    local incoming={}
+    for _,s in pairs(c.state.shipments) do
+        if s.kind=="ASSAULT" and s.side~=side and s.status=="MOVING" then
+            incoming[s.zone]=(incoming[s.zone] or 0)+c.count(s.alive)
+        end
+    end
+    for _,z in ipairs(c.config.zones) do
+        if c.state.zones[z.id].owner==side then
+            local weight=(incoming[z.id] or 0)*10+(c.catalog.frontline(c,z.id) and 1 or 0)
+            if weight>score then best,score=z.id,weight end
+        end
+    end
+    return best
+end
 function Director.air(c,side)
-    if active_flights(c,side)>=3 then return end
     local candidates={}
+    local live=c.config.frontline_tasking
     for _,d in ipairs(c.config.targets) do
-        if d.side==enemy(side) and c:target_health(d.id)>0.25 and d.taskable~=false then
+        local minimum=live and (d.kind=="ARMOR" or d.kind=="SAM" and not c:suppressed(d.id)) and 0 or 0.25
+        if d.side==enemy(side) and d.taskable~=false and c:target_health(d.id)>minimum
+            and (not live or c.state.zones[d.zone].owner==d.side and c.catalog.frontline(c,d.zone)) then
             local priority=d.priority or 1
             if d.kind=="SAM" and not c:suppressed(d.id) then priority=priority+20 end
             candidates[#candidates+1]={d=d,score=priority}
         end
     end
+    if live then
+        for id,s in pairs(c.state.shipments) do
+            if s.side~=side and s.kind=="ASSAULT" and c.count(s.alive)>0 then
+                local owner=c.state.zones[s.zone].owner
+                if s.status=="MOVING" and owner==side then
+                    candidates[#candidates+1]={d=(c:target(id)),score=1000}
+                elseif s.status=="ARRIVED" and owner==s.side and c.catalog.frontline(c,s.zone) then
+                    candidates[#candidates+1]={d=(c:target(id)),score=200}
+                end
+            end
+        end
+    end
     table.sort(candidates,function(a,b)if a.score==b.score then return a.d.id<b.d.id end return a.score>b.score end)
     local cap=false
-    for _,f in pairs(c.state.flights) do if f.side==side and f.role=="CAP" and f.status~="COMPLETE" then cap=true end end
+    local station=live and defensive_station(c,side)
+    for _,f in pairs(c.state.flights) do
+        if f.side==side and f.role=="CAP" and f.status~="COMPLETE" then
+            cap=true
+            if station and f.automatic and f.status=="ENROUTE" and f.station_zone~=station then
+                local plan=c.copy(f);plan.station_zone=station
+                local called,ok=pcall(c.adapter.control_flight,c.adapter,plan,"push")
+                if called and ok then
+                    f.station_zone=station
+                    c:note(f.label.." redirected to defend "..c.zone_defs[station].name..".")
+                end
+            end
+        end
+    end
+    if active_flights(c,side)>=3 then return end
     if not cap then
-        local target=candidates[1] and candidates[1].d.id
-        c:launch("CAP",side,target,true)
-        return
+        if live then
+            if c:launch("CAP",side,nil,true,station) then return end
+        else
+            local target=candidates[1] and candidates[1].d.id
+            c:launch("CAP",side,target,true)
+            return
+        end
     end
     for _,entry in ipairs(candidates) do
         local d=entry.d

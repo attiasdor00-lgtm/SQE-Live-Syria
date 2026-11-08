@@ -1,2 +1,2 @@
 """SQE Live: continuous, single-mission campaign mode."""
-VERSION = "0.1.14"
+VERSION = "0.1.15"

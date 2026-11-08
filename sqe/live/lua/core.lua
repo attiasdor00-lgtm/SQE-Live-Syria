@@ -55,6 +55,7 @@ function Core.new(config, adapter, restored, session, targets, supply)
     end
     for _, z in ipairs(config.zones) do self.state.zones[z.id]={owner=z.owner} end
     if restored then
+        restored=self:upgrade_save(restored)
         local ok, err = self:validate_save(restored)
         if not ok then error("Campaign save rejected: "..err) end
         self.state = copy(restored)
@@ -79,8 +80,22 @@ function Core.new(config, adapter, restored, session, targets, supply)
         self.state.flights = {}
         self.state.pilot.airborne = false
         self:note("Campaign resumed. Interrupted surviving AI flights enter 10-minute maintenance.")
-    else self:note("Operation Cedar Current begins. The campaign clock follows this session.") end
+    else self:note(((config.operation or {}).name or "Operation Cedar Current").." begins. The campaign clock follows this session.") end
     return self
+end
+
+function Core:upgrade_save(s)
+    local prior=self.config.previous_content_version
+    if not prior or type(s)~="table" or s.campaign~=self.config.id or s.content~=prior
+        or type(s.bases)~="table" then return s end
+    for _,id in ipairs(self.config.added_bases) do if s.bases[id]~=nil then return s end end
+    local migrated=copy(s)
+    for _,id in ipairs(self.config.added_bases) do
+        local def=self.base_defs[id]
+        migrated.bases[id]={ready=copy(def.aircraft),resources=copy(def.resources)}
+    end
+    migrated.content=self.config.content_version
+    return migrated
 end
 
 function Core:validate_save(s)
@@ -133,6 +148,7 @@ function Core:validate_save(s)
             or not roles[f.role] or not statuses[f.status] or f.side~=self.base_defs[f.base].side
             or type(f.label)~="string" or #f.label>120 or type(f.automatic)~="boolean"
             or not finite(f.expires) or not finite(f.started) or f.started<0 or f.started>s.time
+            or (f.station_zone~=nil and (f.role~="CAP" or not self.zone_defs[f.station_zone]))
             or (f.target~=false and not self:target(f.target,s)) then return false,"invalid flight" end
         if f.status~="COMPLETE" then stock[f.base][f.aircraft]=stock[f.base][f.aircraft]+count(f.alive)
         elseif not finite(f.finished) or f.finished>s.time then return false,"invalid recovery time" end
@@ -295,6 +311,9 @@ function Core:check_task()
     local t=self.state.task
     if not t then return end
     local result,why=self.catalog.result(self,t)
+    if not result and self.config.frontline_tasking and self.state.status~="ACTIVE" then
+        result,why="unavailable","The campaign has ended."
+    end
     if not result then return end
     local d=self:target(t.target);local name=d and d.name or t.target
     self.state.task=false
@@ -360,7 +379,7 @@ function Core:ground_funding(base)
     end
     return stock.supply>=12+reserve.supply,12+reserve.supply
 end
-function Core:flight_offer(role,side,target,automatic)
+function Core:flight_offer(role,side,target,automatic,station_zone)
     -- A read-only dispatch quote. Launch rechecks this same function before spending.
     local cost=COST[role]
     local out={available=false,role=role,side=side,target=target or false,cost=copy(cost or {})}
@@ -383,10 +402,20 @@ function Core:flight_offer(role,side,target,automatic)
     local sizes=(n==2 and side=="blue" and not automatic) and {2,1} or {n}
     local selected,aircraft
     local reasons,resource_shortage,reserve_shortage
+    local bases=self.config.bases
+    local location=self.zone_defs[station_zone] or d
+    if automatic and self.config.frontline_tasking and location then
+        bases={};for _,b in ipairs(self.config.bases) do if b.side==side then bases[#bases+1]=b end end
+        table.sort(bases,function(a,b)
+            local x,y=dist(a,location),dist(b,location)
+            if x==y then return a.id<b.id end
+            return x<y
+        end)
+    end
     for _,size in ipairs(sizes) do
         n=size;out.count=n
         reasons={};resource_shortage=false;reserve_shortage=false
-        for _, b in ipairs(self.config.bases) do
+        for _, b in ipairs(bases) do
             if b.side==side and self.state.zones[b.zone].owner==side then
                 local ready
                 for _, ac in ipairs(self.config.role_aircraft[side][role] or {}) do
@@ -461,8 +490,8 @@ function Core:support_offer(role,selected)
     if role=="STRIKE" and self:target_health(target)==0 then return blocked("Target already destroyed") end
     return self:flight_offer(role,"blue",target)
 end
-function Core:launch(role,side,target,automatic)
-    local offer=self:flight_offer(role,side,target,automatic)
+function Core:launch(role,side,target,automatic,station_zone)
+    local offer=self:flight_offer(role,side,target,automatic,station_zone)
     if not offer.available then return false,offer.reason end
     local selected=self.base_defs[offer.base]
     local aircraft,n,cost=offer.aircraft,offer.count,offer.cost
@@ -471,7 +500,7 @@ function Core:launch(role,side,target,automatic)
     local f={id=self:id("flight-"),side=side,role=role,base=selected.id,aircraft=aircraft,
         target=offer.target,count=n,alive=alive,status="ENROUTE",started=self.state.time,
         expires=self.state.time+((role=="AWACS" or role=="TANKER") and 5400 or 2100),
-        automatic=automatic or false,label=side.." "..role.." "..self.state.next_id}
+        automatic=automatic or false,station_zone=station_zone,label=side.." "..role.." "..self.state.next_id}
     -- A failed spawn has no inventory effect. ID gaps are intentionally harmless.
     local ok,err=self.adapter:spawn_flight(f)
     if not ok then return false,"Flight could not launch: "..tostring(err) end

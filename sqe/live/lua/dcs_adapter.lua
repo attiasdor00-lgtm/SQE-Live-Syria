@@ -251,7 +251,8 @@ function A:route(f,origin)
         dest={x=b.x+8000,y=b.y-22000}
         tasks[#tasks+1]={id=f.role=="AWACS" and "AWACS" or "Tanker",params={}}
     elseif f.role=="CAP" then
-        dest={x=(b.x+dest.x)*0.5,y=(b.y+dest.y)*0.5}
+        local station=self.core.zone_defs[f.station_zone]
+        dest=station and {x=station.x,y=station.y} or {x=(b.x+dest.x)*0.5,y=(b.y+dest.y)*0.5}
         tasks[#tasks+1]={id="EngageTargetsInZone",params={point=dest,zoneRadius=45000,
             targetTypes={"Air"},priority=0}}
     elseif f.role=="ESCORT" then
