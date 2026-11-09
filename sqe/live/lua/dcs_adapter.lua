@@ -47,6 +47,7 @@ function A:sync_bases()
     self.base_owners=self.base_owners or {}
     local fields={}
     for _,field in ipairs(self.config.airfields or {}) do fields[#fields+1]=field end
+    for _,farp in ipairs(self.config.farps or {}) do fields[#fields+1]=farp end
     for _,base in ipairs(self.config.bases) do fields[#fields+1]=base end
     for _,b in ipairs(fields) do
         local owner=self.core.state.zones[b.zone].owner
@@ -113,6 +114,12 @@ function A:campaign_map(encode)
     end
     for _,z in ipairs(self.config.zones) do
         label(z,z.map_label or z.name,sector_colors[c.state.zones[z.id].owner])
+    end
+    for _,f in ipairs(self.config.farps or {}) do
+        local state=c.state.farps[f.id]
+        local status=state.operational and "ONLINE" or "OFFLINE"
+        local color=state.operational and sector_colors[state.owner] or {0.65,0.65,0.65,0.9}
+        label(f,"[FARP "..status.."] "..f.name,color)
     end
     for _,d in ipairs(self.config.targets) do
         if depots[d.id] then label(d,"[SUPPLY] "..d.name,sector_colors[d.side]) end
@@ -187,6 +194,36 @@ function A:spawn_target(def,state)
     if not ok or not g then return false,tostring(g) end
     self.ground_groups[def.id]=name
     for n,r in pairs(records) do self.registry[n]=r end
+    return true
+end
+function A:retire_target(id)
+    local name=self.ground_groups[id]
+    local group=name and Group.getByName(name)
+    for unit,record in pairs(self.registry) do
+        if record.kind=="target" and record.id==id then
+            self.contacts[unit]=nil
+            self.registry[unit]=nil
+        end
+    end
+    if exists(group) then group:destroy() end
+    self.ground_groups[id]=nil
+    if self.markers and self.markers[id] then
+        trigger.action.removeMark(self.markers[id])
+        self.markers[id]=nil
+        if self.marker_positions then self.marker_positions[id]=nil end
+    end
+end
+function A:sync_zone_targets()
+    for _,def in ipairs(self.config.targets) do
+        local state=self.core.state.targets[def.id]
+        local desired=self.core:target_active(def.id) and self.core.count(state.alive)>0
+        local name=self.ground_groups[def.id]
+        local present=name and exists(Group.getByName(name))
+        if desired and not present then
+            local ok,why=self:spawn_target(def,state)
+            if not ok then return false,why end
+        elseif not desired and name then self:retire_target(def.id) end
+    end
     return true
 end
 function A:rebuild_target(def,replacement)
@@ -372,8 +409,7 @@ function A:spawn_shipment(s,restoring)
     local to=s.kind=="SUPPLY" and b or self.core.zone_defs[s.zone]
     if not from or not to then return false,"Invalid ground route" end
     if s.kind=="SUPPLY" and not restoring and not next(s.positions or {}) then
-        from=self:target_point(from)
-        if not from then return false,"Supply source position unavailable" end
+        from=self:target_point(from) or {x=from.x,y=from.y}
     end
     local name="SQEL-C-"..s.id;local units={}
     local types=s.side=="blue" and (s.kind=="ASSAULT" and {"M-1 Abrams","M-2 Bradley","M-2 Bradley","M 818"} or {"M 818","M 818","M978 HEMTT Tanker","M 818"})

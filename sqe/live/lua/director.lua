@@ -25,7 +25,7 @@ function Director.air(c,side)
     local live=c.config.frontline_tasking
     for _,d in ipairs(c.config.targets) do
         local minimum=live and (d.kind=="ARMOR" or d.kind=="SAM" and not c:suppressed(d.id)) and 0 or 0.25
-        if d.side==enemy(side) and d.taskable~=false and c:target_health(d.id)>minimum
+        if d.side==enemy(side) and d.taskable~=false and c:target_active(d.id) and c:target_health(d.id)>minimum
             and (not live or c.state.zones[d.zone].owner==d.side and c.catalog.frontline(c,d.zone)) then
             local priority=d.priority or 1
             if d.kind=="SAM" and not c:suppressed(d.id) then priority=priority+20 end
@@ -157,7 +157,7 @@ function Director.arrived(c,id)
         c.adapter:retire_shipment_units(s,near)
     else
         if c:defenders(s.zone,s.side,false)>0 then return false end
-        c.state.zones[s.zone].owner=s.side
+        c:capture_zone(s.zone,s.side)
         s.status="ARRIVED"
         c:note(c.zone_defs[s.zone].name.." captured by "..s.side.." ground forces.")
         -- Keep the assault group as the occupying garrison until it is destroyed.
@@ -184,7 +184,7 @@ function Director.repair(c)
         local logistics=d.kind=="DEPOT" or d.kind=="FUEL"
         local disabled=logistics and health<=0.25 or health==0
         local since=logistics and (t.disabled_at or t.destroyed_at) or t.destroyed_at
-        if disabled and since and c.state.time-since>=14400
+        if not d.chain_objective and disabled and since and c.state.time-since>=14400
             and c.state.zones[d.zone].owner==d.side and d.kind~="ARMOR" then
             for _,b in ipairs(c.config.bases) do
                 local r=c.state.bases[b.id].resources

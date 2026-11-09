@@ -1,4 +1,4 @@
-# Israel / Syria starting footprint — 0.1.8
+# Israel / Lebanon / Syria starting footprint — 0.1.16
 
 The default single-player mission now starts with the represented Israeli
 airfields blue, instead of using only the Ramat David/Golan rear area. This is a
@@ -14,10 +14,11 @@ it does not add airports or detailed terrain absent from that map.
 - Sharon: Eyn Shemer, Herzliya.
 - Central Israel: Tel Nof, Hatzor, Ben Gurion, Palmachim.
 - Negev: Nevatim, Hatzerim, Teyman, Kedem.
-- Golan approach remains a blue front sector. Four existing red sectors remain.
+- Golan approach remains blue. Thirty-two connected red sectors cover Lebanon
+  and Syria and open progressively from Naqoura, Bint Jbeil and Quneitra.
 
-There are eleven sectors in total. The schematic map now accepts twelve nodes
-and twenty-four edges, with a fixed widget pool. Clicking a sector lists its
+There are 39 sectors in total. The schematic map accepts 48 nodes and 96 edges,
+with a fixed widget pool. Clicking a sector lists its
 airfields as well as its launch bases. Sector ownership controls the associated
 airports in both the exported mission and the running campaign.
 
@@ -34,8 +35,9 @@ and one each of AWACS/tanker; Hatzor has 4 F-16C; Nevatim has 2 F-16C and one ea
 of AWACS/tanker; Hatzerim has 2 F-16C. No airframes are created by capturing a field.
 
 Central and Negev depots, fuel sites, garrisons and HAWK sites provide regional
-infrastructure. The new profile has 27 static target groups and 113 starting
-units including the player. The existing 180-unit and nine-flight limits remain.
+infrastructure. The authored profile has 111 fixed target definitions, but only
+the current objective of each active frontline sector is spawned. Twelve FARPs
+extend supply routes. The existing 180-unit and nine-flight limits remain.
 Regional stocks are 100/70/50/80/50 at the five blue bases, each for fuel, ammo
 and supply. This is a larger logistics scenario than the old one-base profile;
 old solo balance measurements cannot be carried over unchanged.
@@ -47,7 +49,7 @@ connections, reserve rules, physical arrival and finite aircraft still apply.
 
 ## Existing campaigns
 
-The new mission uses campaign ID `syria_israel_solo` / content `syria-israel-1`.
+The mission uses campaign ID `syria_israel_solo` / content `syria-israel-3`.
 It starts a separate campaign. Existing checkpoints are neither translated into
 the expanded layout nor reset. Their profile remains `syria_cedar_current` /
 `syria-1`, available as `SQE_Live_Syria_Legacy.miz` in the same install bundle.
@@ -62,8 +64,9 @@ and preserve unrelated missions and campaign saves.
 
 New profile checks cover field IDs, exported warehouse coalitions, runtime
 ownership/recapture, alternative support bases, regional supply isolation,
-finite aircraft, eleven-node geometry/native callbacks, duplicate advance
-prevention, six-hour accounting fixtures and legacy checkpoint separation.
+finite aircraft, 39-node geometry/native callbacks, the ordered four-stage
+chain, physical FARPs, duplicate advance prevention, six-hour accounting
+fixtures and legacy checkpoint separation.
 Installer contracts run against both legacy and expanded bundles.
 
 The older regression fixtures deliberately use `syria_legacy.json`. New-profile

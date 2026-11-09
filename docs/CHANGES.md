@@ -1,5 +1,19 @@
 # CHANGES.md
 
+## SQE Live 0.1.16 — 32-sector Lebanon/Syria campaign
+
+Northern Watch now contains 32 connected red sectors across Lebanon and Syria,
+plus seven blue Israeli sectors. Every red sector advances through an ordered
+SEAD, DEAD, STRIKE and CAS chain; only physical arrival of a friendly assault
+column captures it. A red counterattack rebuilds the chain. Twelve physical
+FARPs are tied to sectors and act as long-route supply relays; linked logistics
+damage can disable them and capture transfers them. The native and F10 maps now
+show the enlarged network, bases, FARPs and campaign progress. Only current
+frontline stages are spawned, keeping the 180-unit campaign budget. Existing
+0.1.15 Israel-profile checkpoints migrate without discarding ownership, stock
+or losses. Formation names and DCS-available vehicles are real-world-inspired;
+the coalition alignment and scenario remain fictional.
+
 ## SQE Live 0.1.15 — frontline tasking and more red airbases
 
 Northern Watch offers fixed targets according to frontline control and live

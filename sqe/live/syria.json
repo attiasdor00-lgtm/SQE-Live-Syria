@@ -3,11 +3,11 @@
   "name": "SQE Live \u2014 Israel / Syria",
   "operation": {
     "name": "Operation Northern Watch",
-    "background": "In this fictional scenario, a standoff has escalated into fighting along the Golan. Israel holds the southern approaches from its home airfields. Red forces operate from Syria and are trying to hold the corridor toward Damascus.",
-    "objective": "Hold Israel's airfields and supply network, open the southern corridor, and help blue ground forces take every campaign sector."
+    "background": "In this fictional scenario, a regional war has opened two connected fronts through Lebanon and southern Syria. Israel holds its home airfields while a red coalition occupies thirty-two sectors from Naqoura and Quneitra to Aleppo and Palmyra.",
+    "objective": "Keep Israel supplied, break each red sector through its four ordered objectives, establish forward logistics through captured FARPs, and help blue ground forces take all thirty-two red sectors."
   },
-  "content_version": "syria-israel-2",
-  "previous_content_version": "syria-israel-1",
+  "content_version": "syria-israel-3",
+  "previous_content_version": "syria-israel-2",
   "added_bases": ["khalkhalah", "marj_ab", "tiyas"],
   "frontline_tasking": true,
   "seed": 1971,

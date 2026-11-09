@@ -1,4 +1,4 @@
-# Native front map — 0.1.3
+# Native front map — 0.1.16
 
 L08 adds a sector schematic inside the existing Operations window. It does not
 change campaign mechanics or checkpoint schema/content (`1` / `syria-1`).
@@ -12,11 +12,12 @@ Coordinates determine row order and relative horizontal placement; rows are
 spaced to avoid overlap. This is not a scaled geographic map. Links mean sector
 adjacency, never verified roads or actual supply connectivity.
 
-The current six sectors and five connections fit a 368 × 300 canvas. The adapter
-preallocates eight sector buttons and 48 line panels (three per connection, at
-most 16 connections). Refreshing ownership, text or selection reuses those
-widgets. Invalid data or an exceeded bound falls back to Front plan; adding
-more sectors requires a deliberate layout revision.
+The current profile has 39 sectors and 67 connections on a compact authored
+9 × 9 grid in the 368 × 300 canvas. The adapter preallocates 48 sector buttons
+and 288 line panels (three per connection, at most 96 connections). Refreshing
+ownership, text or selection reuses those widgets. Legacy profiles without grid
+coordinates retain the geographic row layout. Invalid data or an exceeded bound
+falls back to Front plan.
 
 Clicking a sector selects its first task, or explicitly selects no task for an
 empty sector. Task rows and Previous/Next stay within the selected sector.
@@ -36,7 +37,8 @@ carry their current sector ID; callbacks do not capture old snapshot objects.
 All native children hide with the window and when leaving the Map tab. Tab
 switching reflows the target detail panel around the four task rows.
 
-Blue/red colour is accompanied by owner text, front asterisks and base markers.
+Blue/red colour is accompanied by compact labels, front asterisks, base markers
+and FARP markers. Legacy layouts retain explicit owner text.
 The selected sector receives a brighter skin. Amber connections cross opposing
 ownership. A disconnected, stopped or older-than-ten-second snapshot disables
 commands and node/target selection, colours nodes grey, removes amber links and

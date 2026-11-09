@@ -76,7 +76,7 @@ class SupplyCase(unittest.TestCase):
             c.zone_defs.marj.neighbors={'south','damascus'};c.zone_defs.galilee.neighbors={'golan'}
             assert(not mods.supply.path(c,'blue','south','galilee'))
             assert(#mods.supply.path(c,'blue','south','galilee',true)==3)
-            for i=1,33 do cfg.zones[#cfg.zones+1]={id='oversize-'..i} end
+            for i=1,mods.supply.MAX_SECTORS do cfg.zones[#cfg.zones+1]={id='oversize-'..i} end
             assert(not mods.supply.path(c,'blue','south','galilee',true))
         ''')
 

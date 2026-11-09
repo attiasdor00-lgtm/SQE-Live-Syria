@@ -83,11 +83,11 @@ class MapCase(unittest.TestCase):
             v=rt:view();v.front.sectors[1].neighbors={v.front.sectors[1].id};assert(not m.layout(v,368,300))
             v=rt:view();v.front.sectors[1].x=0/0;assert(not m.layout(v,368,300))
             v=rt:view();v.front.sectors[2].id=v.front.sectors[1].id;assert(not m.layout(v,368,300))
-            v=rt:view();for i=1,3 do v.front.sectors[#v.front.sectors+1]=v.front.sectors[1] end
+            v=rt:view();for i=1,mods.map.MAX_SECTORS do v.front.sectors[#v.front.sectors+1]=v.front.sectors[1] end
             assert(not m.layout(v,368,300))
             v=rt:view();v.front.sectors={}
-            for i=1,8 do v.front.sectors[i]={id=tostring(i),name=tostring(i),x=i,y=i,owner='red',neighbors={}} end
-            for i,s in ipairs(v.front.sectors) do for j=1,8 do if i~=j then s.neighbors[#s.neighbors+1]=tostring(j) end end end
+            for i=1,15 do v.front.sectors[i]={id=tostring(i),name=tostring(i),x=i,y=i,owner='red',neighbors={}} end
+            for i,s in ipairs(v.front.sectors) do for j=1,15 do if i~=j then s.neighbors[#s.neighbors+1]=tostring(j) end end end
             assert(not m.layout(v,368,300))
         ''')
 
@@ -229,7 +229,7 @@ class MapCase(unittest.TestCase):
             ui.window.MapTab.click();layout_check()
             local count=#ui.widgets
             for i=1,100 do mock.clock=mock.clock+1;rt:publish();ui.handler.onSimulationFrame() end
-            assert(#ui.widgets==count and #ui.window.MapCanvas.children==84)
+            assert(#ui.widgets==count and #ui.window.MapCanvas.children==mods.map.MAX_SECTORS+mods.map.MAX_EDGES*3)
             ui.window.Close.click();assert(not ui.window.cursor)
             for _,w in ipairs(ui.window.children) do assert(not w.visible,w.name) end
             for _,w in ipairs(ui.window.MapCanvas.children) do assert(not w.visible) end

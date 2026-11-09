@@ -58,8 +58,10 @@ function U:render(layout,online,selected,visible)
         node.id=n and n.id or false
         if n then
             local active=n.id==selected
-            local caption=string.upper(n.owner).." "..n.caption
-                ..(n.frontline and " *" or "")..(#n.bases>0 and " [B]" or "")
+            local caption=n.compact and (n.caption..(n.frontline and "*" or "")
+                ..(#n.bases>0 and "B" or "")..(#n.farps>0 and "F" or ""))
+                or (string.upper(n.owner).." "..n.caption..(n.frontline and " *" or "")
+                    ..(#n.bases>0 and " [B]" or "")..(#n.farps>0 and " [F]" or ""))
             node.widget:setBounds(n.x,n.y,n.w,n.h)
             node.widget:setText(caption)
             node.widget:setSkin(not online and self.skins.stale or self.skins[n.owner..(active and "_selected" or "")])

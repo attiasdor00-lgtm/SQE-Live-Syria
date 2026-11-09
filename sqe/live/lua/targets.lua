@@ -17,14 +17,10 @@ function T.resolve(c,id,state)
 end
 function T.active(c,d,s)
     return d~=nil and s~=nil and (not d.shipment or s.status=="MOVING" or s.status=="ARRIVED")
-        and c.count(s.alive)>0
+        and c.count(s.alive)>0 and (d.shipment or c:target_active(d.id))
 end
 function T.frontline(c,zone)
-    local owner=c.state.zones[zone].owner
-    for _,neighbor in ipairs(c.zone_defs[zone].neighbors) do
-        if c.state.zones[neighbor].owner~=owner then return true end
-    end
-    return false
+    return c:zone_frontline(zone)
 end
 local function strategic_sources(c)
     local sources={}
@@ -63,6 +59,9 @@ function T.tasks(c)
                     or "An enemy ground column is advancing on this sector."
             elseif c.state.zones[d.zone].owner~="red" then return
             elseif current then why="Your current assignment."
+            elseif d.chain_objective then
+                local stage=c:zone_stage(d.zone)
+                why="Ordered sector objective "..stage.."/4. Complete it to unlock the next stage."
             elseif T.frontline(c,d.zone) then why="This target is on the active front."
             elseif strategic[id] then why="This source supplies bases connected to the enemy front."
             else return end
@@ -74,11 +73,16 @@ function T.tasks(c)
             or d.kind=="ARMOR" and "CAS" or "STRIKE"
         out[#out+1]={id=id,role=live and current and current.role or role,name=d.name,zone=d.zone,x=d.x,y=d.y,why=why,
             health=remaining,priority=d.priority or 1,threat=d.threat or "Enemy fighters and short-range air defences",
+            formation=d.formation,
             dynamic=d.shipment==true,survivors=c.count(s.alive),
             force_state=d.shipment and (s.status=="ARRIVED" and "GARRISON"
                 or s.corridor and s.corridor.state~="OPEN" and ("SUPPLY_"..s.corridor.state)
                 or (s.navigation and s.navigation.state or "MOVING")) or nil,
-            objective=d.shipment and "Destroy every remaining vehicle in this force. Arrival or withdrawal does not count as destruction." or nil}
+            objective=d.shipment and "Destroy every remaining vehicle in this force. Arrival or withdrawal does not count as destruction."
+                or d.chain_objective and (role=="SEAD" and "Destroy every search/tracking radar to unlock DEAD."
+                    or role=="DEAD" and "Reduce the remaining battery to 25% strength or less to unlock STRIKE."
+                    or role=="STRIKE" and "Reduce the logistics/command group to 25% strength or less to unlock CAS."
+                    or "Destroy every garrison vehicle. A friendly ground column must still arrive to capture the sector.") or nil}
     end
     for _,d in ipairs(c.config.targets) do add(d.id) end
     for id in pairs(c.state.shipments) do add(id) end

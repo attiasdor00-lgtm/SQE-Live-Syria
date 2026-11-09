@@ -15,7 +15,8 @@ function V.campaign(s)
     local status=s.status=="ACTIVE" and "LIVE" or s.status
     local lines={op.name, status.."  /  "..V.time(s.time), "",
         "SITUATION",op.background,"","CAMPAIGN OBJECTIVE",op.objective,"",
-        string.format("Sectors held %d / %d    Objectives completed %d",op.held,op.total,s.completed or 0)}
+        string.format("Red sectors captured %d / %d    Player objectives completed %d",
+            op.captured or 0,op.red_total or op.total,s.completed or 0)}
     if op.wingman then
         lines[#lines+1]="";lines[#lines+1]="YOUR FLIGHT"
         lines[#lines+1]="Viper 1 and Viper 2, F-16C, Ramat David. Use the standard DCS Wingman / Flight radio menus."
@@ -25,8 +26,9 @@ end
 function V.campaign_actions(s)
     local lines={"FLY THE CAMPAIGN","","Open Missions, pick a task, review its campaign effect, then select Accept.",
         "AI aircraft and ground forces keep operating between player assignments.","",
-        "F10 MAP","Blue and red rings show sector control. Dashed lines show open supply links.",
+        "F10 MAP","Blue and red rings show sector control. Lines show currently open supply links.",
         "Airfield labels show current control. Gold rings identify frontline sectors.",
+        "FARP ONLINE labels identify operating long-range supply relays.",
         "Sector rings and supply links are schematic.","","YOUR ASSIGNMENT"}
     local active=s.task and V.selected(s,s.task.target)
     if active then
@@ -128,6 +130,7 @@ function V.task(s,id)
     local t=V.selected(s,id)
     if not t then return "No remaining taskable targets. Watch the front and ground advances." end
     local lines={t.role.." / "..t.name, "Sector: "..(t.sector_name or t.zone)..(t.why and ("\n"..t.why) or ""),
+        t.formation and ("Formation: "..t.formation) or "",
         "", "CAMPAIGN EFFECT",t.impact or "Effect not supplied by this mission.",
         "", "SECTOR OBJECTIVE",t.sector_instruction or "See the Campaign tab.",
         "", "COORDINATES", t.coordinates or "Use Brief / coordinates or Mark on F10 map.",

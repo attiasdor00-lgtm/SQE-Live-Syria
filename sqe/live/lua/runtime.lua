@@ -185,10 +185,8 @@ function Runtime.start(config,modules,storage)
         end
     end
     local initialized,initialization_error=pcall(function()
-        for _,d in ipairs(config.targets) do
-            local ok,err=adapter:spawn_target(d,core.state.targets[d.id])
-            if not ok then error("World initialization failed: "..tostring(err)) end
-        end
+        local targets_ok,targets_error=adapter:sync_zone_targets()
+        if not targets_ok then error("World initialization failed: "..tostring(targets_error)) end
         for _,s in pairs(core.state.shipments) do
             if s.status=="MOVING" or s.status=="ARRIVED" then
                 local ok,err=adapter:spawn_shipment(s,true)
@@ -233,6 +231,8 @@ function Runtime.start(config,modules,storage)
                 local dt=math.max(0,now-runtime.last_clock);runtime.last_clock=now
                 core:tick(dt)
                 adapter:observe()
+                local targets_ok,targets_error=adapter:sync_zone_targets()
+                if not targets_ok then error("Sector objective activation failed: "..tostring(targets_error)) end
                 Director.tick(core)
                 core:check_task()
                 adapter:sync_bases()

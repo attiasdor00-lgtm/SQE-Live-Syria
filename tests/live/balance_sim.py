@@ -30,18 +30,28 @@ def simulate(config, scenario, baseline_ref=None):
     h.start()
     h.g.scenario = scenario
     result = h.run('''
+        local function kill_target(id,limit)
+            local d=c.target_defs[id];local group=a.ground_groups[id]
+            if not d or not group or not mock.groups[group] then return 0 end
+            local killed=0
+            for i=1,math.min(limit or #d.types,#d.types) do
+                local u=mock.units[group..'-'..i]
+                if u and u.alive then mock.kill(u.name);killed=killed+1 end
+            end
+            return killed
+        end
         local low=scenario~='steady' and scenario~='attrition'
         c.state.bases.ramat.resources=low and {fuel=30,ammo=30,supply=30} or {fuel=100,ammo=100,supply=100}
         if scenario=='empty_legacy_stock' then c.state.bases.ramat.resources={fuel=0,ammo=0,supply=0} end
         local depot_loss=scenario=='low_stock_depot_loss' or scenario=='quarter_strength_depot' or scenario=='empty_legacy_stock'
         if depot_loss then
             local n=scenario=='quarter_strength_depot' and 3 or 4
-            for i=1,n do mock.kill('SQEL-G-blue_depot-1-'..i) end
+            kill_target('blue_depot',n)
         end
         if scenario=='low_stock_depot_loss' then
-            for i=1,5 do mock.kill('SQEL-G-south_armor-1-'..i) end
+            kill_target('south_armor',5)
         end
-        if scenario=='fuel_loss' then for i=1,3 do mock.kill('SQEL-G-blue_fuel-1-'..i) end end
+        if scenario=='fuel_loss' then kill_target('blue_fuel',3) end
         if scenario=='corridor_cut' then c.state.zones.golan.owner='red' end
         local seen,seen_ship={},{}
         local south_was_blue=c.state.zones.south.owner=='blue'
@@ -51,15 +61,12 @@ def simulate(config, scenario, baseline_ref=None):
         for minute=1,360 do
             c:tick(60)
             if scenario=='corridor_cut' and minute==120 then
-                for i=1,#c.target_defs.blue_front.types do mock.kill(a.ground_groups.blue_front..'-'..i) end
+                kill_target('blue_front')
                 c.state.zones.golan.owner='blue'
             end
             if (scenario=='steady' or scenario=='attrition') and (minute==90 or minute==180 or minute==270) then
                 local target=minute==90 and 'south_armor' or minute==180 and 'marj_armor' or 'damascus_armor'
-                for i=1,#c.target_defs[target].types do
-                    local name=a.ground_groups[target]..'-'..i
-                    if mock.units[name].alive then mock.kill(name) end
-                end
+                kill_target(target)
             end
             for id,f in pairs(c.state.flights) do
                 if not seen[id] then

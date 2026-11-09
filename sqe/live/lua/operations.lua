@@ -28,7 +28,7 @@ function O.impact(c,id)
         if not c:suppressed(id) then
             return "Destroy the search/tracking radars to complete SEAD. Surviving battery units can become a DEAD task. This does not capture the sector."
         end
-        return "Radars destroyed. Reduce the remaining battery to 25% strength or less for DEAD. Ground capture is a separate objective."
+        return "Radars destroyed. Reduce the remaining battery to 25% strength or less for DEAD. This unlocks the sector STRIKE objective."
     elseif t.kind=="DEPOT" or t.kind=="FUEL" then
         local active=sources(c,t.side,t.kind)
         local online=c:target_health(id)>0.25 and c.state.zones[t.zone].owner==t.side
@@ -61,10 +61,12 @@ function O.sectors(c)
         end
     end
     for _,z in ipairs(c.config.zones) do
-        local s={id=z.id,name=z.name,map_label=z.map_label or z.name,x=z.x,y=z.y,neighbors=c.copy(z.neighbors),base_names={},airfield_names={},
+        local s={id=z.id,name=z.name,map_label=z.map_label or z.name,x=z.x,y=z.y,ui_col=z.ui_col,ui_row=z.ui_row,
+            neighbors=c.copy(z.neighbors),base_names={},airfield_names={},farps={},
             owner=c.state.zones[z.id].owner,defenders=c:defenders(z.id,"blue",false),
             resistance=c:defenders(z.id,"blue",true),frontline=false,
-            friendly_columns=0,enemy_columns=0,delayed_columns=0,garrison=0,base_effects={}}
+            friendly_columns=0,enemy_columns=0,delayed_columns=0,garrison=0,base_effects={},
+            campaign_stage=c:zone_stage(z.id),formation=z.formation,nation=z.nation}
         for _,adj in ipairs(z.neighbors) do
             if c.state.zones[adj].owner~=s.owner then s.frontline=true end
         end
@@ -94,12 +96,26 @@ function O.sectors(c)
                 end
             end
         end
+        for _,f in ipairs(c.config.farps or {}) do if f.zone==z.id then
+            local state=c.state.farps[f.id]
+            s.farps[#s.farps+1]={id=f.id,name=f.name,owner=state.owner,operational=state.operational}
+            s.base_effects[#s.base_effects+1]=f.name..": "..(state.operational and "operating supply relay" or "offline; long-range supply cannot relay here")
+        end end
         if s.owner=="blue" then
             s.stage=s.enemy_columns>0 and "DEFEND" or "HELD"
             s.instruction=s.enemy_columns>0 and (s.enemy_columns.." enemy ground column(s) inbound. Protect the sector's defenders.")
                 or "Sector held. Protect its forces and supply sites."
         elseif not s.frontline then
-            s.stage="BEHIND_FRONT";s.instruction="Capture an adjacent sector before a ground advance. Deep strikes remain available."
+            s.stage="BEHIND_FRONT";s.instruction="Capture an adjacent sector to open this sector's four ordered objectives."
+        elseif s.campaign_stage and s.campaign_stage<5
+            and not c:target_active(c:stage_target(z.id)) then
+            s.stage="FRONT_RESERVE"
+            s.instruction="Connected front sector waiting for an active-front slot. Existing progress is retained; complete another active sector or finish a bound mission."
+        elseif s.campaign_stage and s.campaign_stage<5 then
+            local names={"SEAD","DEAD","STRIKE","CAS"}
+            s.stage=names[s.campaign_stage].." "..s.campaign_stage.."/4"
+            s.instruction="Ordered sector chain: complete "..names[s.campaign_stage].." to unlock "
+                ..(names[s.campaign_stage+1] or "the ground advance")..". Formation: "..(s.formation or "local defence group").."."
         elseif s.friendly_columns>0 then
             s.stage=s.defenders>0 and "COVER_ADVANCE" or "AWAIT_ARRIVAL"
             s.instruction=s.friendly_columns.." friendly column(s) en route. "..(s.defenders>0
@@ -139,10 +155,11 @@ function O.sectors(c)
 end
 function O.decorate(c,view)
     local sectors=O.sectors(c);local by_id={}
-    local held=0
+    local held,red_remaining=0,0
     for _,s in ipairs(sectors) do
         by_id[s.id]=s
         if s.owner=="blue" then held=held+1 end
+        if c.zone_defs[s.id].owner=="red" and s.owner=="red" then red_remaining=red_remaining+1 end
     end
     view.operation=c.copy(c.config.operation or {
         name=c.config.name,
@@ -150,6 +167,9 @@ function O.decorate(c,view)
         objective="Help blue ground forces take every campaign sector."
     })
     view.operation.held=held;view.operation.total=#sectors
+    view.operation.red_total=c.config.red_zone_count or red_remaining
+    view.operation.red_remaining=red_remaining
+    view.operation.captured=view.operation.red_total-red_remaining
     view.operation.wingman=c.config.wingman_unit~=nil
     for _,t in ipairs(view.tasks) do
         local sector=by_id[t.zone]
@@ -157,7 +177,7 @@ function O.decorate(c,view)
         t.impact=O.impact(c,t.id);t.support=O.support(c,t.id)
         t.rank=t.priority
         if sector.owner=="red" and sector.frontline then
-            t.rank=t.rank+(t.role=="CAS" and 120 or t.role=="SEAD" and 100 or 60)
+            t.rank=t.rank+(t.role=="CAS" and 120 or t.role=="SEAD" and 100 or t.role=="DEAD" and 90 or 60)
         end
         if c.state.task and t.id==c.state.task.target then t.rank=t.rank+1000 end
     end

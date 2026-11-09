@@ -44,6 +44,9 @@ def content(campaign_id: str | None = None, scenario="israel"):
     if scenario not in profiles:
         raise ValueError("Unknown Syria scenario")
     spec = json.loads((HERE / profiles[scenario]).read_text())
+    if scenario == "israel":
+        from .campaign32 import apply as apply_campaign32
+        apply_campaign32(spec)
     campaign_id=campaign_id or spec["id"]
     if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", campaign_id):
         raise ValueError("Campaign ID must contain only letters, digits, underscores or hyphens")
@@ -55,6 +58,31 @@ def content(campaign_id: str | None = None, scenario="israel"):
         airport = terrain.airports[zone["airport"]]
         zone.update(x=airport.position.x + zone.pop("dx"), y=airport.position.y + zone.pop("dy"))
     zones = {z["id"]: z for z in spec["zones"]}
+    if len(zones) != len(spec["zones"]):
+        raise ValueError("Duplicate campaign sector id")
+    for zone in spec["zones"]:
+        if not zone["neighbors"]:
+            raise ValueError(f"{zone['id']}: disconnected campaign sector")
+        for neighbor in zone["neighbors"]:
+            if neighbor not in zones:
+                raise ValueError(f"{zone['id']}: unknown neighboring sector {neighbor}")
+            if zone["id"] not in zones[neighbor]["neighbors"]:
+                raise ValueError(f"{zone['id']} / {neighbor}: asymmetric campaign connection")
+    reached = {spec["zones"][0]["id"]}
+    pending = list(reached)
+    while pending:
+        current = pending.pop()
+        for neighbor in zones[current]["neighbors"]:
+            if neighbor not in reached:
+                reached.add(neighbor)
+                pending.append(neighbor)
+    if len(reached) != len(zones):
+        raise ValueError("Campaign sector graph is not fully connected")
+    grids = [(z.get("ui_col"), z.get("ui_row")) for z in spec["zones"]]
+    if scenario == "israel" and (None, None) in grids:
+        raise ValueError("Every campaign sector needs a UI grid position")
+    if scenario == "israel" and len(grids) != len(set(grids)):
+        raise ValueError("Campaign sector UI grid positions overlap")
     for field in spec.get("airfields", []):
         a=terrain.airports[field["airport"]]
         if field["zone"] not in zones:
@@ -63,12 +91,27 @@ def content(campaign_id: str | None = None, scenario="israel"):
     for base in spec["bases"]:
         a = terrain.airports[base["airport"]]
         base.update(x=a.position.x, y=a.position.y, airport_id=a.id)
+    for farp in spec.get("farps", []):
+        zone = zones[farp["zone"]]
+        farp.update(x=zone["x"] + farp.pop("dx"), y=zone["y"] + farp.pop("dy"))
     for target in spec["targets"]:
         z = zones[target["zone"]]
         target.update(x=z["x"] + target.pop("dx"), y=z["y"] + target.pop("dy"))
         missing = set(target["types"]) - known_types
         if missing:
             raise ValueError(f"{target['id']}: unknown DCS vehicle types: {missing}")
+    if scenario == "israel":
+        red = [z for z in spec["zones"] if z["owner"] == "red"]
+        if len(red) != 32:
+            raise ValueError(f"Expected 32 red sectors, found {len(red)}")
+        target_ids = {t["id"] for t in spec["targets"]}
+        for zone in red:
+            chain = zone.get("mission_chain")
+            objectives = zone.get("objectives", {})
+            if chain != ["SEAD", "DEAD", "STRIKE", "CAS"]:
+                raise ValueError(f"{zone['id']}: invalid four-stage mission chain")
+            if set(objectives) != {"sam", "strike", "armor"} or not set(objectives.values()) <= target_ids:
+                raise ValueError(f"{zone['id']}: incomplete objective chain")
     return spec, terrain
 
 
@@ -138,6 +181,7 @@ end
 
 def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True):
     from dcs import Mission, planes, task
+    from dcs.mapping import Point
     from dcs.mission import StartType
     from dcs.unit import Skill
     from dcs.triggers import TriggerOnce
@@ -156,6 +200,10 @@ def build(output: Path, campaign_id=None, scenario="israel", include_legacy=True
     for base in config["bases"]:
         a = m.terrain.airports[base["airport"]]
         (a.set_blue if base["side"] == "blue" else a.set_red)()
+    for index,farp in enumerate(config.get("farps", []),1):
+        country=m.country("USA" if farp["owner"]=="blue" else "Russia")
+        m.farp(country,farp["name"],Point(farp["x"],farp["y"],m.terrain),
+               frequency=127.0+index*0.25,callsign_id=(index-1)%4+1)
     home = m.terrain.airports["Ramat David"]
     player_flight = {"callsign_name": "Viper", "callsign_nr": 1, "group_size": 2} if scenario=="israel" else {}
     g = m.flight_group_from_airport(m.country("USA"), "Viper Live", planes.F_16C_50,

@@ -1,5 +1,5 @@
 -- Pure sector schematic and local browsing state. No DCS or campaign mutations.
-local M={MAX_SECTORS=12,MAX_EDGES=24,PAGE_SIZE=4}
+local M={MAX_SECTORS=48,MAX_EDGES=96,PAGE_SIZE=4}
 local function finite(v)return type(v)=="number" and v==v and math.abs(v)<5000000 end
 function M.sector(view,id)
     for _,s in ipairs(view.front and view.front.sectors or {}) do if s.id==id then return s end end
@@ -53,12 +53,14 @@ function M.layout(view,width,height)
     if not finite(width) or not finite(height) or width<340 or height<280 then return nil,"Map area too small" end
     local ordered,by_id={},{}
     local east_min,east_max
+    local grid=true
     for _,s in ipairs(sectors) do
         if type(s)~="table" or type(s.id)~="string" or by_id[s.id] or type(s.name)~="string"
             or not finite(s.x) or not finite(s.y) or type(s.neighbors)~="table"
             or (s.owner~="blue" and s.owner~="red") then return nil,"Invalid sector map data" end
         by_id[s.id]=s;ordered[#ordered+1]=s
         east_min=math.min(east_min or s.y,s.y);east_max=math.max(east_max or s.y,s.y)
+        if not finite(s.ui_col) or not finite(s.ui_row) then grid=false end
     end
     table.sort(ordered,function(a,b)if a.x==b.x then return a.id<b.id end return a.x>b.x end)
     local nodes,positions={},{}
@@ -66,8 +68,12 @@ function M.layout(view,width,height)
     for i,s in ipairs(ordered) do
         local east=east_max>east_min and (s.y-east_min)/(east_max-east_min) or 0.5
         local n={id=s.id,name=s.name,caption=s.map_label or s.name,owner=s.owner,
-            frontline=s.frontline==true,bases=s.base_names or {},
-            x=math.floor(44+east*(width-248)),y=math.floor(8+(i-1)*step),w=160,h=math.min(34,math.floor(step-4))}
+            frontline=s.frontline==true,bases=s.base_names or {},farps=s.farps or {},
+            compact=grid,
+            x=grid and math.floor(2+s.ui_col*40) or math.floor(44+east*(width-248)),
+            y=grid and math.floor(3+s.ui_row*33) or math.floor(8+(i-1)*step),
+            w=grid and 36 or 160,h=grid and 24 or math.min(34,math.floor(step-4))}
+        if n.x<0 or n.y<0 or n.x+n.w>width or n.y+n.h>height then return nil,"Sector grid exceeds map area" end
         nodes[#nodes+1]=n;positions[s.id]=n
     end
     local edges,seen={},{}
@@ -79,15 +85,13 @@ function M.layout(view,width,height)
                 if #edges>=M.MAX_EDGES then return nil,"Too many sector connections; use Front plan" end
                 seen[key]=true
                 local a,b=positions[s.id],positions[id]
-                local left=(a.x+b.x+a.w)<width
-                -- Separate lanes keep non-adjacent connections from merging into a bus.
-                local lane=left and (6+2*#edges) or (width-8-2*#edges)
-                local ax=left and a.x or a.x+a.w;local bx=left and b.x or b.x+b.w
+                local ax=a.x+math.floor(a.w/2);local bx=b.x+math.floor(b.w/2)
                 local ay=a.y+math.floor(a.h/2);local by=b.y+math.floor(b.h/2)
+                local middle=math.floor((ax+bx)/2)
                 edges[#edges+1]={from=s.id,to=id,front=s.owner~=by_id[id].owner,segments={
-                    {x=math.min(ax,lane),y=ay,w=math.max(2,math.abs(ax-lane)),h=2},
-                    {x=lane,y=math.min(ay,by),w=2,h=math.max(2,math.abs(ay-by))},
-                    {x=math.min(bx,lane),y=by,w=math.max(2,math.abs(bx-lane)),h=2}}}
+                    {x=math.min(ax,middle),y=ay,w=math.max(2,math.abs(ax-middle)),h=2},
+                    {x=middle,y=math.min(ay,by),w=2,h=math.max(2,math.abs(ay-by))},
+                    {x=math.min(bx,middle),y=by,w=math.max(2,math.abs(bx-middle)),h=2}}}
             end
         end
     end
@@ -102,6 +106,9 @@ function M.detail(view,current,V)
     if #M.tasks(view,s.id)==0 then lines[#lines+1]="No current task cards in this sector." end
     if #(s.base_names or {})>0 then lines[#lines+1]="Bases: "..table.concat(s.base_names,", ") end
     if #(s.airfield_names or {})>0 then lines[#lines+1]="Airfields: "..table.concat(s.airfield_names,", ") end
+    for _,f in ipairs(s.farps or {}) do
+        lines[#lines+1]="FARP: "..f.name.." / "..(f.operational and "ONLINE" or "OFFLINE").." / "..string.upper(f.owner)
+    end
     lines[#lines+1]="Enemy ground defenders: "..s.defenders
     lines[#lines+1]="Friendly / enemy columns: "..s.friendly_columns.." / "..s.enemy_columns
     for _,effect in ipairs(s.base_effects) do lines[#lines+1]=effect end

@@ -37,12 +37,13 @@ function Core.new(config, adapter, restored, session, targets, supply)
     assert(type(config) == "table" and config.id and config.content_version, "invalid content")
     local self = setmetatable({config=config, adapter=adapter, session=session,catalog=assert(targets,"target catalog required"),
         supply=assert(supply,"supply coordinator required"),
-        target_defs={}, base_defs={}, zone_defs={}, journal={}, journal_order={}}, Core)
+        target_defs={}, base_defs={}, zone_defs={}, farp_defs={}, journal={}, journal_order={}}, Core)
     for _, t in ipairs(config.targets) do self.target_defs[t.id] = t end
     for _, b in ipairs(config.bases) do self.base_defs[b.id] = b end
     for _, z in ipairs(config.zones) do self.zone_defs[z.id] = z end
+    for _, f in ipairs(config.farps or {}) do self.farp_defs[f.id] = f end
     self.state = {schema=1, campaign=config.id, content=config.content_version, time=0,
-        revision=1, next_id=0, rng=config.seed or 71, targets={}, bases={}, zones={},
+        revision=1, next_id=0, rng=config.seed or 71, targets={}, bases={}, zones={},farps={},
         flights={}, shipments={}, maintenance={}, task=false, completed=0,
         pilot={sorties=0, landings=0, losses=0, airborne=false}, log={}, status="ACTIVE",
         next_director=180, next_logistics=900, next_repair=1800}
@@ -54,6 +55,9 @@ function Core.new(config, adapter, restored, session, targets, supply)
         self.state.targets[t.id] = {alive=alive, generation=1, positions={}, destroyed_at=false,disabled_at=false}
     end
     for _, z in ipairs(config.zones) do self.state.zones[z.id]={owner=z.owner} end
+    for _, f in ipairs(config.farps or {}) do
+        self.state.farps[f.id]={owner=f.owner,operational=true}
+    end
     if restored then
         restored=self:upgrade_save(restored)
         local ok, err = self:validate_save(restored)
@@ -85,14 +89,46 @@ function Core.new(config, adapter, restored, session, targets, supply)
 end
 
 function Core:upgrade_save(s)
+    -- Saves written before FARPs were introduced have no farps table.  The
+    -- legacy scenario still has no FARPs, so this is a schema-compatible
+    -- addition rather than a campaign reset or a content migration.
+    if type(s)=="table" and s.campaign==self.config.id and s.content==self.config.content_version
+        and s.farps==nil and next(self.farp_defs)==nil then
+        s=copy(s);s.farps={}
+    end
     local prior=self.config.previous_content_version
     if not prior or type(s)~="table" or s.campaign~=self.config.id or s.content~=prior
         or type(s.bases)~="table" then return s end
-    for _,id in ipairs(self.config.added_bases) do if s.bases[id]~=nil then return s end end
     local migrated=copy(s)
-    for _,id in ipairs(self.config.added_bases) do
-        local def=self.base_defs[id]
-        migrated.bases[id]={ready=copy(def.aircraft),resources=copy(def.resources)}
+    migrated.targets=type(migrated.targets)=="table" and migrated.targets or {}
+    migrated.zones=type(migrated.zones)=="table" and migrated.zones or {}
+    migrated.farps={}
+    for id in pairs(migrated.bases) do if not self.base_defs[id] then migrated.bases[id]=nil end end
+    for id in pairs(migrated.targets) do if not self.target_defs[id] then migrated.targets[id]=nil end end
+    for id in pairs(migrated.zones) do if not self.zone_defs[id] then migrated.zones[id]=nil end end
+    for id,def in pairs(self.base_defs) do
+        if not migrated.bases[id] then migrated.bases[id]={ready=copy(def.aircraft),resources=copy(def.resources)} end
+    end
+    for id,def in pairs(self.target_defs) do
+        if not migrated.targets[id] then
+            local alive={};for i=1,#def.types do alive[tostring(i)]=true end
+            migrated.targets[id]={alive=alive,generation=1,positions={},destroyed_at=false,disabled_at=false}
+        end
+    end
+    for id,def in pairs(self.zone_defs) do
+        if not migrated.zones[id] then migrated.zones[id]={owner=def.owner} end
+    end
+    for id,def in pairs(self.farp_defs) do
+        migrated.farps[id]={owner=migrated.zones[def.zone].owner,operational=true}
+    end
+    for _,def in pairs(self.target_defs) do if def.farp and migrated.zones[def.zone].owner==def.side then
+        local target=migrated.targets[def.id]
+        if count(target.alive)/#def.types<=0.25 then migrated.farps[def.farp].operational=false end
+    end end
+    if migrated.task and not self.target_defs[migrated.task.target] then migrated.task=false end
+    for _,flight in pairs(migrated.flights or {}) do
+        if flight.target and flight.target~=false and not self.target_defs[flight.target]
+            and not (migrated.shipments and migrated.shipments[flight.target]) then flight.target=false end
     end
     migrated.content=self.config.content_version
     return migrated
@@ -102,7 +138,7 @@ function Core:validate_save(s)
     if type(s)~="table" or s.schema~=1 or s.campaign~=self.config.id or s.content~=self.config.content_version then
         return false, "schema, campaign or content does not match"
     end
-    for _, key in ipairs({"targets","bases","zones","flights","shipments","maintenance","pilot","log"}) do
+    for _, key in ipairs({"targets","bases","zones","farps","flights","shipments","maintenance","pilot","log"}) do
         if type(s[key])~="table" then return false, "missing "..key end
     end
     for _, key in ipairs({"time","revision","next_id","rng","next_director","next_logistics","next_repair","completed"}) do
@@ -114,6 +150,7 @@ function Core:validate_save(s)
     for id in pairs(s.targets) do if not self.target_defs[id] then return false,"unknown saved target" end end
     for id in pairs(s.bases) do if not self.base_defs[id] then return false,"unknown saved base" end end
     for id in pairs(s.zones) do if not self.zone_defs[id] then return false,"unknown saved zone" end end
+    for id in pairs(s.farps) do if not self.farp_defs[id] then return false,"unknown saved FARP" end end
     for id, def in pairs(self.target_defs) do
         local t=s.targets[id]
         if type(t)~="table" or not units(t.alive,t.positions,#def.types) or not integer(t.generation,1,1e8) then
@@ -136,6 +173,11 @@ function Core:validate_save(s)
     end
     for id in pairs(self.zone_defs) do
         if type(s.zones[id])~="table" or (s.zones[id].owner~="blue" and s.zones[id].owner~="red") then return false,"invalid zone "..id end
+    end
+    for id,def in pairs(self.farp_defs) do
+        local f=s.farps[id]
+        if type(f)~="table" or (f.owner~="blue" and f.owner~="red") or type(f.operational)~="boolean"
+            or f.owner~=s.zones[def.zone].owner then return false,"invalid FARP "..id end
     end
     local stock={}
     for id,b in pairs(s.bases) do stock[id]=copy(b.ready) end
@@ -243,7 +285,7 @@ function Core:validate_save(s)
     end
     local active=self.config.player_slots or 1
     local flights=0
-    for _,t in pairs(s.targets) do active=active+count(t.alive) end
+    for id,t in pairs(s.targets) do if self:target_active(id,s) then active=active+count(t.alive) end end
     for _,f in pairs(s.flights) do
         if f.status~="COMPLETE" then active=active+count(f.alive);flights=flights+1 end
     end
@@ -268,6 +310,104 @@ function Core:id(prefix)
     return prefix..tostring(self.state.next_id)
 end
 function Core:target(id,state) return self.catalog.resolve(self,id,state) end
+function Core:zone_frontline(id,state)
+    state=state or self.state
+    local zone=self.zone_defs[id]
+    if not zone or not state.zones[id] then return false end
+    local owner=state.zones[id].owner
+    for _,neighbor in ipairs(zone.neighbors) do
+        if state.zones[neighbor].owner~=owner then return true end
+    end
+    return false
+end
+function Core:target_health_in(id,state)
+    state=state or self.state
+    local d=self.target_defs[id];local t=d and state.targets[id]
+    return d and t and count(t.alive)/#d.types or 0
+end
+function Core:suppressed_in(id,state)
+    state=state or self.state
+    local d=self.target_defs[id];local t=d and state.targets[id]
+    if not d or not t then return true end
+    if not d.radars or #d.radars==0 then return self:target_health_in(id,state)==0 end
+    for _,i in ipairs(d.radars) do if t.alive[tostring(i)] then return false end end
+    return true
+end
+function Core:zone_stage(id,state)
+    state=state or self.state
+    local z=self.zone_defs[id]
+    if not z or not z.objectives then return false end
+    if state.zones[id].owner~="red" then return 0 end
+    if not self:suppressed_in(z.objectives.sam,state) then return 1 end
+    if self:target_health_in(z.objectives.sam,state)>0.25 then return 2 end
+    if self:target_health_in(z.objectives.strike,state)>0.25 then return 3 end
+    if self:target_health_in(z.objectives.armor,state)>0 then return 4 end
+    return 5
+end
+function Core:stage_target(id,state)
+    local z=self.zone_defs[id];local stage=self:zone_stage(id,state)
+    if not z or not z.objectives or not stage then return false end
+    if stage==1 or stage==2 then return z.objectives.sam end
+    if stage==3 then return z.objectives.strike end
+    if stage==4 then return z.objectives.armor end
+    return false
+end
+function Core:active_chain_targets(state)
+    state=state or self.state
+    local cached=self.active_chain_cache
+    if cached and cached.state==state and cached.revision==state.revision then
+        return cached.selected,cached.used
+    end
+    local candidates={};local bound={}
+    if state.task and state.task.target then bound[state.task.target]=2 end
+    for _,f in pairs(state.flights or {}) do
+        if f.target and f.status~="COMPLETE" then bound[f.target]=math.max(bound[f.target] or 0,1) end
+    end
+    for _,z in ipairs(self.config.zones) do if z.objectives and state.zones[z.id].owner=="red" then
+        local id=self:stage_target(z.id,state)
+        if id and (self:zone_frontline(z.id,state) or bound[id]) then
+            local def=self.target_defs[id]
+            candidates[#candidates+1]={id=id,bound=bound[id] or 0,priority=def.priority or 0,
+                units=count(state.targets[id].alive)}
+        end
+    end end
+    table.sort(candidates,function(a,b)
+        if a.bound~=b.bound then return a.bound>b.bound end
+        if a.priority~=b.priority then return a.priority>b.priority end
+        return a.id<b.id
+    end)
+    local selected={};local used=0
+    -- Chain objectives yield first when flights, convoys or occupying garrisons
+    -- consume the global budget.  This prevents a capture that exposes several
+    -- new branches from invalidating the next checkpoint.
+    local occupied=(self.config.player_slots or 1)+(self.config.wingman_unit and 1 or 0)
+    for id,target in pairs(state.targets) do
+        local def=self.target_defs[id];local zone=def and self.zone_defs[def.zone]
+        if def and (not zone or not zone.objectives) then occupied=occupied+count(target.alive) end
+    end
+    for _,f in pairs(state.flights or {}) do if f.status~="COMPLETE" then occupied=occupied+count(f.alive) end end
+    for _,ship in pairs(state.shipments or {}) do
+        if ship.status=="MOVING" or ship.status=="ARRIVED" then occupied=occupied+count(ship.alive) end
+    end
+    local limit=math.max(0,math.min(self.config.active_front_unit_limit or self.config.unit_budget,
+        self.config.unit_budget-occupied))
+    for _,entry in ipairs(candidates) do
+        if used+entry.units<=limit then selected[entry.id]=true;used=used+entry.units end
+    end
+    self.active_chain_cache={state=state,revision=state.revision,selected=selected,used=used}
+    return selected,used
+end
+function Core:target_active(id,state)
+    state=state or self.state
+    local d=self.target_defs[id]
+    if not d then return false end
+    local zone=self.zone_defs[d.zone]
+    if not zone or not zone.objectives then return true end
+    if state.zones[d.zone].owner~="red" then return false end
+    if self:stage_target(d.zone,state)~=id then return false end
+    local selected=self:active_chain_targets(state)
+    return selected[id]==true
+end
 function Core:target_health(id)
     local d,s=self:target(id)
     return d and s and count(s.alive)/(d.size or #d.types) or 0
@@ -283,8 +423,12 @@ function Core:task_done(task)
 end
 function Core:defenders(zone,side,health)
     local n=0
+    local zone_def=self.zone_defs[zone]
+    local stage=self:zone_stage(zone)
+    if zone_def and zone_def.objectives and self.state.zones[zone].owner=="red" and side=="blue"
+        and stage and stage>0 and stage<4 then n=1 end
     for _,t in ipairs(self.config.targets) do
-        if t.zone==zone and t.side~=side and t.kind=="ARMOR" then
+        if t.zone==zone and t.side~=side and t.kind=="ARMOR" and self:target_active(t.id) then
             n=n+(health and self:target_health(t.id) or count(self.state.targets[t.id].alive))
         end
     end
@@ -302,10 +446,35 @@ function Core:active_count()
     -- Reserve room for the editor-placed wingman when dispatching new units.
     -- Checkpoint validation counts the persisted force plus the original player slot.
     local n=(self.config.player_slots or 1)+(self.config.wingman_unit and 1 or 0)
-    for _, t in pairs(self.state.targets) do n=n+count(t.alive) end
+    for id,t in pairs(self.state.targets) do if self:target_active(id) then n=n+count(t.alive) end end
     for _, f in pairs(self.state.flights) do if f.status~="COMPLETE" then n=n+count(f.alive) end end
     for _, c in pairs(self.state.shipments) do if c.status=="MOVING" or c.status=="ARRIVED" then n=n+count(c.alive) end end
     return n
+end
+function Core:reset_zone_defenses(zone)
+    local z=self.zone_defs[zone]
+    if not z or not z.objectives then return false end
+    for _,id in pairs(z.objectives) do
+        local def=self.target_defs[id];local old=self.state.targets[id]
+        local alive={};for i=1,#def.types do alive[tostring(i)]=true end
+        self.state.targets[id]={alive=alive,generation=(old and old.generation or 0)+1,
+            positions={},destroyed_at=false,disabled_at=false}
+    end
+    for id,def in pairs(self.farp_defs) do if def.zone==zone then
+        self.state.farps[id]={owner="red",operational=true}
+    end end
+    self:note(z.name.." red sector defences reconstituted for a counterattack.")
+    return true
+end
+function Core:capture_zone(zone,side)
+    local old=self.state.zones[zone].owner
+    self.state.zones[zone].owner=side
+    for id,def in pairs(self.farp_defs) do if def.zone==zone then
+        self.state.farps[id].owner=side
+        self.state.farps[id].operational=true
+        self:note(def.name.." captured and opened as a "..side.." supply relay.")
+    end end
+    if side=="red" and old~="red" and self.zone_defs[zone].owner=="red" then self:reset_zone_defenses(zone) end
 end
 function Core:check_task()
     local t=self.state.task
@@ -332,6 +501,13 @@ function Core:lose_target(id, index)
     local d=self.target_defs[id]
     if (d.kind=="DEPOT" or d.kind=="FUEL") and count(t.alive)/#d.types<=0.25 and not t.disabled_at then
         t.disabled_at=self.state.time
+    end
+    if d.farp and count(t.alive)/#d.types<=0.25 then
+        local farp=self.state.farps[d.farp]
+        if farp and farp.operational then
+            farp.operational=false
+            self:note(self.farp_defs[d.farp].name.." disabled; long-range supply routes may be cut.")
+        end
     end
     if count(t.alive)==0 then t.destroyed_at=self.state.time end
     self:note(self.target_defs[id].name..": unit lost ("..count(t.alive).."/"..#self.target_defs[id].types.." remaining).")
@@ -480,7 +656,8 @@ function Core:support_offer(role,selected)
         local origin=d;local nearest,range
         for _,d in ipairs(self.config.targets) do
             local r=dist(origin,d)
-            if d.kind=="SAM" and d.side=="red" and not self:suppressed(d.id) and (not range or r<range) then
+            if d.kind=="SAM" and d.side=="red" and self:target_active(d.id)
+                and not self:suppressed(d.id) and (not range or r<range) then
                 nearest,range=d.id,r
             end
         end

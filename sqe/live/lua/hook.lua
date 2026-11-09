@@ -128,7 +128,7 @@ local function start()
             window.Overview:setText("Map unavailable: "..tostring(map_error or "waiting for campaign").."\n\nUse the F10 map. You can still choose a mission here.")
         end
         window.MapLegend:setText((online and "LIVE / sector schematic" or "STALE / last known state")
-            .."\nBLUE friendly / RED enemy / * front / [B] base\nLinks are sector connections, not roads.")
+            .."\nBLUE friendly / RED enemy / * front / B base / F FARP\nLinks are sector connections, not roads.")
         window.Target:setBounds(392,map_visible and 216 or 52,524,map_visible and 196 or 360)
         window.MapFilter:setVisible(map_visible);window.AllSectors:setVisible(map_visible)
         window.AllSectors:setEnabled(online)

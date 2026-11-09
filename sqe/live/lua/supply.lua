@@ -1,26 +1,44 @@
 -- Campaign corridor eligibility and convoy pause/resume coordination.
 -- Sector connectivity is an abstract permission, not a physical road boundary.
-local S={MAX_SECTORS=32}
+local S={MAX_SECTORS=64}
+local function relay(c,side,zone)
+    for _,def in ipairs(c.config.farps or {}) do
+        local state=c.state.farps and c.state.farps[def.id]
+        if def.zone==zone and state and state.owner==side and state.operational then return true end
+    end
+    return false
+end
 function S.path(c,side,from,to,unrestricted)
     if #c.config.zones>S.MAX_SECTORS or not c.zone_defs[from] or not c.zone_defs[to] then return nil end
     local function allowed(id)return c.zone_defs[id] and (unrestricted or c.state.zones[id].owner==side)end
     if not allowed(from) or not allowed(to) then return nil end
-    local queue,parents={from},{[from]=false};local head=1
+    local limit=unrestricted and S.MAX_SECTORS or (c.config.supply_hops or S.MAX_SECTORS)
+    local queue={{id=from,hops=0,path={from}}};local head=1
+    local best={[from]=0}
     while head<=#queue do
-        local id=queue[head];head=head+1
-        if id==to then
-            local path={};while id do table.insert(path,1,id);id=parents[id] end
-            return path
+        local item=queue[head];head=head+1
+        if item.id==to then return item.path end
+        local neighbors=c.copy(c.zone_defs[item.id].neighbors);table.sort(neighbors)
+        for _,next_id in ipairs(neighbors) do if allowed(next_id) then
+            local hops=item.hops+1
+            if unrestricted or relay(c,side,next_id) then hops=0 end
+            if hops<=limit and (best[next_id]==nil or hops<best[next_id]) then
+                local path=c.copy(item.path);path[#path+1]=next_id
+                best[next_id]=hops;queue[#queue+1]={id=next_id,hops=hops,path=path}
+            end
         end
-        local neighbors=c.copy(c.zone_defs[id].neighbors);table.sort(neighbors)
-        for _,next_id in ipairs(neighbors) do
-            if parents[next_id]==nil and allowed(next_id) then parents[next_id]=id;queue[#queue+1]=next_id end
         end
     end
 end
 function S.path_open(c,side,path)
     if not path or #path==0 then return false end
-    for _,id in ipairs(path) do if not c.state.zones[id] or c.state.zones[id].owner~=side then return false end end
+    local hops=0;local limit=c.config.supply_hops or S.MAX_SECTORS
+    for i,id in ipairs(path) do
+        if not c.state.zones[id] or c.state.zones[id].owner~=side then return false end
+        if i>1 then hops=hops+1 end
+        if relay(c,side,id) then hops=0 end
+        if hops>limit then return false end
+    end
     return true
 end
 function S.cut_reason(c,side,from,to)
@@ -28,6 +46,9 @@ function S.cut_reason(c,side,from,to)
     if not path then return "No sector connection between source and destination." end
     local blocked={}
     for _,id in ipairs(path) do if c.state.zones[id].owner~=side then blocked[#blocked+1]=c.zone_defs[id].name end end
+    if #blocked==0 and not S.path(c,side,from,to) then
+        return "No operating FARP relay keeps this route within "..tostring(c.config.supply_hops or S.MAX_SECTORS).." sector hops."
+    end
     return ("No controlled supply corridor. Blocked sector(s): "..table.concat(blocked,", ")):sub(1,300)
 end
 function S.sources(c,b,kind)
